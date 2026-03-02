@@ -9,7 +9,7 @@ from .ansi import RESET, TextAttributes
 
 def bold(text: str) -> str:
     """Return the text wrapped in bold ANSI escape codes."""
-    return f"{TextAttributes.BOLD}{text}{RESET}"
+    return style(text, ansi_style=TextAttributes.BOLD)
 
 
 def color_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], color: str) -> str:
@@ -60,12 +60,17 @@ def color_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], c
 
 def dim(text: str) -> str:
     """Return the text wrapped in dim ANSI escape codes."""
-    return f"{TextAttributes.DIM}{text}{RESET}"
+    return style(text, ansi_style=TextAttributes.DIM)
 
 
 def reverse_video(text: str) -> str:
     """Return the text wrapped in reverse-video ANSI escape codes."""
-    return f"{TextAttributes.REVERSE}{text}{RESET}"
+    return style(text, ansi_style=TextAttributes.REVERSE)
+
+
+def style(text: str, *, ansi_style: str) -> str:
+    """Return the text wrapped in ANSI escape codes."""
+    return f"{ansi_style}{text}{RESET}"
 
 
 __all__: Final[tuple[str, ...]] = (
@@ -73,4 +78,5 @@ __all__: Final[tuple[str, ...]] = (
     "color_pattern_matches",
     "dim",
     "reverse_video",
+    "style"
 )

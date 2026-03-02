@@ -81,3 +81,9 @@ class TestRender(unittest.TestCase):
         result = render.reverse_video(text)
 
         self.assertEqual(result, f"{ansi.TextAttributes.REVERSE}word{ansi.RESET}")
+
+    def test_style(self):
+        text = "word"
+        result = render.style(text, ansi_style=ansi.Colors.BLUE)
+
+        self.assertEqual(result, f"{ansi.Colors.BLUE}word{ansi.RESET}")

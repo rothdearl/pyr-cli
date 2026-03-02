@@ -46,6 +46,7 @@ from .render import (
     color_pattern_matches,
     dim,
     reverse_video,
+    style,
 )
 from .terminal import (
     stderr_is_redirected,
