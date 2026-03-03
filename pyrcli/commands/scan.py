@@ -149,7 +149,7 @@ class Scan(TextProgram):
         file_name = ""
 
         if self.should_print_file_header():
-            file_name = self.render_file_header(origin_file, file_name_color=Colors.FILE_NAME, colon_color=Colors.COLON)
+            file_name = self.render_file_header(origin_file, file_name_style=Colors.FILE_NAME, colon_style=Colors.COLON)
 
         if self.is_printing_counts():
             print(f"{file_name}{len(matches)}")
