@@ -102,8 +102,9 @@ class Order(TextProgram):
         """
         Return a sort key that orders currency-like values numerically when possible.
 
-        :param line: Line to derive key from.
-        :return: A list of tuples containing ``(0, number)`` when text parses as a number, otherwise ``(1, text)``.
+        - Returns a list of tuples used for comparison.
+        - Each tuple is ``(0, number)`` when the text parses as a number.
+        - Otherwise returns ``(1, text)`` to fall back to lexicographic ordering.
         """
         segments = []
 
@@ -124,8 +125,9 @@ class Order(TextProgram):
         """
         Return a sort key that orders date-like values chronologically when possible.
 
-        :param line: Line to derive key from.
-        :return: A list of tuples containing ``(0, date)`` when text parses as a date, otherwise ``(1, text)``.
+        - Returns a list of tuples used for comparison.
+        - Each tuple is ``(0, date)`` when the text parses as a date.
+        - Otherwise returns ``(1, text)`` to fall back to lexicographic ordering.
         """
         segments = []
 
@@ -155,8 +157,9 @@ class Order(TextProgram):
         """
         Return a sort key that orders text lexicographically and numbers numerically when possible.
 
-        :param line: Line to derive key from.
-        :return: A list of tuples containing ``(0, number)`` when text parses as a number, otherwise ``(1, text)``.
+        - Returns a list of tuples used for comparison.
+        - Each tuple is ``(0, number)`` when the text parses as a number.
+        - Otherwise returns ``(1, text)`` to fall back to lexicographic ordering.
         """
         segments = []
 
