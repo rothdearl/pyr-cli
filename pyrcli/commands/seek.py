@@ -214,9 +214,9 @@ class Seek(CLIProgram):
                     for path in root.rglob("*"):
                         depth = len(path.relative_to(root).parts)
 
-                        # Stop processing starting directory once --max-depth is exceeded.
+                        # Skip paths deeper than --max-depth.
                         if self.args.max_depth < depth:
-                            break
+                            continue
 
                         self.print_path(path)
                 except PermissionError as error:
