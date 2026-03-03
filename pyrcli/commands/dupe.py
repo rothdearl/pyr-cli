@@ -2,7 +2,7 @@
 
 import argparse
 import sys
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from typing import Final, NoReturn, override
 
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
@@ -135,59 +135,12 @@ class Dupe(TextProgram):
 
     def group_and_print_lines(self, lines: Iterable[str], *, origin_file: str) -> None:
         """Group and print lines to standard output according to command-line arguments."""
-        file_header_printed = False
-
-        # Group matches.
         if self.args.adjacent:
             groups = self.group_adjacent_matching_lines(lines)
         else:
             groups = self.group_lines_by_key(lines).values()
 
-        # Print groups.
-        printed_group_count = 0
-
-        for group in groups:
-            group_count = len(group)
-
-            if self.args.group and printed_group_count:
-                print()
-
-            for line_index, line in enumerate(group):
-                can_print = True
-                group_count_str = ""
-
-                if self.args.count:
-                    # Only print the group count for the first line.
-                    if line_index == 0:
-                        if self.print_color:
-                            group_count_str = (
-                                f"{Styles.GROUP_COUNT}"
-                                f"{group_count:>{self.args.count_width},}"
-                                f"{Styles.COLON}:"
-                                f"{ansi.RESET}"
-                            )
-                        else:
-                            group_count_str = f"{group_count:>{self.args.count_width},}:"
-                    else:
-                        empty_space = " "  # Ensure lines align.
-
-                        group_count_str = f"{empty_space:>{self.args.count_width}} "
-
-                if self.args.all_repeated or self.args.repeated:
-                    can_print = group_count > 1
-                elif self.args.unique:
-                    can_print = group_count == 1
-
-                if can_print:
-                    if not file_header_printed:
-                        self.print_file_header(origin_file)
-                        file_header_printed = True
-
-                    print(f"{group_count_str}{line}")
-                    printed_group_count += 1
-
-                    if not (self.args.all_repeated or self.args.group):
-                        break
+        self.print_line_groups(groups, origin_file=origin_file)
 
     def group_and_print_lines_from_input(self) -> None:
         """Read and print lines from standard input until EOF."""
@@ -226,6 +179,54 @@ class Dupe(TextProgram):
         """Print the rendered file header for ``file_name``."""
         if self.should_print_file_header():
             print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
+
+    def print_line_groups(self, line_groups: Iterable[Sequence[str]], *, origin_file: str) -> None:
+        """Print groups of matching lines according to command-line arguments."""
+        file_header_printed = False
+        printed_line_count = 0
+
+        for line_group in line_groups:
+            group_count = len(line_group)
+
+            if self.args.group and printed_line_count:
+                print()
+
+            for line_index, line in enumerate(line_group):
+                can_print = True
+                group_count_str = ""
+
+                if self.args.count:
+                    # Only print the group count for the first line.
+                    if line_index == 0:
+                        if self.print_color:
+                            group_count_str = (
+                                f"{Styles.GROUP_COUNT}"
+                                f"{group_count:>{self.args.count_width},}"
+                                f"{Styles.COLON}:"
+                                f"{ansi.RESET}"
+                            )
+                        else:
+                            group_count_str = f"{group_count:>{self.args.count_width},}:"
+                    else:
+                        empty_space = " "  # Ensure lines align.
+
+                        group_count_str = f"{empty_space:>{self.args.count_width}} "
+
+                if self.args.all_repeated or self.args.repeated:
+                    can_print = group_count > 1
+                elif self.args.unique:
+                    can_print = group_count == 1
+
+                if can_print:
+                    if not file_header_printed:
+                        self.print_file_header(origin_file)
+                        file_header_printed = True
+
+                    print(f"{group_count_str}{line}")
+                    printed_line_count += 1
+
+                    if not (self.args.all_repeated or self.args.group):
+                        break
 
     @override
     def validate_option_ranges(self) -> None:
