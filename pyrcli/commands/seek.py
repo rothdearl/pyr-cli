@@ -11,8 +11,8 @@ from typing import Final, NoReturn, override
 from pyrcli.cli import CLIProgram, CompiledPatterns, ansi, io, patterns, render, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
+class Styles:
+    """Namespace for terminal styling constants."""
     MATCH: Final[str] = ansi.Colors.BRIGHT_RED
 
 
@@ -183,8 +183,8 @@ class Seek(CLIProgram):
         self.found_any_match = True
 
         if self.print_color and not self.args.invert_match:
-            name_part = render.style_pattern_matches(name_part, patterns=self.name_patterns, ansi_style=Colors.MATCH)
-            path_part = render.style_pattern_matches(path_part, patterns=self.path_patterns, ansi_style=Colors.MATCH)
+            name_part = render.style_pattern_matches(name_part, patterns=self.name_patterns, ansi_style=Styles.MATCH)
+            path_part = render.style_pattern_matches(path_part, patterns=self.path_patterns, ansi_style=Styles.MATCH)
 
         if self.args.abs:
             if is_current_directory:  # Do not join the current working directory with '.'.

@@ -9,19 +9,19 @@ from typing import Final, NamedTuple, NoReturn, override
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
-    COUNT: Final[str] = ansi.Colors.BRIGHT_CYAN
-    COUNT_TOTAL: Final[str] = ansi.Colors.BRIGHT_YELLOW
-    FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
-
-
 class Counts(NamedTuple):
     """Immutable container for information about counts."""
     lines: int
     words: int
     characters: int
     max_line_length: int
+
+
+class Styles:
+    """Namespace for terminal styling constants."""
+    COUNT: Final[str] = ansi.Colors.BRIGHT_CYAN
+    COUNT_TOTAL: Final[str] = ansi.Colors.BRIGHT_YELLOW
+    FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
 
 
 class Tally(TextProgram):
@@ -145,8 +145,8 @@ class Tally(TextProgram):
 
     def print_counts(self, counts: Counts, *, origin_file: str) -> None:
         """Print line, word, and character counts for the given file."""
-        count_color = Colors.COUNT_TOTAL if origin_file == "total" else Colors.COUNT
-        origin_file_color = Colors.COUNT_TOTAL if origin_file == "total" else Colors.FILE_NAME
+        count_color = Styles.COUNT_TOTAL if origin_file == "total" else Styles.COUNT
+        origin_file_color = Styles.COUNT_TOTAL if origin_file == "total" else Styles.FILE_NAME
         padding = self.args.count_width if origin_file or sum(self.flags) > 1 else 0  # 0 if standard input or one flag.
 
         for index, count in enumerate(counts):

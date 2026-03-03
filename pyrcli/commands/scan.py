@@ -8,18 +8,18 @@ from typing import Final, NamedTuple, NoReturn, override
 from pyrcli.cli import CompiledPatterns, TextProgram, ansi, io, patterns, render, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
-    COLON: Final[str] = ansi.Colors.BRIGHT_CYAN
-    FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
-    LINE_NUMBER: Final[str] = ansi.Colors.BRIGHT_GREEN
-    MATCH: Final[str] = ansi.Colors.BRIGHT_RED
-
-
 class Match(NamedTuple):
     """Immutable container representing a single pattern match."""
     line_number: int
     line: str
+
+
+class Styles:
+    """Namespace for terminal styling constants."""
+    COLON: Final[str] = ansi.Colors.BRIGHT_CYAN
+    FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
+    LINE_NUMBER: Final[str] = ansi.Colors.BRIGHT_GREEN
+    MATCH: Final[str] = ansi.Colors.BRIGHT_RED
 
 
 class Scan(TextProgram):
@@ -90,7 +90,7 @@ class Scan(TextProgram):
                 self.found_any_match = True
 
                 if self.print_color and not self.args.invert_match:
-                    line = render.style_pattern_matches(line, patterns=self.patterns, ansi_style=Colors.MATCH)
+                    line = render.style_pattern_matches(line, patterns=self.patterns, ansi_style=Styles.MATCH)
 
                 matches.append(Match(line_number, line))
 
@@ -149,7 +149,7 @@ class Scan(TextProgram):
         file_name = ""
 
         if self.should_print_file_header():
-            file_name = self.render_file_header(origin_file, file_name_style=Colors.FILE_NAME, colon_style=Colors.COLON)
+            file_name = self.render_file_header(origin_file, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON)
 
         if self.is_printing_counts():
             print(f"{file_name}{len(matches)}")
@@ -163,9 +163,9 @@ class Scan(TextProgram):
                 if self.args.line_number:
                     if self.print_color:
                         print(
-                            f"{Colors.LINE_NUMBER}"
+                            f"{Styles.LINE_NUMBER}"
                             f"{line_number:>{padding}}"
-                            f"{Colors.COLON}:"
+                            f"{Styles.COLON}:"
                             f"{ansi.RESET}",
                             end=""
                         )

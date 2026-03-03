@@ -8,8 +8,8 @@ from typing import Final, NoReturn, override
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
+class Styles:
+    """Namespace for terminal styling constants."""
     END_MARKER: Final[str] = ansi.Colors.BRIGHT_BLUE
     NUMBER: Final[str] = ansi.Colors.BRIGHT_GREEN
     TAB_MARKER: Final[str] = ansi.Colors.BRIGHT_CYAN
@@ -117,7 +117,7 @@ class Glue(TextProgram):
         """Prefix a formatted line number to the line."""
         if self.print_color:
             return (
-                f"{Colors.NUMBER}"
+                f"{Styles.NUMBER}"
                 f"{self.line_number:>{self.args.number_width}}"
                 f"{ansi.RESET}"
                 f" {line}"
@@ -132,7 +132,7 @@ class Glue(TextProgram):
         if self.args.show_tabs:
             if self.print_color:
                 tab_marker = (
-                    f"{Colors.TAB_MARKER}"
+                    f"{Styles.TAB_MARKER}"
                     f"{Whitespace.TAB_MARKER}"
                     f"{ansi.RESET}"
                 )
@@ -145,7 +145,7 @@ class Glue(TextProgram):
             if self.print_color:
                 rendered = (
                     f"{rendered}"
-                    f"{Colors.END_MARKER}"
+                    f"{Styles.END_MARKER}"
                     f"{Whitespace.END_MARKER}"
                     f"{ansi.RESET}"
                 )

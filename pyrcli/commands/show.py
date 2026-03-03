@@ -8,8 +8,8 @@ from typing import Final, NoReturn, override
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
+class Styles:
+    """Namespace for terminal styling constants."""
     COLON: Final[str] = ansi.Colors.BRIGHT_CYAN
     END_MARKER: Final[str] = ansi.Colors.BRIGHT_BLUE
     FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
@@ -93,7 +93,7 @@ class Show(TextProgram):
     def print_file_header(self, file_name: str) -> None:
         """Print the rendered file header for ``file_name``."""
         if self.should_print_file_header():
-            print(self.render_file_header(file_name, file_name_style=Colors.FILE_NAME, colon_style=Colors.COLON))
+            print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
 
     def print_lines(self, lines: Sequence[str]) -> None:
         """Print lines to standard output, applying numbering and whitespace rendering."""
@@ -128,7 +128,7 @@ class Show(TextProgram):
         if self.print_color:
             return (
                 f"{line}"
-                f"{Colors.END_MARKER}"
+                f"{Styles.END_MARKER}"
                 f"{Whitespace.END_MARKER}"
                 f"{ansi.RESET}"
             )
@@ -139,7 +139,7 @@ class Show(TextProgram):
         """Prefix the line with a line number, right-aligned to the specified padding."""
         if self.print_color:
             return (
-                f"{Colors.LINE_NUMBER}"
+                f"{Styles.LINE_NUMBER}"
                 f"{line_number:>{padding}}"
                 f"{ansi.RESET}"
                 f" {line}"
@@ -156,10 +156,10 @@ class Show(TextProgram):
         rendered = rendered[:-trailing_count] if trailing_count else rendered
 
         if self.print_color:
-            space_marker = f"{Colors.SPACE_MARKER}{Whitespace.SPACE_MARKER}{ansi.RESET}"
+            space_marker = f"{Styles.SPACE_MARKER}{Whitespace.SPACE_MARKER}{ansi.RESET}"
 
             rendered = rendered.replace(" ", space_marker)
-            rendered = rendered + Colors.SPACE_MARKER + (Whitespace.TRAILING_SPACE_MARKER * trailing_count) + ansi.RESET
+            rendered = rendered + Styles.SPACE_MARKER + (Whitespace.TRAILING_SPACE_MARKER * trailing_count) + ansi.RESET
         else:
             rendered = rendered.replace(" ", Whitespace.SPACE_MARKER)
             rendered = rendered + (Whitespace.TRAILING_SPACE_MARKER * trailing_count)
@@ -170,7 +170,7 @@ class Show(TextProgram):
         """Replace tabs with visible markers."""
         if self.print_color:
             tab_marker = (
-                f"{Colors.TAB_MARKER}"
+                f"{Styles.TAB_MARKER}"
                 f"{Whitespace.TAB_MARKER}"
                 f"{ansi.RESET}"
             )

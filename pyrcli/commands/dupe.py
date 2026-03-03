@@ -8,8 +8,8 @@ from typing import Final, NoReturn, override
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
+class Styles:
+    """Namespace for terminal styling constants."""
     COLON: Final[str] = ansi.Colors.BRIGHT_CYAN
     FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
     GROUP_COUNT: Final[str] = ansi.Colors.BRIGHT_GREEN
@@ -161,9 +161,9 @@ class Dupe(TextProgram):
                     if line_index == 0:
                         if self.print_color:
                             group_count_str = (
-                                f"{Colors.GROUP_COUNT}"
+                                f"{Styles.GROUP_COUNT}"
                                 f"{group_count:>{self.args.count_width},}"
-                                f"{Colors.COLON}:"
+                                f"{Styles.COLON}:"
                                 f"{ansi.RESET}"
                             )
                         else:
@@ -225,7 +225,7 @@ class Dupe(TextProgram):
     def print_file_header(self, file_name: str) -> None:
         """Print the rendered file header for ``file_name``."""
         if self.should_print_file_header():
-            print(self.render_file_header(file_name, file_name_style=Colors.FILE_NAME, colon_style=Colors.COLON))
+            print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
 
     @override
     def validate_option_ranges(self) -> None:

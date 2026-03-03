@@ -9,8 +9,8 @@ from typing import Final, NoReturn, override
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
 
-class Colors:
-    """Namespace for terminal color constants."""
+class Styles:
+    """Namespace for terminal styling constants."""
     COLON: Final[str] = ansi.Colors.BRIGHT_CYAN
     FILE_NAME: Final[str] = ansi.Colors.BRIGHT_MAGENTA
 
@@ -75,7 +75,7 @@ class Peek(TextProgram):
     def print_file_header(self, file_name: str) -> None:
         """Print the rendered file header for ``file_name``."""
         if self.should_print_file_header():
-            print(self.render_file_header(file_name, file_name_style=Colors.FILE_NAME, colon_style=Colors.COLON))
+            print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
 
     def print_lines(self, lines: Iterable[str]) -> None:
         """Print lines to standard output."""
