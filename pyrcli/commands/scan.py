@@ -83,7 +83,7 @@ class Scan(TextProgram):
         matches = []
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):
-            if patterns.matches_all_patterns(line, patterns=self.patterns) != self.args.invert_match:
+            if patterns.matches_all_patterns(line, compiled_patterns=self.patterns) != self.args.invert_match:
                 if self.args.quiet:  # Exit early if --quiet.
                     raise SystemExit(0)
 

@@ -154,10 +154,10 @@ class Seek(CLIProgram):
 
     def path_matches_patterns(self, name_part: str, path_part: str) -> bool:
         """Return whether the ``name_part`` and ``path_part`` match all provided pattern groups."""
-        if not patterns.matches_all_patterns(name_part, patterns=self.name_patterns):
+        if not patterns.matches_all_patterns(name_part, compiled_patterns=self.name_patterns):
             return False
 
-        if not patterns.matches_all_patterns(path_part, patterns=self.path_patterns):
+        if not patterns.matches_all_patterns(path_part, compiled_patterns=self.path_patterns):
             return False
 
         return True

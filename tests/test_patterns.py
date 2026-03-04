@@ -96,34 +96,34 @@ class TestMatchesAllPatterns(unittest.TestCase):
         text = "abcdef"
         test_patterns = [re.compile(r"abc"), re.compile(r"def")]
 
-        self.assertTrue(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertTrue(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
 
     def test_one_pattern_does_not_match(self):
         text = "abcdef"
         test_patterns = [re.compile(r"abc"), re.compile(r"xyz")]
 
-        self.assertFalse(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertFalse(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
 
     def test_empty_pattern_list_returns_true(self):
         text = "abcdef"
         test_patterns = []
 
-        self.assertTrue(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertTrue(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
 
     def test_empty_text_no_match(self):
         text = ""
         test_patterns = [re.compile(r"abc")]
 
-        self.assertFalse(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertFalse(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
 
     def test_pattern_matching_empty_string(self):
         text = ""
         test_patterns = [re.compile(r"^$")]
 
-        self.assertTrue(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertTrue(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
 
     def test_multiple_patterns_partial_match(self):
         text = "abcdef"
         test_patterns = [re.compile(r"abc"), re.compile(r"cd")]
 
-        self.assertTrue(patterns.matches_all_patterns(text, patterns=test_patterns))
+        self.assertTrue(patterns.matches_all_patterns(text, compiled_patterns=test_patterns))
