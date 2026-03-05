@@ -88,9 +88,8 @@ class Subs(TextProgram):
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
         """Process the text stream in ``file_info``."""
         if self.args.in_place:
-            io.write_text_to_file(file_info.file_name,
-                                  lines=self.iter_replaced_lines(file_info.text_stream.readlines()),
-                                  encoding=self.encoding, on_error=self.print_error)
+            io.write_text_file(file_info.file_name, lines=self.iter_replaced_lines(file_info.text_stream.readlines()),
+                               encoding=self.encoding, on_error=self.print_error)
         else:
             self.print_file_header(file_info.file_name)
             self.print_replaced_lines(file_info.text_stream.readlines())

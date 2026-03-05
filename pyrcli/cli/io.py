@@ -14,14 +14,14 @@ class FileInfo(NamedTuple):
     """
     Immutable container for information about a file being read.
 
-    :ivar file_name: File name (normalized by the caller).
-    :ivar text_stream: Open text stream for the file, valid only until the next yield.
+    - file_name: File name (normalized by the caller).
+    - text_stream: Open text stream for the file, valid only until the next yield.
     """
     file_name: str
     text_stream: TextIO
 
 
-def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterable[Path]:
+def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterator[Path]:
     """
     Yield descendant paths under ``root`` whose depth is less than or equal to ``max_depth``.
 
@@ -35,7 +35,7 @@ def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterable[
         current = Path(dir_path)
         depth = len(current.parts) - root_depth
 
-        # Enforce --max-depth: prevent descent and suppress deeper children.
+        # Prune subdirectories to prevent descent beyond max_depth.
         if depth >= max_depth:
             dir_names[:] = []
             continue
@@ -48,13 +48,13 @@ def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterable[
 
 
 def iter_stdin_file_names() -> Iterator[str]:
-    """Yield normalized file names from standard input."""
+    """Yield file names from standard input, with trailing newlines removed and empty lines skipped."""
     yield from iter_nonempty_lines(sys.stdin)
 
 
 def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: ErrorReporter) -> Iterator[FileInfo]:
     """
-    Open files for reading in text mode and yield ``FileInfo`` objects.
+    Yield a ``FileInfo`` for each readable file in ``file_names``.
 
     - Each yielded ``FileInfo.text_stream`` is valid only until the next iteration.
     - ``on_error(message)`` is invoked for file-related errors; processing continues with the next file.
@@ -78,9 +78,9 @@ def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: Error
             on_error(f"{file_name!r}: unable to read")
 
 
-def write_text_to_file(file_name: str, *, lines: Iterable[str], encoding: str, on_error: ErrorReporter) -> None:
+def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_error: ErrorReporter) -> None:
     """
-    Write text lines to a file, ensuring exactly one trailing newline is written for each input line.
+    Write lines to a file, ensuring exactly one trailing newline is written for each input line.
 
     - ``on_error(message)`` is invoked for file-related errors.
     - Errors reported: unknown encoding, permission denied, encoding failures, other OS write errors.
@@ -103,5 +103,5 @@ __all__: Final[tuple[str, ...]] = (
     "FileInfo",
     "iter_stdin_file_names",
     "read_text_files",
-    "write_text_to_file",
+    "write_text_file",
 )

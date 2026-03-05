@@ -1,4 +1,4 @@
-"""INI configuration reader using a shared module-level parser."""
+"""Utilities for reading and querying INI configuration files."""
 
 import configparser
 import json
@@ -6,13 +6,13 @@ from typing import Final
 
 from .types import ErrorReporter, JsonObject
 
-# Intentional module-level shared ConfigParser instance.
+# Shared across all callers; reflects the most recently loaded configuration.
 _config: configparser.ConfigParser = configparser.ConfigParser()
 
-# Set of string values that are considered falsy.
+# String values that are considered falsy.
 _falsy_values: Final[frozenset[str]] = frozenset({"0", "false", "off", "n", "no"})
 
-# Set of string values that are considered truthy.
+# String values that are considered truthy.
 _truthy_values: Final[frozenset[str]] = frozenset({"1", "on", "true", "y", "yes"})
 
 
@@ -94,7 +94,7 @@ def get_str_option(section: str, option: str) -> str:
 
 
 def get_str_option_with_fallback(section: str, option: str, *, fallback: str) -> str:
-    """Return a string value, using a fallback if the option is missing or empty."""
+    """Return a string value, using ``fallback`` if the option is missing or empty."""
     return _config.get(section, option, fallback=fallback) or fallback
 
 
@@ -102,7 +102,7 @@ def get_str_options(section: str, option: str, *, separator: str = ",") -> list[
     """Return string values split on a separator, ignoring empty entries."""
     value = get_str_option_with_fallback(section, option, fallback="")
 
-    return [s for sub in value.split(separator) if (s := sub.strip())]
+    return [entry for part in value.split(separator) if (entry := part.strip())]
 
 
 def has_defaults() -> bool:
@@ -124,10 +124,11 @@ def read_options(path: str, *, clear_previous: bool = True, on_error: ErrorRepor
     """
     Read options from a configuration file.
 
-    - Clears previously loaded options when ``clear_previous`` is ``True``.
+    - Clears previously loaded options before reading when ``clear_previous`` is ``True``.
     - Invokes ``on_error(message)`` if the file cannot be read or parsed.
-    - Returns ``True`` on success.
     - Errors reported: missing file, permission denied, invalid configuration file, other OS read errors.
+    - Returns ``True`` on success.
+    - A failed read after clearing leaves the configuration empty.
     """
     try:
         with open(path, mode="rt", encoding="utf-8") as f:

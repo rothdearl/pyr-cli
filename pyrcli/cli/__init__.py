@@ -28,7 +28,7 @@ from .io import (
     FileInfo,
     iter_stdin_file_names,
     read_text_files,
-    write_text_to_file,
+    write_text_file,
 )
 from .os_info import (
     IS_LINUX,
@@ -105,7 +105,7 @@ __all__: Final[tuple[str, ...]] = (
     "FileInfo",
     "iter_stdin_file_names",
     "read_text_files",
-    "write_text_to_file",
+    "write_text_file",
 
     # os_info
     "IS_LINUX",
