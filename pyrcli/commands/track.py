@@ -121,7 +121,7 @@ class Track(TextProgram):
     @override
     def normalize_options(self) -> None:
         """Apply derived defaults and adjust option values for consistent internal use."""
-        # Set --no-file-name to True if there are no files and --stdin-files=False.
+        # Suppress file headers when standard input is the only source.
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 

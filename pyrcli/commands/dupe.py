@@ -16,7 +16,7 @@ class Styles:
 
 
 class Dupe(TextProgram):
-    """Filters duplicate or unique lines from files."""
+    """Command implementation for filtering duplicate or unique lines from files."""
 
     def __init__(self) -> None:
         """Initialize a new instance."""
@@ -63,7 +63,7 @@ class Dupe(TextProgram):
         return parser
 
     def can_group_key(self, key: str) -> bool:
-        """Return ``True`` if the key should participate in grouping (optionally ignoring blank keys)."""
+        """Return ``True`` if ``key`` should participate in grouping."""
         return not self.args.ignore_blank or key.strip()
 
     @override
@@ -92,7 +92,7 @@ class Dupe(TextProgram):
             self.group_and_print_lines_from_input()
 
     def get_compare_key(self, line: str) -> str:
-        """Return a normalized comparison key derived from the line, applying rules according to command-line options."""
+        """Return a normalized comparison key derived from the line, applying skip, trim, and case options."""
         compare_key = line
 
         if self.args.skip_whitespace:
@@ -135,7 +135,7 @@ class Dupe(TextProgram):
         return groups
 
     def group_and_print_lines(self, lines: Iterable[str], *, origin_file: str) -> None:
-        """Group and print lines to standard output according to command-line arguments."""
+        """Group lines and print them to standard output."""
         if self.args.adjacent:
             groups = self.group_adjacent_matching_lines(lines)
         else:
@@ -172,7 +172,7 @@ class Dupe(TextProgram):
     @override
     def normalize_options(self) -> None:
         """Apply derived defaults and adjust option values for consistent internal use."""
-        # Set --no-file-name to True if there are no files and --stdin-files=False.
+        # Suppress file headers when standard input is the only source.
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 
@@ -182,7 +182,7 @@ class Dupe(TextProgram):
             print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
 
     def print_line_groups(self, line_groups: Iterable[Sequence[str]], *, origin_file: str) -> None:
-        """Print groups of matching lines according to command-line arguments."""
+        """Print line groups as duplicates, unique lines, or grouped output."""
         file_header_printed = False
         printed_line_count = 0
 
@@ -209,9 +209,9 @@ class Dupe(TextProgram):
                         else:
                             group_count_str = f"{group_count:>{self.args.count_width},}:"
                     else:
-                        empty_space = " "  # Ensure lines align.
+                        indent = " "  # Ensure lines align.
 
-                        group_count_str = f"{empty_space:>{self.args.count_width}} "
+                        group_count_str = f"{indent:>{self.args.count_width}} "
 
                 if self.args.all_repeated or self.args.repeated:
                     can_print = group_count > 1

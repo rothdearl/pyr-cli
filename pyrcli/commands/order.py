@@ -11,6 +11,15 @@ from dateutil.parser import ParserError, parse
 
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
+# Matches one or more consecutive characters that are not digits, commas, or periods.
+_CURRENCY_SANITIZE_REGEX: Final[str] = r"[^0-9,.]+"
+
+# Matches (and captures) one or more decimal digits.
+_DIGIT_TOKEN_REGEX: Final[str] = r"(\d+)"
+
+# Matches one or more consecutive characters that are not Unicode word characters or whitespace.
+_NON_WORD_OR_WHITESPACE_REGEX: Final[str] = r"[^\w\s]+"
+
 
 class Styles:
     """Namespace for ANSI styling constants."""
@@ -19,18 +28,7 @@ class Styles:
 
 
 class Order(TextProgram):
-    """
-    Sorts files and prints them to standard output.
-
-    Attributes:
-        CURRENCY_SANITIZE_REGEX: Matches one or more consecutive characters that are not digits, commas, or periods.
-        DIGIT_TOKEN_REGEX: Matches (and captures) one or more decimal digits.
-        NON_WORD_OR_WHITESPACE_REGEX: Matches one or more consecutive characters that are not Unicode word characters or whitespace.
-    """
-
-    CURRENCY_SANITIZE_REGEX: Final[str] = r"[^0-9,.]+"
-    DIGIT_TOKEN_REGEX: Final[str] = r"(\d+)"
-    NON_WORD_OR_WHITESPACE_REGEX: Final[str] = r"[^\w\s]+"
+    """Command implementation for sorting files and prints them to standard output."""
 
     def __init__(self) -> None:
         """Initialize a new instance."""
@@ -111,10 +109,8 @@ class Order(TextProgram):
         segments = []
 
         for field in self.get_sort_fields(line, filter_empty_fields=True):
-            negative = "-" in field or "(" in field and ")" in field  # Negative if field contains "-" or "(" and ")".
-
-            # Remove non-numeric characters.
-            number = self.normalize_number(re.sub(pattern=self.CURRENCY_SANITIZE_REGEX, repl="", string=field))
+            negative = "-" in field or "(" in field and ")" in field
+            number = self.normalize_number(re.sub(pattern=_CURRENCY_SANITIZE_REGEX, repl="", string=field))
 
             try:
                 # Convert to float and apply sign.
@@ -152,7 +148,7 @@ class Order(TextProgram):
 
         for field in self.get_sort_fields(line):
             # Remove everything except Unicode word characters and whitespace.
-            sort_fields.append(re.sub(pattern=self.NON_WORD_OR_WHITESPACE_REGEX, repl="", string=field))
+            sort_fields.append(re.sub(pattern=_NON_WORD_OR_WHITESPACE_REGEX, repl="", string=field))
 
         return sort_fields
 
@@ -170,8 +166,8 @@ class Order(TextProgram):
             try:
                 segments.append((0, float(self.normalize_number(field))))
             except ValueError:
-                # Split field into chunks and check for digits.
-                for chunk in re.split(pattern=self.DIGIT_TOKEN_REGEX, string=field):
+                # Fall back to splitting on digit boundaries for mixed alphanumeric fields.
+                for chunk in re.split(pattern=_DIGIT_TOKEN_REGEX, string=field):
                     if not chunk:  # Skip empty chunks.
                         continue
 
@@ -182,13 +178,11 @@ class Order(TextProgram):
 
         return segments
 
-    def get_sort_fields(self, line: str, filter_empty_fields: bool = False) -> list[str]:
+    def get_sort_fields(self, line: str, *, filter_empty_fields: bool = False) -> list[str]:
         """Return normalized sort fields after optional empty-field filtering and applying ``args.skip_fields``."""
         normalized = self.normalize_line(line)
         separator = self.args.field_separator or " "
         skip = self.args.skip_fields
-
-        # Split line into fields, optionally filter empty fields, and apply --skip-fields.
         fields = text.split_csv(normalized, separator=separator, on_error=self.print_error_and_exit)
 
         # When skipping fields, discard empty tokens first so skip counts apply to "real" fields.
@@ -230,11 +224,11 @@ class Order(TextProgram):
     @override
     def normalize_options(self) -> None:
         """Apply derived defaults and adjust option values for consistent internal use."""
-        # Set --ignore-case to True if --dictionary-order=True or --natural-sort=True.
+        # Dictionary order and natural sort normalize case internally.
         if self.args.dictionary_order or self.args.natural_sort:
             self.args.ignore_case = True
 
-        # Set --no-file-name to True if there are no files and --stdin-files=False.
+        # Suppress file headers when standard input is the only source.
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 
@@ -244,7 +238,7 @@ class Order(TextProgram):
             print(self.render_file_header(file_name, file_name_style=Styles.FILE_NAME, colon_style=Styles.COLON))
 
     def sort_and_print_lines(self, lines: list[str]) -> None:
-        """Sort lines in place and print them to standard output according to command-line arguments."""
+        """Sort and print lines to standard output according to command-line options."""
         if self.args.random_sort:
             random.shuffle(lines)
         else:
@@ -255,11 +249,9 @@ class Order(TextProgram):
                 self.generate_natural_sort_key if self.args.natural_sort else
                 self.generate_default_sort_key
             )
-            reverse = self.args.reverse
 
-            lines.sort(key=key_function, reverse=reverse)
+            lines.sort(key=key_function, reverse=self.args.reverse)
 
-        # Print lines.
         for line in text.iter_normalized_lines(lines):
             if self.args.no_blank and not line.rstrip():
                 continue

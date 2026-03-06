@@ -10,6 +10,9 @@ from typing import Final, NoReturn, override
 
 from pyrcli.cli import CLIProgram, CompiledPatterns, ansi, io, patterns, render, terminal, text
 
+# Exit code when no matches are found.
+_NO_MATCHES_EXIT_CODE: Final[int] = 1
+
 
 class Styles:
     """Namespace for ANSI styling constants."""
@@ -21,13 +24,10 @@ class Seek(CLIProgram):
     Command implementation for searching for files in a directory hierarchy.
 
     Attributes:
-        NO_MATCHES_EXIT_CODE: Exit code when no matches are found.
         found_any_match: Whether any match was found.
         name_patterns: Compiled name patterns to match.
         path_patterns: Compiled path patterns to match.
     """
-
-    NO_MATCHES_EXIT_CODE: Final[int] = 1
 
     def __init__(self) -> None:
         """Initialize a new instance."""

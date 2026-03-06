@@ -7,8 +7,11 @@ from typing import Final, NamedTuple, NoReturn, override
 
 from pyrcli.cli import CompiledPatterns, TextProgram, ansi, io, patterns, render, terminal, text
 
+# Exit code when no matches are found.
+_NO_MATCHES_EXIT_CODE: Final[int] = 1
 
-class Match(NamedTuple):
+
+class _Match(NamedTuple):
     """Immutable container representing a single pattern match."""
     line_number: int
     line: str
@@ -27,12 +30,9 @@ class Scan(TextProgram):
     Command implementation for printing lines matching patterns in files.
 
     Attributes:
-        NO_MATCHES_EXIT_CODE: Exit code when no matches are found.
         found_any_match: Whether any match was found.
         patterns: Compiled patterns to match.
     """
-
-    NO_MATCHES_EXIT_CODE: Final[int] = 1
 
     def __init__(self) -> None:
         """Initialize a new instance."""
@@ -71,7 +71,7 @@ class Scan(TextProgram):
 
         return parser
 
-    def collect_matches(self, lines: Iterable[str]) -> list[Match]:
+    def collect_matches(self, lines: Iterable[str]) -> list[_Match]:
         """Return a list of ``Match`` objects for lines matching the configured patterns."""
         matches = []
 
@@ -86,7 +86,7 @@ class Scan(TextProgram):
                 if self.print_color and not self.args.invert_match:
                     line = render.style_pattern_matches(line, patterns=self.patterns, ansi_style=Styles.MATCH)
 
-                matches.append(Match(line_number, line))
+                matches.append(_Match(line_number, line))
 
         return matches
 
@@ -118,7 +118,7 @@ class Scan(TextProgram):
         super().exit_if_errors()
 
         if not self.found_any_match:
-            raise SystemExit(self.NO_MATCHES_EXIT_CODE)
+            raise SystemExit(_NO_MATCHES_EXIT_CODE)
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
@@ -132,7 +132,7 @@ class Scan(TextProgram):
 
         # Exit early if no --find patterns are provided.
         if not self.args.find:
-            raise SystemExit(self.NO_MATCHES_EXIT_CODE)
+            raise SystemExit(_NO_MATCHES_EXIT_CODE)
 
         self.compile_patterns()
 
@@ -147,7 +147,7 @@ class Scan(TextProgram):
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 
-    def print_match_results(self, matches: Sequence[Match], *, origin_file: str) -> None:
+    def print_match_results(self, matches: Sequence[_Match], *, origin_file: str) -> None:
         """Print match counts or matched lines according to command-line options."""
         file_name = ""
 

@@ -127,7 +127,7 @@ class Slice(TextProgram):
         # Convert one-based input to zero-based.
         self.selected_fields = [i - 1 for i in self.selected_fields]
 
-        # Set --no-file-name to True if there are no files and --stdin-files=False.
+        # Suppress file headers when standard input is the only source.
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 
