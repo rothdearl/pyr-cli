@@ -9,6 +9,9 @@ from typing import Final, NoReturn, override
 
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
+# Interval in seconds between file content polls when following.
+_POLLING_INTERVAL: Final[float] = 0.5
+
 
 class _Styles:
     """Namespace for ANSI styling constants."""
@@ -66,7 +69,6 @@ class Track(TextProgram):
             self.print_lines_from_input()
 
         if self.args.follow and printed_files:
-            # Start threads and wait for them to terminate.
             for thread in self.start_following_threads(printed_files, print_file_name_on_update=len(printed_files) > 1):
                 thread.join()
 
@@ -76,8 +78,6 @@ class Track(TextProgram):
 
         - The entire file is re-read on each poll; only newly appended lines are printed.
         """
-        polling_interval: float = .5
-
         try:
             # Get the initial file content.
             with open(file_name, mode="rt", encoding=self.encoding) as f:
@@ -85,11 +85,10 @@ class Track(TextProgram):
 
             # Follow file until Ctrl-C.
             while True:
-                # Re-open the file with each iteration.
+                # Re-open the file with each iteration and check for changes.
                 with open(file_name, mode="rt", encoding=self.encoding) as f:
                     next_content = f.read()
 
-                    # Check for changes.
                     if previous_content != next_content:
                         print_index = 0
 
@@ -106,7 +105,7 @@ class Track(TextProgram):
                         print(next_content[print_index:])
                         previous_content = next_content
 
-                time.sleep(polling_interval)
+                time.sleep(_POLLING_INTERVAL)
         except FileNotFoundError:
             self.print_error(f"{file_name!r} has been deleted")
         except (UnicodeDecodeError, OSError):
@@ -132,11 +131,12 @@ class Track(TextProgram):
 
     def print_lines(self, lines: Sequence[str]) -> None:
         """Print lines to standard output."""
-        skip_to_line = len(lines) - self.args.lines
-
-        # Print all but the first 'N' lines.
+        # Negative --lines: skip the first N lines.
         if self.args.lines < 0:
             skip_to_line = abs(self.args.lines)
+        else:
+            # Positive --lines: print the last N lines.
+            skip_to_line = len(lines) - self.args.lines
 
         for index, line in enumerate(text.iter_normalized_lines(lines), start=1):
             if index > skip_to_line:

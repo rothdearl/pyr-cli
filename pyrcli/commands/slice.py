@@ -76,8 +76,6 @@ class Slice(TextProgram):
             "--field-separator": self.args.field_separator is not None,
             "--literal-quotes": self.args.literal_quotes
         }
-
-        # Any mismatched option is an error.
         allowed = allowed_option_by_mode[self.args.mode]
         mismatched = [name for name, is_set in provided_options.items() if is_set and name != allowed]
 
@@ -92,6 +90,9 @@ class Slice(TextProgram):
         # --unique is only meaningful with --fields.
         if self.args.unique and self.args.fields is None:
             self.print_error_and_exit("--unique requires --fields")
+
+        # Initialize selected_fields before validate_option_ranges() checks its contents.
+        self.selected_fields = self.args.fields or []
 
     @override
     def execute(self) -> None:
@@ -112,6 +113,16 @@ class Slice(TextProgram):
         else:
             self.split_and_print_lines_from_input()
 
+    def get_field_quote(self) -> str:
+        """Return the quote character for wrapping output fields, or an empty string when quoting is disabled."""
+        match self.args.quotes:
+            case "d":
+                return '"'
+            case "s":
+                return "'"
+            case _:
+                return ""
+
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
         """Process the text stream for a single file."""
@@ -121,6 +132,7 @@ class Slice(TextProgram):
     @override
     def normalize_options(self) -> None:
         """Apply derived defaults and adjust option values for consistent internal use."""
+        # Sort and deduplicate before converting to zero-based indices.
         if self.args.unique:
             self.selected_fields = sorted(set(self.selected_fields))
 
@@ -138,7 +150,7 @@ class Slice(TextProgram):
 
     def split_and_print_lines(self, lines: Iterable[str]) -> None:
         """Split lines into fields and print them."""
-        quote = '"' if self.args.quotes == "d" else "'" if self.args.quotes == "s" else ""
+        quote = self.get_field_quote()
 
         for line in text.iter_normalized_lines(lines):
             fields = self.split_line(line)
@@ -182,8 +194,6 @@ class Slice(TextProgram):
     @override
     def validate_option_ranges(self) -> None:
         """Validate that option values fall within their allowed numeric or logical ranges."""
-        self.selected_fields = self.args.fields or []
-
         for field in self.selected_fields:
             if field < 1:
                 self.print_error_and_exit("--fields must contain numbers >= 1")
