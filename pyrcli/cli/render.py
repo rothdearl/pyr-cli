@@ -29,30 +29,30 @@ def style(text: str, *, ansi_style: str) -> str:
 
 def style_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], ansi_style: str) -> str:
     """Return ``text`` rendered with the given ANSI style, reset afterward."""
+    # Avoid allocation and iteration for the common empty case.
     if not patterns:
         return text
 
-    # Collect match ranges.
-    ranges = []
+    match_ranges = []
 
     for pattern in patterns:
         for match in pattern.finditer(text):
-            ranges.append((match.start(), match.end()))
+            match_ranges.append((match.start(), match.end()))
 
-    # Merge overlapping match ranges.
-    merged_ranges = []
+    # Merge overlapping match ranges to prevent nested ANSI codes from corrupting the output.
+    merged_match_ranges = []
 
-    for start, end in sorted(ranges):
-        if merged_ranges and start <= merged_ranges[-1][1]:
-            merged_ranges[-1] = (merged_ranges[-1][0], max(merged_ranges[-1][1], end))
+    for start, end in sorted(match_ranges):
+        if merged_match_ranges and start <= merged_match_ranges[-1][1]:
+            merged_match_ranges[-1] = (merged_match_ranges[-1][0], max(merged_match_ranges[-1][1], end))
         else:
-            merged_ranges.append((start, end))
+            merged_match_ranges.append((start, end))
 
     # Style match ranges.
     styled_text = []
     prev_end = 0
 
-    for start, end in merged_ranges:
+    for start, end in merged_match_ranges:
         if prev_end < start:
             styled_text.append(text[prev_end:start])
 
