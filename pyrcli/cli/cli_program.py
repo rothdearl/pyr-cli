@@ -1,4 +1,4 @@
-"""Abstract base class for command-line programs, defining a standard program lifecycle."""
+"""Abstract base class for command-line programs with a standard parse-configure-execute lifecycle"""
 
 import argparse
 import sys
@@ -9,14 +9,15 @@ from pyrcli import __version__
 from .os_info import IS_WINDOWS
 from .terminal import stdout_is_terminal
 
-# Exit codes.
+# Unix exit codes for errors and signal termination.
+_DEFAULT_ERROR_EXIT_CODE: Final[int] = 1
 _KEYBOARD_INTERRUPT_EXIT_CODE: Final[int] = 130
 _SIGPIPE_EXIT_CODE: Final[int] = 141
 
 
 class CLIProgram(ABC):
     """
-    Base class for command-line programs, defining a standard program lifecycle.
+    Base class for command-line programs with a standard parse-configure-execute lifecycle.
 
     Attributes:
         args: Parsed command-line arguments.
@@ -27,8 +28,7 @@ class CLIProgram(ABC):
         version: Program version.
     """
 
-    def __init__(self, *, name: str, error_exit_code: int = 1) -> None:
-        """Initialize the ``CLIProgram``."""
+    def __init__(self, *, name: str, error_exit_code: int = _DEFAULT_ERROR_EXIT_CODE) -> None:
         self.args: argparse.Namespace | None = None
         self.error_exit_code: Final[int] = error_exit_code
         self.has_errors: bool = False
@@ -96,7 +96,7 @@ class CLIProgram(ABC):
         Run the full program lifecycle and normalize process termination.
 
         - Configures the environment.
-        - Parses arguments and prepare runtime state.
+        - Parses arguments and prepares runtime state.
         - Executes the command.
         - Handles errors.
         - Returns ``0`` on success.
