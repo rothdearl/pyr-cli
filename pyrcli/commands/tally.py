@@ -8,12 +8,12 @@ from typing import Final, NamedTuple, NoReturn, override
 
 from pyrcli.cli import TextProgram, ansi, io, terminal, text
 
-# Matches a whole word token.
+# Matches sequences of word characters bounded by word boundaries.
 _WORD_PATTERN: Final[re.Pattern[str]] = re.compile(r"\b\w+\b")
 
 
 class _Counts(NamedTuple):
-    """Immutable container for information about counts."""
+    """Immutable container for line, word, character, and maximum line length counts."""
     lines: int
     words: int
     characters: int
@@ -45,8 +45,8 @@ class Tally(TextProgram):
         self.flags: list[bool] = [False, False, False, False]  # [lines, words, characters, max_line_length]
         self.totals: _Counts = _Counts(0, 0, 0, 0)
 
-    def add_counts_to_totals(self, counts: _Counts) -> None:
-        """Add the counts to the totals."""
+    def accumulate_counts(self, counts: _Counts) -> None:
+        """Accumulate ``counts`` into the running totals, taking the maximum for line length."""
         self.totals = _Counts(
             self.totals.lines + counts.lines,
             self.totals.words + counts.words,
@@ -82,8 +82,8 @@ class Tally(TextProgram):
         return parser
 
     def calculate_counts(self, lines: Iterable[str]) -> _Counts:
-        """Calculate counts for lines, words, characters, and the maximum displayed line length in the lines."""
-        character_count, line_count, max_line_length, words = 0, 0, 0, 0
+        """Return line, word, character, and maximum display-width counts for ``lines``."""
+        line_count, word_count, character_count, max_line_length = 0, 0, 0, 0
 
         for raw_line in lines:
             display_line = text.strip_trailing_newline(raw_line)
@@ -92,9 +92,9 @@ class Tally(TextProgram):
             character_count += len(raw_line)
             line_count += 1
             max_line_length = max(max_display_width, max_line_length)
-            words += len(_WORD_PATTERN.findall(display_line))
+            word_count += len(_WORD_PATTERN.findall(display_line))
 
-        return _Counts(line_count, words, character_count, max_line_length)
+        return _Counts(line_count, word_count, character_count, max_line_length)
 
     @override
     def execute(self) -> None:
@@ -107,8 +107,8 @@ class Tally(TextProgram):
                     counts = self.calculate_counts(standard_input)
 
                     self.files_counted += 1
-                    self.add_counts_to_totals(counts)
-                    self.print_counts(counts, origin_file="(standard input)" if self.args.files else "")
+                    self.accumulate_counts(counts)
+                    self.print_counts(counts, origin_file="(standard input)" if self.args.files else "", is_total=False)
 
             # Process any additional file arguments.
             if self.args.files:
@@ -119,7 +119,7 @@ class Tally(TextProgram):
             self.print_counts_from_input()
 
         if self.args.total == "on" or (self.args.total == "auto" and self.files_counted > 1):
-            self.print_counts(self.totals, origin_file="total")
+            self.print_counts(self.totals, origin_file="total", is_total=True)
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
@@ -127,8 +127,8 @@ class Tally(TextProgram):
         counts = self.calculate_counts(file_info.text_stream)
 
         self.files_counted += 1
-        self.add_counts_to_totals(counts)
-        self.print_counts(counts, origin_file=file_info.file_name)
+        self.accumulate_counts(counts)
+        self.print_counts(counts, origin_file=file_info.file_name, is_total=False)
 
     @override
     def initialize_runtime_state(self) -> None:
@@ -145,11 +145,15 @@ class Tally(TextProgram):
             for index in (0, 1, 2):
                 self.flags[index] = True
 
-    def print_counts(self, counts: _Counts, *, origin_file: str) -> None:
-        """Print line, word, and character counts for the given file."""
-        count_color = _Styles.COUNT_TOTAL if origin_file == "total" else _Styles.COUNT
-        origin_file_color = _Styles.COUNT_TOTAL if origin_file == "total" else _Styles.FILE_NAME
-        padding = self.args.count_width if origin_file or sum(self.flags) > 1 else 0  # 0 if standard input or one flag.
+    def print_counts(self, counts: _Counts, *, origin_file: str, is_total: bool) -> None:
+        """Print counts for a file, applying total styling when ``is_total`` is ``True``."""
+        count_color = _Styles.COUNT_TOTAL if is_total else _Styles.COUNT
+        origin_file_color = _Styles.COUNT_TOTAL if is_total else _Styles.FILE_NAME
+        padding = self.args.count_width
+
+        # Omit padding when only one count is printed with no file name.
+        if sum(self.flags) == 1 and not origin_file:
+            padding = 0
 
         for index, count in enumerate(counts):
             if self.flags[index]:
@@ -172,11 +176,15 @@ class Tally(TextProgram):
             print()
 
     def print_counts_from_input(self) -> None:
-        """Read, count, and print from standard input until EOF."""
+        """
+        Read, count, and print from standard input until EOF.
+
+        - ``files_counted`` is not incremented; totals are suppressed for single stdin input.
+        """
         counts = self.calculate_counts(sys.stdin)
 
-        self.add_counts_to_totals(counts)
-        self.print_counts(counts, origin_file="")
+        self.accumulate_counts(counts)
+        self.print_counts(counts, origin_file="", is_total=False)
 
     @override
     def validate_option_ranges(self) -> None:

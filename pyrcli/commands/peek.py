@@ -100,7 +100,7 @@ class Peek(TextProgram):
             buffer.append(line)
 
     def print_lines_from_input(self) -> None:
-        """Read and print lines from standard input (negative ``args.lines`` is treated as ``|N|``)."""
+        """Read and print lines from standard input until EOF."""
         self.args.lines = abs(self.args.lines)  # Normalize --lines before reading from standard input.
         self.print_lines(sys.stdin)
 
