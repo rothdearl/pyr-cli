@@ -5,7 +5,8 @@ from typing import Final, NoReturn, override
 
 import requests
 
-from pyrcli.cli import CLIProgram, JsonObject
+from pyrcli.cli import CLIProgram, JsonObject, reporters
+from pyrcli.cli.http import client, responses
 
 # Endpoint returning public IP geolocation data in JSON.
 _IPINFO_URL: Final[str] = "https://ipinfo.io/json"
@@ -44,16 +45,8 @@ class Where(CLIProgram):
     def execute(self) -> None:
         """Execute the command using the prepared runtime state."""
         try:
-            response = requests.get(_IPINFO_URL, timeout=5)
-
-            # Ensure a successful response.
-            response.raise_for_status()
-
-            # Get and validate JSON data.
-            data = response.json()
-
-            if not isinstance(data, dict):
-                raise ValueError()
+            response = client.get(_IPINFO_URL, raise_on_error=True)
+            data = responses.parse_json_body(response, on_error=reporters.raises(ValueError))
 
             # Print geolocation information.
             for key in ("city", "region", "postal", "country", "timezone"):
@@ -99,6 +92,9 @@ class Where(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
+    # Reduce timeout from the default; where is interactive and a slow response is indistinguishable from a hang.
+    client.set_timeout(5.0)
+
     return Where().run_program()
 
 
