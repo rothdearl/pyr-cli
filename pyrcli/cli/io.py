@@ -49,7 +49,7 @@ def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterator[
 
 
 def iter_stdin_file_names() -> Iterator[str]:
-    """Yield file names from standard input, with trailing newlines removed and empty lines skipped."""
+    """Yield file names from standard input, skipping empty lines and removing trailing newlines."""
     yield from iter_nonempty_lines(sys.stdin)
 
 
@@ -102,6 +102,7 @@ def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_e
 
 __all__: Final[tuple[str, ...]] = (
     "FileInfo",
+    "iter_descendant_paths",
     "iter_stdin_file_names",
     "read_text_files",
     "write_text_file",

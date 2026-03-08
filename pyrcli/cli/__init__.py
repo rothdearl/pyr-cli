@@ -26,6 +26,7 @@ from .ini import (
 )
 from .io import (
     FileInfo,
+    iter_descendant_paths,
     iter_stdin_file_names,
     read_text_files,
     write_text_file,
@@ -108,6 +109,7 @@ __all__: Final[tuple[str, ...]] = (
 
     # io
     "FileInfo",
+    "iter_descendant_paths",
     "iter_stdin_file_names",
     "read_text_files",
     "write_text_file",
