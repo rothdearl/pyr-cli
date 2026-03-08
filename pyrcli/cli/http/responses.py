@@ -16,7 +16,7 @@ def parse_json_body(response: requests.Response, *, on_error: ErrorReporter) -> 
     """
     try:
         parsed_json = response.json()
-    except requests.JSONDecodeError:
+    except ValueError:
         on_error("unable to decode json from response")
         return None
 
