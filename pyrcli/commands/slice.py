@@ -125,7 +125,7 @@ class Slice(TextProgram):
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
-        """Process the text stream for a single file."""
+        """Process the text stream for a single input file."""
         self.print_file_header(file_info.file_name)
         self.split_and_print_lines(file_info.text_stream)
 

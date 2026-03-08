@@ -88,7 +88,7 @@ class Subs(TextProgram):
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
-        """Process the text stream for a single file."""
+        """Process the text stream for a single input file."""
         if self.args.in_place:
             io.write_text_file(file_info.file_name, lines=self.iter_replaced_lines(file_info.text_stream.readlines()),
                                encoding=self.encoding, on_error=self.print_error)

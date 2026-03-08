@@ -123,7 +123,7 @@ class Tally(TextProgram):
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
-        """Process the text stream for a single file."""
+        """Process the text stream for a single input file."""
         counts = self.calculate_counts(file_info.text_stream)
 
         self.files_counted += 1
