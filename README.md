@@ -136,9 +136,8 @@ The CLI framework provides two optional sub-packages for commands that need them
 
 ### `pyrcli.cli.http`
 
-Provides HTTP request helpers for DELETE, GET, POST, and PUT operations,
-built on ``requests``. Includes utilities for parsing and validating HTTP
-response bodies.
+Provides HTTP request helpers for DELETE, GET, POST, and PUT operations, built on ``requests``. Includes utilities for
+parsing and validating HTTP response bodies.
 
 - ``client`` — HTTP request helpers with configurable timeout and optional status validation.
 - ``responses`` — Utilities for parsing and validating HTTP response bodies.
