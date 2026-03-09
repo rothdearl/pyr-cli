@@ -40,7 +40,6 @@ def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
     Return a dictionary parsed from the option.
 
     - Uses ``"{}"`` if the option is missing or empty.
-    - The option value is decoded using ``json.loads()``.
     - Returns the decoded dictionary when parsing succeeds.
     - Returns ``None`` if decoding fails or the value is not a JSON object.
     """
