@@ -2,9 +2,9 @@
 
 import configparser
 import json
-from typing import Final
+from typing import Any, Final
 
-from .types import ErrorReporter, JsonObject
+from .types import ErrorReporter
 
 # Shared across all callers; reflects the most recently loaded configuration.
 _config: configparser.ConfigParser = configparser.ConfigParser()
@@ -33,6 +33,25 @@ def get_bool_option(section: str, option: str) -> bool | None:
         return True
 
     return None
+
+
+def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
+    """
+    Return a dictionary parsed from the option.
+
+    - Uses ``"{}"`` if the option is missing or empty.
+    - The option value is decoded using ``json.loads()``.
+    - Returns the decoded dictionary when parsing succeeds.
+    - Returns ``None`` if decoding fails or the value is not a JSON object.
+    """
+    value = get_str_option_with_fallback(section, option, fallback="{}")
+
+    try:
+        dict_value = json.loads(value)
+    except json.JSONDecodeError:
+        return None
+
+    return dict_value if isinstance(dict_value, dict) else None
 
 
 def get_float_option(section: str, option: str) -> float | None:
@@ -65,27 +84,6 @@ def get_int_option(section: str, option: str) -> int | None:
         return int(value)
     except ValueError:
         return None
-
-
-def get_json_option(section: str, option: str) -> JsonObject | None:
-    """
-    Return a JSON object parsed from the option.
-
-    - Uses ``"{}"`` if the option is missing or empty.
-    - Returns the decoded JSON object when parsing succeeds.
-    - Returns ``None`` if decoding fails or the value is not a JSON object.
-    """
-    value = get_str_option_with_fallback(section, option, fallback="{}")
-
-    try:
-        json_value = json.loads(value)
-    except json.JSONDecodeError:
-        return None
-
-    if not isinstance(json_value, dict):
-        return None
-
-    return json_value
 
 
 def get_str_option(section: str, option: str) -> str:
@@ -154,9 +152,9 @@ def read_options(path: str, *, clear_previous: bool = True, on_error: ErrorRepor
 
 __all__: Final[tuple[str, ...]] = (
     "get_bool_option",
+    "get_dict_option",
     "get_float_option",
     "get_int_option",
-    "get_json_option",
     "get_str_option",
     "get_str_option_with_fallback",
     "get_str_options",

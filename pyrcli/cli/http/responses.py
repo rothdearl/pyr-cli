@@ -4,27 +4,29 @@ from typing import Final
 
 import requests
 
-from pyrcli.cli import ErrorReporter, JsonArray, JsonObject
+from pyrcli.cli import ErrorReporter
+from .types import JsonType
 
 
-def parse_json_body(response: requests.Response, *, on_error: ErrorReporter) -> JsonArray | JsonObject | None:
+def parse_json_body(response: requests.Response, *, allowed_types: tuple[type[JsonType], ...] = (dict, list),
+                    on_error: ErrorReporter) -> JsonType | None:
     """
-    Return the JSON body from ``response`` as an object or array, or ``None`` on error.
+    Return the decoded JSON body from ``response``.
 
-    - Invokes ``on_error(message)`` if the response body cannot be decoded as JSON.
-    - Returns ``None`` if the decoded JSON is not an object or array.
+    - Invokes ``on_error(message)`` if the body cannot be decoded as JSON.
+    - Returns ``None`` if the decoded value is not one of ``allowed_types``.
     """
     try:
-        decoded_json = response.json()
+        json_value = response.json()
     except ValueError:
-        on_error("unable to decode json from response")
+        on_error("response body is not valid json")
         return None
 
-    if not isinstance(decoded_json, (dict, list)):
-        on_error("unexpected response format")
+    if not isinstance(json_value, allowed_types):
+        on_error("unexpected json value type")
         return None
 
-    return decoded_json
+    return json_value
 
 
 __all__: Final[tuple[str, ...]] = ("parse_json_body",)

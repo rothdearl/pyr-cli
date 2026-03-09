@@ -54,6 +54,31 @@ class TestINI(unittest.TestCase):
         # Invalid.
         self.assertIsNone(ini.get_bool_option("bool_options", "invalid_value"))
 
+    def test_values_dict(self) -> None:
+        section = "dict_options"
+
+        # Valid.
+        self.assertEqual(ini.get_dict_option(section, "valid_dict"), {"a": 1, "b": True})
+        self.assertIsInstance(ini.get_dict_option(section, "valid_dict"), dict)
+        self.assertEqual(ini.get_dict_option(section, "valid_dicts"),
+                         {"a": 1, "b": True, "c": {"d": 15.0, "e": "true"}})
+        self.assertIsInstance(ini.get_dict_option(section, "valid_dicts"), dict)
+
+        # Invalid.
+        self.assertIsNone(ini.get_dict_option(section, "invalid_array"))
+        self.assertIsNone(ini.get_dict_option(section, "invalid_string"))
+        self.assertIsNone(ini.get_dict_option(section, "invalid_number"))
+        self.assertIsNone(ini.get_dict_option(section, "invalid_bool"))
+        self.assertIsNone(ini.get_dict_option(section, "valid_null"))
+
+        # Fallback.
+        self.assertEqual(ini.get_dict_option(section, "empty_value"), {})
+        self.assertEqual(ini.get_dict_option(section, "missing_value"), {})
+        self.assertEqual(ini.get_dict_option("missing_section", "valid_object"), {})
+
+        # Invalid.
+        self.assertIsNone(ini.get_dict_option(section, "invalid_value"))
+
     def test_values_float(self) -> None:
         # Valid.
         self.assertEqual(ini.get_float_option("float_options", "valid_float"), 3.14159)
@@ -83,25 +108,6 @@ class TestINI(unittest.TestCase):
         # Invalid.
         self.assertIsNone(ini.get_int_option("int_options", "invalid_value"))
         self.assertIsNone(ini.get_int_option("int_options", "invalid_string"))
-
-    def test_values_json(self) -> None:
-        # Valid.
-        self.assertEqual(ini.get_json_option("json_options", "valid_object"), {"a": 1, "b": True})
-
-        # Invalid.
-        self.assertIsNone(ini.get_json_option("json_options", "invalid_array"))
-        self.assertIsNone(ini.get_json_option("json_options", "invalid_string"))
-        self.assertIsNone(ini.get_json_option("json_options", "invalid_number"))
-        self.assertIsNone(ini.get_json_option("json_options", "invalid_bool"))
-        self.assertIsNone(ini.get_json_option("json_options", "valid_null"))
-
-        # Fallback.
-        self.assertEqual(ini.get_json_option("json_options", "empty_value"), {})
-        self.assertEqual(ini.get_json_option("json_options", "missing_value"), {})
-        self.assertEqual(ini.get_json_option("missing_section", "valid_object"), {})
-
-        # Invalid.
-        self.assertIsNone(ini.get_json_option("json_options", "invalid_value"))
 
     def test_values_string(self) -> None:
         # Valid.

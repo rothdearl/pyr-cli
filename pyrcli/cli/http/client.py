@@ -6,7 +6,7 @@ from typing import Callable, Final
 
 import requests
 
-from pyrcli.cli import JsonObject, KeyValuePairs, MultipartFiles, QueryParameters
+from .types import JsonType, KeyValuePairs, MultipartFiles, QueryParameters
 from .upload import multipart_file
 
 
@@ -30,7 +30,7 @@ _REQUESTS_FUNCTIONS: Final[dict[_Methods, Callable[..., requests.Response]]] = {
 _timeout: float = 15.0
 
 
-def _build_request_headers(*, data: JsonObject | None = None, files: MultipartFiles | None = None,
+def _build_request_headers(*, data: JsonType = None, files: MultipartFiles | None = None,
                            serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None) -> KeyValuePairs:
     """
     Return request headers for this client.
@@ -57,8 +57,8 @@ def _build_request_headers(*, data: JsonObject | None = None, files: MultipartFi
     return headers
 
 
-def _execute_request(*, method: _Methods, url: str, params: QueryParameters | None = None,
-                     data: JsonObject | str | None = None, files: MultipartFiles | None = None, headers: KeyValuePairs,
+def _execute_request(*, method: _Methods, url: str, params: QueryParameters | None = None, data: JsonType = None,
+                     files: MultipartFiles | None = None, headers: KeyValuePairs,
                      raise_on_error: bool) -> requests.Response:
     """
     Execute an HTTP request and return the ``requests.Response``.
@@ -76,8 +76,7 @@ def _execute_request(*, method: _Methods, url: str, params: QueryParameters | No
     return response
 
 
-def _prepare_request_body(*, data: JsonObject | None, files: MultipartFiles | None,
-                          serialize_to_json: bool) -> JsonObject | str | None:
+def _prepare_request_body(*, data: JsonType, files: MultipartFiles | None, serialize_to_json: bool) -> JsonType:
     """
     Return the request body payload.
 
@@ -119,8 +118,8 @@ def get(url: str, *, params: QueryParameters | None = None,
     return _execute_request(method=_Methods.GET, url=url, params=params, headers=headers, raise_on_error=raise_on_error)
 
 
-def post(url: str, *, params: QueryParameters | None = None, data: JsonObject | None = None,
-         files: MultipartFiles | None = None, serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
+def post(url: str, *, params: QueryParameters | None = None, data: JsonType = None, files: MultipartFiles | None = None,
+         serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
          raise_on_error: bool = False) -> requests.Response:
     """
     Send a POST request and return the response.
@@ -139,8 +138,8 @@ def post(url: str, *, params: QueryParameters | None = None, data: JsonObject | 
                             raise_on_error=raise_on_error)
 
 
-def put(url: str, *, params: QueryParameters | None = None, data: JsonObject | None = None,
-        files: MultipartFiles | None = None, serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
+def put(url: str, *, params: QueryParameters | None = None, data: JsonType = None, files: MultipartFiles | None = None,
+        serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
         raise_on_error: bool = False) -> requests.Response:
     """
     Send a PUT request and return the response.

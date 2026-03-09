@@ -13,9 +13,9 @@ from .ansi import (
 from .cli_program import CLIProgram
 from .ini import (
     get_bool_option,
+    get_dict_option,
     get_float_option,
     get_int_option,
-    get_json_option,
     get_str_option,
     get_str_option_with_fallback,
     get_str_options,
@@ -74,11 +74,6 @@ from .text_program import TextProgram
 from .types import (
     CompiledPatterns,
     ErrorReporter,
-    JsonArray,
-    JsonObject,
-    KeyValuePairs,
-    MultipartFiles,
-    QueryParameters,
 )
 
 __all__: Final[tuple[str, ...]] = (
@@ -96,9 +91,9 @@ __all__: Final[tuple[str, ...]] = (
 
     # ini
     "get_bool_option",
+    "get_dict_option",
     "get_float_option",
     "get_int_option",
-    "get_json_option",
     "get_str_option",
     "get_str_option_with_fallback",
     "get_str_options",
@@ -156,9 +151,4 @@ __all__: Final[tuple[str, ...]] = (
     # types
     "CompiledPatterns",
     "ErrorReporter",
-    "JsonArray",
-    "JsonObject",
-    "KeyValuePairs",
-    "MultipartFiles",
-    "QueryParameters",
 )
