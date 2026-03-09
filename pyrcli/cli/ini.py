@@ -41,7 +41,7 @@ def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
 
     - Uses ``"{}"`` if the option is missing or empty.
     - Returns the decoded dictionary when parsing succeeds.
-    - Returns ``None`` if decoding fails or the value is not a JSON object.
+    - Returns ``None`` if decoding fails or the value is not a dictionary.
     """
     value = get_str_option_with_fallback(section, option, fallback="{}")
 
