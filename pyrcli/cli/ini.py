@@ -18,7 +18,7 @@ _truthy_values: Final[frozenset[str]] = frozenset({"1", "on", "true", "y", "yes"
 
 def get_bool_option(section: str, option: str) -> bool | None:
     """
-    Return a boolean value parsed from the option.
+    Return the option parsed as a boolean value.
 
     - Uses ``"false"`` if the option is missing or empty.
     - Returns ``True`` or ``False`` for recognized truthy or falsy values.
@@ -37,7 +37,7 @@ def get_bool_option(section: str, option: str) -> bool | None:
 
 def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
     """
-    Return a dictionary parsed from the option.
+    Return the option parsed as a dictionary.
 
     - Uses ``"{}"`` if the option is missing or empty.
     - Returns the decoded dictionary when parsing succeeds.
@@ -55,7 +55,7 @@ def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
 
 def get_float_option(section: str, option: str) -> float | None:
     """
-    Return a floating-point value parsed from the option.
+    Return the option parsed as a floating-point value.
 
     - Uses ``"0.0"`` if the option is missing or empty.
     - Returns the parsed floating-point value when conversion succeeds.
@@ -71,7 +71,7 @@ def get_float_option(section: str, option: str) -> float | None:
 
 def get_int_option(section: str, option: str) -> int | None:
     """
-    Return an integer value parsed from the option.
+    Return the option parsed as an integer value.
 
     - Uses ``"0"`` if the option is missing or empty.
     - Returns the parsed integer value when conversion succeeds.
