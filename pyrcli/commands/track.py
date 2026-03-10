@@ -95,9 +95,9 @@ class Track(TextProgram):
                         if next_content.startswith(previous_content):
                             print_index = len(previous_content)
                         elif len(next_content) < len(previous_content):
-                            print(f"data deleted in: {file_name}")
+                            print(f"data removed in: {file_name!r}")
                         else:
-                            print(f"data modified in: {file_name}")
+                            print(f"data modified in: {file_name!r}")
 
                         if print_file_name_on_update:
                             self.print_file_header(file_name)
@@ -133,13 +133,13 @@ class Track(TextProgram):
         """Print lines to standard output."""
         # Negative --lines: skip the first N lines.
         if self.args.lines < 0:
-            skip_to_line = abs(self.args.lines)
+            start_index = abs(self.args.lines)
         else:
             # Positive --lines: print the last N lines.
-            skip_to_line = len(lines) - self.args.lines
+            start_index = len(lines) - self.args.lines
 
         for index, line in enumerate(text.iter_normalized_lines(lines), start=1):
-            if index > skip_to_line:
+            if index > start_index:
                 print(line)
 
     def print_lines_from_input(self) -> None:
@@ -157,7 +157,7 @@ class Track(TextProgram):
 
         for file_name in files:
             thread = Thread(target=self.follow_file, args=(file_name, print_file_name_on_update),
-                            name=f"following-{file_name}")
+                            name=f"following-{file_name!r}")
             thread.start()
             threads.append(thread)
 

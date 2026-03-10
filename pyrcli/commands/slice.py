@@ -80,7 +80,7 @@ class Slice(TextProgram):
         mismatched = [name for name, is_set in provided_options.items() if is_set and name != allowed]
 
         if mismatched:
-            self.print_error_and_exit(f"{', '.join(mismatched)} not valid with --mode={self.args.mode}")
+            self.print_error_and_exit(f"{', '.join(mismatched)} invalid with --mode={self.args.mode}")
 
     @override
     def check_option_dependencies(self) -> None:
@@ -155,7 +155,7 @@ class Slice(TextProgram):
         for line in text.iter_normalized_lines(lines):
             fields = self.split_line(line)
 
-            # Do not print blank lines unless --keep-empty-lines=True.
+            # Skip blank lines unless --keep-empty-lines is enabled.
             if not fields and not self.args.keep_empty_lines:
                 continue
 
@@ -166,7 +166,7 @@ class Slice(TextProgram):
         self.split_and_print_lines(sys.stdin)
 
     def split_line(self, line: str) -> list[str]:
-        """Split the line into fields, optionally filter empty fields, and apply field selection if configured."""
+        """Split a line into fields and apply configured filtering and selection."""
         fields = []
 
         match self.args.mode:
