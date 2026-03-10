@@ -12,7 +12,7 @@ _DEFAULT_DATETIME_FORMAT: Final[str] = "%a %b %-d %-I:%M%p" if os_info.IS_POSIX 
 
 
 class _CalendarQuarterColumnBounds(NamedTuple):
-    """Character column bounds for a single month within a three-month quarter row."""
+    """Immutable container for column bounds for a month within a three-month quarter row."""
     start: int
     end: int
 

@@ -24,7 +24,7 @@ class Seek(CLIProgram):
     Command implementation for searching for files in a directory hierarchy.
 
     Attributes:
-        found_any_match: Whether any match was found.
+        match_found: Whether any match was found.
         name_patterns: Compiled name patterns to match.
         path_patterns: Compiled path patterns to match.
     """
@@ -33,7 +33,7 @@ class Seek(CLIProgram):
         """Initialize a new instance."""
         super().__init__(name="seek", error_exit_code=2)
 
-        self.found_any_match: bool = False
+        self.match_found: bool = False
         self.name_patterns: CompiledPatterns = []
         self.path_patterns: CompiledPatterns = []
 
@@ -105,7 +105,7 @@ class Seek(CLIProgram):
         """Raise ``SystemExit(NO_MATCHES_EXIT_CODE)`` if a match was not found."""
         super().exit_if_errors()
 
-        if not self.found_any_match:
+        if not self.match_found:
             raise SystemExit(_NO_MATCHES_EXIT_CODE)
 
     @override
@@ -184,7 +184,7 @@ class Seek(CLIProgram):
         if self.args.quiet:
             raise SystemExit(0)
 
-        self.found_any_match = True
+        self.match_found = True
 
         if self.print_color and not self.args.invert_match:
             name_part = render.style_pattern_matches(name_part, patterns=self.name_patterns, ansi_style=_Styles.MATCH)

@@ -30,7 +30,7 @@ class Scan(TextProgram):
     Command implementation for printing lines matching patterns in files.
 
     Attributes:
-        found_any_match: Whether any match was found.
+        match_found: Whether any match was found.
         patterns: Compiled patterns to match.
     """
 
@@ -38,7 +38,7 @@ class Scan(TextProgram):
         """Initialize a new instance."""
         super().__init__(name="scan", error_exit_code=2)
 
-        self.found_any_match: bool = False
+        self.match_found: bool = False
         self.patterns: CompiledPatterns = []
 
     @override
@@ -81,7 +81,7 @@ class Scan(TextProgram):
                 if self.args.quiet:
                     raise SystemExit(0)
 
-                self.found_any_match = True
+                self.match_found = True
 
                 if self.print_color and not self.args.invert_match:
                     line = render.style_pattern_matches(line, patterns=self.patterns, ansi_style=_Styles.MATCH)
@@ -117,7 +117,7 @@ class Scan(TextProgram):
         """Raise ``SystemExit(NO_MATCHES_EXIT_CODE)`` if a match was not found."""
         super().exit_if_errors()
 
-        if not self.found_any_match:
+        if not self.match_found:
             raise SystemExit(_NO_MATCHES_EXIT_CODE)
 
     @override
