@@ -62,7 +62,7 @@ class Subs(TextProgram):
             self.print_error_and_exit("--in-place requires FILES")
 
     def compile_patterns(self) -> None:
-        """Compile search patterns and combine them into a single OR-pattern."""
+        """Compile search patterns into a single OR-pattern."""
         if compiled := patterns.compile_patterns(self.args.find, ignore_case=self.args.ignore_case,
                                                  on_error=self.print_error_and_exit):
             self.pattern = patterns.compile_combined_patterns(compiled, ignore_case=self.args.ignore_case)
@@ -124,7 +124,7 @@ class Subs(TextProgram):
             self.args.no_file_name = True
 
     def print_file_header(self, file_name: str) -> None:
-        """Print the rendered file header for ``file_name``."""
+        """Print the file header for ``file_name``."""
         if self.can_print_file_header():
             print(self.render_file_header(file_name, file_name_style=_Styles.FILE_NAME, colon_style=_Styles.COLON))
 

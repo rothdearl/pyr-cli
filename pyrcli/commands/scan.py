@@ -12,7 +12,7 @@ _NO_MATCHES_EXIT_CODE: Final[int] = 1
 
 
 class _Match(NamedTuple):
-    """Immutable container representing a single pattern match."""
+    """Immutable container representing a matched line."""
     line_number: int
     line: str
 
@@ -72,7 +72,7 @@ class Scan(TextProgram):
         return parser
 
     def collect_matches(self, lines: Iterable[str]) -> list[_Match]:
-        """Return a list of ``Match`` objects for lines matching the configured patterns."""
+        """Return matches for lines matching the configured patterns."""
         matches = []
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):
@@ -102,7 +102,7 @@ class Scan(TextProgram):
             if self.args.stdin_files:
                 self.process_text_files_from_stdin()
             elif standard_input := sys.stdin.readlines():
-                self.print_matches(standard_input, origin_file="")
+                self.print_matches(standard_input, source_file="")
 
             # Process any additional file arguments.
             if self.args.files:
@@ -123,7 +123,7 @@ class Scan(TextProgram):
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
         """Process the text stream for a single input file."""
-        self.print_matches(file_info.text_stream, origin_file=file_info.file_name)
+        self.print_matches(file_info.text_stream, source_file=file_info.file_name)
 
     @override
     def initialize_runtime_state(self) -> None:
@@ -147,18 +147,18 @@ class Scan(TextProgram):
         if not self.args.files and not self.args.stdin_files:
             self.args.no_file_name = True
 
-    def print_match_results(self, matches: Sequence[_Match], *, origin_file: str) -> None:
+    def print_match_results(self, matches: Sequence[_Match], *, source_file: str) -> None:
         """Print match counts or matched lines according to command-line options."""
         file_name = ""
 
         if self.can_print_file_header():
-            file_name = self.render_file_header(origin_file, file_name_style=_Styles.FILE_NAME,
+            file_name = self.render_file_header(source_file, file_name_style=_Styles.FILE_NAME,
                                                 colon_style=_Styles.COLON)
 
         if self.is_printing_counts():
             print(f"{file_name}{len(matches)}")
         elif matches:
-            padding = len(str(matches[-1][0]))  # Line number from the last match determines pad width.
+            padding = len(str(matches[-1].line_number))  # Line number from the last match determines pad width.
 
             if file_name:
                 print(file_name)
@@ -178,7 +178,7 @@ class Scan(TextProgram):
 
                 print(line)
 
-    def print_matches(self, lines: Iterable[str], *, origin_file: str) -> None:
+    def print_matches(self, lines: Iterable[str], *, source_file: str) -> None:
         """Search lines and print matches or counts according to command-line options."""
         matches = self.collect_matches(lines)
 
@@ -186,14 +186,14 @@ class Scan(TextProgram):
         if self.args.count_nonzero and not matches:
             return
 
-        self.print_match_results(matches, origin_file=origin_file)
+        self.print_match_results(matches, source_file=source_file)
 
     def print_matches_from_input(self) -> None:
         """Read and print matches from standard input until EOF."""
         if self.is_printing_counts():
-            self.print_matches(sys.stdin.readlines(), origin_file="")
+            self.print_matches(sys.stdin.readlines(), source_file="")
         else:
-            self.print_matches(sys.stdin, origin_file="")
+            self.print_matches(sys.stdin, source_file="")
 
 
 def main() -> int | NoReturn:

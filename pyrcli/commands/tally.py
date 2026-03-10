@@ -108,7 +108,7 @@ class Tally(TextProgram):
 
                     self.files_counted += 1
                     self.accumulate_counts(counts)
-                    self.print_counts(counts, origin_file="(standard input)" if self.args.files else "", is_total=False)
+                    self.print_counts(counts, source_file="(standard input)" if self.args.files else "", is_total=False)
 
             # Process any additional file arguments.
             if self.args.files:
@@ -119,7 +119,7 @@ class Tally(TextProgram):
             self.print_counts_from_input()
 
         if self.args.total == "on" or (self.args.total == "auto" and self.files_counted > 1):
-            self.print_counts(self.totals, origin_file="total", is_total=True)
+            self.print_counts(self.totals, source_file="total", is_total=True)
 
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
@@ -128,7 +128,7 @@ class Tally(TextProgram):
 
         self.files_counted += 1
         self.accumulate_counts(counts)
-        self.print_counts(counts, origin_file=file_info.file_name, is_total=False)
+        self.print_counts(counts, source_file=file_info.file_name, is_total=False)
 
     @override
     def initialize_runtime_state(self) -> None:
@@ -145,14 +145,14 @@ class Tally(TextProgram):
             for index in (0, 1, 2):
                 self.flags[index] = True
 
-    def print_counts(self, counts: _Counts, *, origin_file: str, is_total: bool) -> None:
+    def print_counts(self, counts: _Counts, *, source_file: str, is_total: bool) -> None:
         """Print counts for a file, applying total styling when ``is_total`` is ``True``."""
         count_color = _Styles.COUNT_TOTAL if is_total else _Styles.COUNT
-        origin_file_color = _Styles.COUNT_TOTAL if is_total else _Styles.FILE_NAME
+        source_file_color = _Styles.COUNT_TOTAL if is_total else _Styles.FILE_NAME
         padding = self.args.count_width
 
         # Omit padding when only one count is printed with no file name.
-        if sum(self.flags) == 1 and not origin_file:
+        if sum(self.flags) == 1 and not source_file:
             padding = 0
 
         for index, count in enumerate(counts):
@@ -167,11 +167,11 @@ class Tally(TextProgram):
                 else:
                     print(f"{count:>{padding},}", end="")
 
-        if origin_file:
+        if source_file:
             if self.print_color:
-                print(f" {origin_file_color}{origin_file}{ansi.RESET}")
+                print(f" {source_file_color}{source_file}{ansi.RESET}")
             else:
-                print(f" {origin_file}")
+                print(f" {source_file}")
         else:
             print()
 
@@ -184,7 +184,7 @@ class Tally(TextProgram):
         counts = self.calculate_counts(sys.stdin)
 
         self.accumulate_counts(counts)
-        self.print_counts(counts, origin_file="", is_total=False)
+        self.print_counts(counts, source_file="", is_total=False)
 
     @override
     def validate_option_ranges(self) -> None:
