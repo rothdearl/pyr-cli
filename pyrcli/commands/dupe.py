@@ -137,11 +137,11 @@ class Dupe(TextProgram):
     def group_and_print_lines(self, lines: Iterable[str], *, source_file: str) -> None:
         """Group lines and print them to standard output."""
         if self.args.adjacent:
-            groups = self.group_adjacent_matching_lines(lines)
+            line_groups = self.group_adjacent_matching_lines(lines)
         else:
-            groups = self.group_lines_by_key(lines).values()
+            line_groups = self.group_lines_by_key(lines).values()
 
-        self.print_line_groups(groups, source_file=source_file)
+        self.print_line_groups(line_groups, source_file=source_file)
 
     def group_and_print_lines_from_input(self) -> None:
         """Read and print lines from standard input until EOF."""
@@ -189,11 +189,13 @@ class Dupe(TextProgram):
         for line_group in line_groups:
             group_count = len(line_group)
 
+            if not self.should_print_group(group_count):
+                continue
+
             if self.args.group and printed_line_count:
                 print()
 
             for line_index, line in enumerate(line_group):
-                can_print = True
                 group_count_str = ""
 
                 if self.args.count:
@@ -213,21 +215,29 @@ class Dupe(TextProgram):
 
                         group_count_str = f"{indent:>{self.args.count_width}} "
 
-                if self.args.all_repeated or self.args.repeated:
-                    can_print = group_count > 1
-                elif self.args.unique:
-                    can_print = group_count == 1
+                if not file_header_printed:
+                    self.print_file_header(source_file)
+                    file_header_printed = True
 
-                if can_print:
-                    if not file_header_printed:
-                        self.print_file_header(source_file)
-                        file_header_printed = True
+                print(f"{group_count_str}{line}")
+                printed_line_count += 1
 
-                    print(f"{group_count_str}{line}")
-                    printed_line_count += 1
+                if not self.should_print_all_group_lines():
+                    break
 
-                    if not (self.args.all_repeated or self.args.group):
-                        break
+    def should_print_all_group_lines(self) -> bool:
+        """Return ``True`` if all lines in a group should be printed."""
+        return self.args.all_repeated or self.args.group
+
+    def should_print_group(self, group_count: int) -> bool:
+        """Return ``True`` if a line group should produce output."""
+        if self.args.repeated or self.args.all_repeated:
+            return group_count > 1
+
+        if self.args.unique:
+            return group_count == 1
+
+        return True
 
     @override
     def validate_option_ranges(self) -> None:
