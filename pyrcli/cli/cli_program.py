@@ -78,7 +78,7 @@ class CLIProgram(ABC):
 
     @final
     def print_error(self, error_message: str) -> None:
-        """Set the error flag and print the message to standard error unless ``--no-messages`` is enabled."""
+        """Set the error flag and print ``error_message`` to standard error unless ``--no-messages`` is enabled."""
         self.has_errors = True
 
         # --no-messages is a Unix convention to suppress per-file diagnostics but still set the error flag.
@@ -87,13 +87,12 @@ class CLIProgram(ABC):
 
     @final
     def print_error_and_exit(self, error_message: str) -> None:
-        """Print to standard error and raise ``SystemExit`` immediately."""
+        """Print ``error_message`` to standard error and raise ``SystemExit`` immediately."""
         print(f"{self.name}: error: {error_message}", file=sys.stderr)
         raise SystemExit(self.error_exit_code)
 
     @final
     def run_program(self) -> int:
-
         """
         Run the full program lifecycle and normalize process termination.
 

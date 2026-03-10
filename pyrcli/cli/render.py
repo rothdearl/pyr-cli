@@ -43,15 +43,15 @@ def reverse_video(text: str) -> str:
 
 
 def style(text: str, *, ansi_style: str) -> str:
-    """Return ``text`` rendered with the given ANSI style, resetting afterward."""
+    """Return ``text`` rendered with ``ansi_style``, resetting afterward."""
     return f"{ansi_style}{text}{RESET}"
 
 
 def style_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], ansi_style: str) -> str:
     """
-    Return ``text`` with pattern matches rendered using the given ANSI style, resetting after each match.
+    Return ``text`` with pattern matches rendered with ``ansi_style``, resetting after each match.
 
-    - Only matched ranges are styled.
+    - Styles only matched ranges.
     - Overlapping matches are merged before styling.
     """
     # Avoid allocation and iteration for the empty case.

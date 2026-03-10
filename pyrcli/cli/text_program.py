@@ -44,7 +44,7 @@ class TextProgram(CLIProgram, ABC):
     @final
     def process_text_files(self, file_names: Iterable[str]) -> list[str]:
         """
-        Process each input text file.
+        Process input text files.
 
         - Delegates stream handling to ``handle_text_stream()``.
         - Returns the names of files successfully processed.

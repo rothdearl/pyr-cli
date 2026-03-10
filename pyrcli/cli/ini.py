@@ -96,7 +96,7 @@ def get_str_option_with_fallback(section: str, option: str, *, fallback: str) ->
 
 
 def get_str_options(section: str, option: str, *, separator: str = ",") -> list[str]:
-    """Return string values split on a separator, trimming whitespace and ignoring empty entries."""
+    """Return string values split on ``separator``, trimming whitespace and skipping empty entries."""
     value = get_str_option_with_fallback(section, option, fallback="")
 
     return [entry for part in value.split(separator) if (entry := part.strip())]

@@ -22,7 +22,7 @@ def compile_combined_patterns(patterns: Iterable[re.Pattern[str]], *, ignore_cas
 
 def compile_patterns(patterns: Iterable[str], *, ignore_case: bool, on_error: ErrorReporter) -> CompiledPatterns:
     """
-    Return compiled patterns suitable for AND-style matching.
+    Return compiled patterns for AND-style matching.
 
     - Skips empty pattern strings.
     - Case-insensitive when ``ignore_case`` is ``True``.
