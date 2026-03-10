@@ -137,7 +137,7 @@ class Scan(TextProgram):
         self.compile_patterns()
 
     def is_printing_counts(self) -> bool:
-        """Return ``True`` if either ``--count`` or ``--count-nonzero`` is enabled."""
+        """Return ``True`` if line counts will be printed."""
         return self.args.count or self.args.count_nonzero
 
     @override
