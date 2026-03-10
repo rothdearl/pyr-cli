@@ -11,7 +11,7 @@ from .upload import multipart_file
 
 
 class _Methods(StrEnum):
-    """HTTP method identifiers used for internal request dispatch."""
+    """HTTP methods used for internal request dispatch."""
     DELETE = "DELETE"
     GET = "GET"
     POST = "POST"
@@ -26,14 +26,14 @@ _REQUESTS_FUNCTIONS: Final[dict[_Methods, Callable[..., requests.Response]]] = {
     _Methods.PUT: requests.put,
 }
 
-# Module-wide default HTTP request timeout in seconds (configurable via ``set_timeout()``).
+# Module-wide HTTP request timeout in seconds (configurable via ``set_timeout()``).
 _timeout: float = 15.0
 
 
 def _build_request_headers(*, data: JsonType = None, files: MultipartFiles | None = None,
                            serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None) -> KeyValuePairs:
     """
-    Return request headers for this client.
+    Return HTTP request headers for the client.
 
     - Always sets ``Accept: application/json``.
     - Sets ``Content-Type`` based on ``data``, ``files``, and ``serialize_to_json``:
@@ -61,7 +61,7 @@ def _execute_request(*, method: _Methods, url: str, params: QueryParameters | No
                      files: MultipartFiles | None = None, headers: KeyValuePairs,
                      raise_on_error: bool) -> requests.Response:
     """
-    Execute an HTTP request and return the ``requests.Response``.
+    Execute the HTTP request and return the ``requests.Response``.
 
     - Dispatches to the corresponding ``requests`` function for ``method``.
     - Uses the module-wide default request timeout (configurable via ``set_timeout``).
@@ -78,7 +78,7 @@ def _execute_request(*, method: _Methods, url: str, params: QueryParameters | No
 
 def _prepare_request_body(*, data: JsonType, files: MultipartFiles | None, serialize_to_json: bool) -> JsonType:
     """
-    Return the request body payload.
+    Return the prepared request body payload.
 
     - When ``serialize_to_json`` is enabled and multipart files are not used, serializes mapping payloads to JSON.
     - Otherwise returns ``data`` unchanged.
@@ -161,7 +161,7 @@ def put(url: str, *, params: QueryParameters | None = None, data: JsonType = Non
 def put_file(url: str, *, file_path: str, field_name: str = "file", auth_headers: KeyValuePairs | None = None,
              raise_on_error: bool = False) -> requests.Response:
     """
-    Send a PUT request that uploads a single file via multipart/form-data.
+    Send a PUT request that uploads a file via multipart/form-data.
 
     - Sends the file as multipart/form-data.
     - Adds ``Accept: application/json`` to the request headers.
