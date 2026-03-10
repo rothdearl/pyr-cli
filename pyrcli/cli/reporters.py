@@ -6,7 +6,7 @@ from .types import ErrorReporter
 
 
 def raises(exception_type: type[Exception]) -> ErrorReporter:
-    """Return an ``ErrorReporter`` that raises ``exception_type`` with the message."""
+    """Return an ``ErrorReporter`` that raises ``exception_type`` with a message."""
 
     def reporter(message: str) -> None:
         """Raise ``exception_type`` with ``message``."""
@@ -16,8 +16,8 @@ def raises(exception_type: type[Exception]) -> ErrorReporter:
 
 
 def suppress(_: str) -> None:
-    """Silently suppress the error message."""
-    return None
+    """Suppress the error message."""
+    pass
 
 
 __all__: Final[tuple[str, ...]] = (

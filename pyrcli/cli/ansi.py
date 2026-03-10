@@ -2,7 +2,7 @@
 
 from typing import Final, final
 
-# Control Sequence Introducer (CSI).
+# ANSI Control Sequence Introducer.
 _CSI: Final[str] = "\x1b["
 
 #: Reset all text attributes and colors.
