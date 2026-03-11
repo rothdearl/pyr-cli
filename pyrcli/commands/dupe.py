@@ -81,7 +81,8 @@ class Dupe(TextProgram):
                 self.process_text_files_from_stdin()
             else:
                 if standard_input := sys.stdin.readlines():
-                    self.group_and_print_lines(standard_input, source_file="")
+                    self.print_file_header(file_name="")
+                    self.group_and_print_lines(standard_input)
 
             # Process any additional file arguments.
             if self.args.files:
@@ -134,18 +135,18 @@ class Dupe(TextProgram):
 
         return groups
 
-    def group_and_print_lines(self, lines: Iterable[str], *, source_file: str) -> None:
+    def group_and_print_lines(self, lines: Iterable[str]) -> None:
         """Group lines and print them to standard output."""
         if self.args.adjacent:
             line_groups = self.group_adjacent_matching_lines(lines)
         else:
             line_groups = self.group_lines_by_key(lines).values()
 
-        self.print_line_groups(line_groups, source_file=source_file)
+        self.print_line_groups(line_groups)
 
     def group_and_print_lines_from_input(self) -> None:
         """Read and print lines from standard input until EOF."""
-        self.group_and_print_lines(sys.stdin, source_file="")
+        self.group_and_print_lines(sys.stdin)
 
     def group_lines_by_key(self, lines: Iterable[str]) -> dict[str, list[str]]:
         """Return a mapping from comparison keys to matching lines."""
@@ -167,7 +168,8 @@ class Dupe(TextProgram):
     @override
     def handle_text_stream(self, file_info: io.FileInfo) -> None:
         """Process the text stream for a single input file."""
-        self.group_and_print_lines(file_info.text_stream, source_file=file_info.file_name)
+        self.print_file_header(file_info.file_name)
+        self.group_and_print_lines(file_info.text_stream)
 
     @override
     def normalize_options(self) -> None:
@@ -181,9 +183,8 @@ class Dupe(TextProgram):
         if self.can_print_file_header():
             print(self.render_file_header(file_name, file_name_style=_Styles.FILE_NAME, colon_style=_Styles.COLON))
 
-    def print_line_groups(self, line_groups: Iterable[Sequence[str]], *, source_file: str) -> None:
+    def print_line_groups(self, line_groups: Iterable[Sequence[str]]) -> None:
         """Print line groups as duplicates, unique lines, or grouped output."""
-        file_header_printed = False
         printed_line_count = 0
 
         for line_group in line_groups:
@@ -214,10 +215,6 @@ class Dupe(TextProgram):
                         indent = " "  # Ensure lines align.
 
                         group_count_str = f"{indent:>{self.args.count_width}} "
-
-                if not file_header_printed:
-                    self.print_file_header(source_file)
-                    file_header_printed = True
 
                 print(f"{group_count_str}{line}")
                 printed_line_count += 1
