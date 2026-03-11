@@ -24,7 +24,7 @@ def get_bool_option(section: str, option: str) -> bool | None:
     - Returns ``True`` or ``False`` for recognized truthy or falsy values.
     - Returns ``None`` if the value is neither truthy nor falsy.
     """
-    value = get_str_option_with_fallback(section, option, fallback="false").lower()
+    value = get_str_option(section, option, fallback="false").lower()
 
     if value in _falsy_values:
         return False
@@ -43,7 +43,7 @@ def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
     - Returns the decoded dictionary when parsing succeeds.
     - Returns ``None`` if decoding fails or the value is not a dictionary.
     """
-    value = get_str_option_with_fallback(section, option, fallback="{}")
+    value = get_str_option(section, option, fallback="{}")
 
     try:
         dict_value = json.loads(value)
@@ -61,7 +61,7 @@ def get_float_option(section: str, option: str) -> float | None:
     - Returns the parsed floating-point value when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
-    value = get_str_option_with_fallback(section, option, fallback="0.0")
+    value = get_str_option(section, option, fallback="0.0")
 
     try:
         return float(value)
@@ -77,7 +77,7 @@ def get_int_option(section: str, option: str) -> int | None:
     - Returns the parsed integer value when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
-    value = get_str_option_with_fallback(section, option, fallback="0")
+    value = get_str_option(section, option, fallback="0")
 
     try:
         return int(value)
@@ -85,19 +85,14 @@ def get_int_option(section: str, option: str) -> int | None:
         return None
 
 
-def get_str_option(section: str, option: str) -> str:
-    """Return a string value, using ``""`` if the option is missing or empty."""
-    return get_str_option_with_fallback(section, option, fallback="")
-
-
-def get_str_option_with_fallback(section: str, option: str, *, fallback: str) -> str:
+def get_str_option(section: str, option: str, *, fallback: str = "") -> str:
     """Return a string value, using ``fallback`` if the option is missing or empty."""
     return _config.get(section, option, fallback=fallback) or fallback
 
 
 def get_str_options(section: str, option: str, *, separator: str = ",") -> list[str]:
     """Return string values split on ``separator``, trimming whitespace and skipping empty entries."""
-    value = get_str_option_with_fallback(section, option, fallback="")
+    value = get_str_option(section, option, fallback="")
 
     return [entry for part in value.split(separator) if (entry := part.strip())]
 
@@ -155,7 +150,6 @@ __all__: Final[tuple[str, ...]] = (
     "get_float_option",
     "get_int_option",
     "get_str_option",
-    "get_str_option_with_fallback",
     "get_str_options",
     "has_defaults",
     "has_sections",

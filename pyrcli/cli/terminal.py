@@ -1,4 +1,4 @@
-"""Predicates indicating whether standard streams are attached to a terminal."""
+"""Boolean predicates for the terminal attachment state of standard streams."""
 
 import sys
 from typing import Final

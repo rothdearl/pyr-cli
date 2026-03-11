@@ -33,7 +33,7 @@ def bold(text: str) -> str:
 
 
 def dim(text: str) -> str:
-    """Return ``text`` rendered in dim."""
+    """Return text rendered at reduced intensity."""
     return style(text, ansi_style=TextAttributes.DIM)
 
 
