@@ -26,7 +26,7 @@ _REQUESTS_FUNCTIONS: Final[dict[_Methods, Callable[..., requests.Response]]] = {
     _Methods.PUT: requests.put,
 }
 
-# Module-wide HTTP request timeout in seconds (configurable via ``set_timeout()``).
+# Module-wide request timeout in seconds; configure via set_timeout().
 _timeout: float = 15.0
 
 
@@ -76,13 +76,8 @@ def _execute_request(*, method: _Methods, url: str, params: QueryParameters | No
     return response
 
 
-def _prepare_request_body(*, data: JsonType, files: MultipartFiles | None, serialize_to_json: bool) -> JsonType:
-    """
-    Return the prepared request body payload.
-
-    - When ``serialize_to_json`` is enabled and multipart files are not used, serializes mapping payloads to JSON.
-    - Otherwise returns ``data`` unchanged.
-    """
+def _serialize_request_body(*, data: JsonType, files: MultipartFiles | None, serialize_to_json: bool) -> JsonType:
+    """Serialize the request body payload when conditions are met, or return ``data`` unchanged."""
     if files is None and isinstance(data, dict) and serialize_to_json:
         return json.dumps(data)
 
@@ -132,7 +127,7 @@ def post(url: str, *, params: QueryParameters | None = None, data: JsonType = No
     """
     headers = _build_request_headers(data=data, files=files, serialize_to_json=serialize_to_json,
                                      auth_headers=auth_headers)
-    payload = _prepare_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
+    payload = _serialize_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
 
     return _execute_request(method=_Methods.POST, url=url, params=params, data=payload, files=files, headers=headers,
                             raise_on_error=raise_on_error)
@@ -152,7 +147,7 @@ def put(url: str, *, params: QueryParameters | None = None, data: JsonType = Non
     """
     headers = _build_request_headers(data=data, files=files, serialize_to_json=serialize_to_json,
                                      auth_headers=auth_headers)
-    payload = _prepare_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
+    payload = _serialize_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
 
     return _execute_request(method=_Methods.PUT, url=url, params=params, data=payload, files=files, headers=headers,
                             raise_on_error=raise_on_error)
@@ -173,13 +168,9 @@ def put_file(url: str, *, file_path: str, field_name: str = "file", auth_headers
 
 
 def set_timeout(timeout: float) -> None:
-    """
-    Set the default HTTP request timeout in seconds.
-
-    - Affects all subsequent HTTP requests made by this module.
-    """
+    """Set the module-wide HTTP request timeout in seconds, affecting all subsequent requests."""
     if timeout <= 0:
-        raise ValueError("HTTP request timeout must be greater than 0.")
+        raise ValueError("http request timeout must be greater than 0.")
 
     global _timeout
     _timeout = timeout
