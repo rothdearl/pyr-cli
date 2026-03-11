@@ -6,7 +6,7 @@ from typing import Final, final
 from ._base import _ProgressIndicator
 from .types import ProgressMessage
 
-# Default glyph sequence, cycled on each advance.
+# Default glyph sequence.
 _DEFAULT_SPINNER_FRAMES: Final[tuple[str, ...]] = ("-", "\\", "|", "/")
 
 
