@@ -179,8 +179,10 @@ class Order(TextProgram):
     @override
     def handle_redirected_input(self, input_lines: Iterable[str]) -> None:
         """Process input received from redirected standard input."""
+        lines = list(input_lines)  # Convert to a list; sort_and_print_lines requires a list for in-place sorting.
+
         self.print_file_header(file_name="")
-        self.sort_and_print_lines(list(input_lines))
+        self.sort_and_print_lines(lines)
 
     @override
     def handle_terminal_input(self) -> None:
