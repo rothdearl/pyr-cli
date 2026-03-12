@@ -17,7 +17,7 @@ class _ProgressIndicator(ABC):
     Attributes:
         text_stream: Text stream where output is written.
         visible: Whether the indicator is rendered.
-        final_message: Optional message written on finalization (empty strings are treated as no message).
+        final_message: Optional message written on finalization; empty strings are treated as no message.
         message_position: Whether the message appears to the left or right of the indicator (default: ``right``).
     """
 

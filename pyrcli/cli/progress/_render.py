@@ -62,7 +62,7 @@ class _LineWriter:
         self._last_visible_width = 0
 
     def write(self, text: str) -> None:
-        """Overwrite the current terminal line with ``text`` (no trailing newline), if enabled."""
+        """Overwrite the current terminal line with ``text`` (without a trailing newline) if enabled."""
         if not self.enabled:
             return
 

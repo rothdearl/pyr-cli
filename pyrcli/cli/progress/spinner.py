@@ -16,7 +16,7 @@ class Spinner(_ProgressIndicator):
     """
     Terminal spinner for tracking work with an unknown total.
 
-    - Cycles through configured glyphs on each call to ``advance``
+    - Cycles through configured glyphs on each call to ``advance``.
     - Clears the rendered frame on finalization.
     - Writes a final message followed by a newline when a message is provided, even when the indicator is not visible.
     - Treats empty messages as no message.

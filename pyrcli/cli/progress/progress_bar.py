@@ -49,7 +49,6 @@ class ProgressBar(_ProgressIndicator):
     """
     Terminal progress bar for tracking work with a known total.
 
-    - Displays a horizontal progress bar for work with a known total.
     - Updates the rendered bar when progress advances.
     - Clamps progress to ``[0, total]`` when ``total > 0``; otherwise renders as permanently 100%.
     - On finalization:
@@ -70,7 +69,7 @@ class ProgressBar(_ProgressIndicator):
     clear_on_finish: bool = False
     _completed: int = field(default=0, init=False, repr=False)
 
-    def _fraction_completed(self, completed: int) -> float:
+    def _completion_fraction(self, completed: int) -> float:
         """Return the fraction of work completed, or ``1.0`` if ``total <= 0``."""
         if self.total <= 0:
             return 1.0
@@ -94,7 +93,7 @@ class ProgressBar(_ProgressIndicator):
             self._finalize_with_message(message)
             return
 
-        bar = self._render_bar(self._fraction_completed(self._completed))
+        bar = self._render_bar(self._completion_fraction(self._completed))
 
         self._writer.write_composed(indicator=bar, message=message, position=self.message_position)
         self._writer.newline()
@@ -129,12 +128,13 @@ class ProgressBar(_ProgressIndicator):
         if self._finished:
             return
 
+        # Clamp progress to the valid range.
         if self.total <= 0:
             clamped = max(0, completed)
         else:
             clamped = max(0, min(self.total, completed))
 
-        bar = self._render_bar(self._fraction_completed(clamped))
+        bar = self._render_bar(self._completion_fraction(clamped))
 
         self._writer.write_composed(indicator=bar, message=message, position=self.message_position)
         self._completed = clamped
