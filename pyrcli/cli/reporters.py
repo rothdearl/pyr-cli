@@ -6,7 +6,7 @@ from .types import ErrorReporter
 
 
 def raises(exception_type: type[Exception]) -> ErrorReporter:
-    """Return an ``ErrorReporter`` that raises ``exception_type`` with a message."""
+    """Return an ``ErrorReporter`` that raises ``exception_type`` with the message."""
 
     def reporter(message: str) -> None:
         """Raise ``exception_type`` with ``message``."""
