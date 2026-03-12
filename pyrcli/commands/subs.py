@@ -80,7 +80,7 @@ class Subs(TextProgram):
         # Compile search patterns into a single OR-pattern.
         if compiled := patterns.compile_patterns(self.args.find, ignore_case=self.args.ignore_case,
                                                  on_error=self.print_error_and_exit):
-            self.pattern = patterns.compile_combined_patterns(compiled, ignore_case=self.args.ignore_case)
+            self.pattern = patterns.compile_any_pattern(compiled, ignore_case=self.args.ignore_case)
 
     def iter_replaced_lines(self, lines: Iterable[str]) -> Iterator[str]:
         """
