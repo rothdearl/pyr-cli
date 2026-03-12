@@ -72,7 +72,7 @@ class Scan(TextProgram):
         return parser
 
     def collect_matches(self, lines: Iterable[str]) -> list[_Match]:
-        """Return matches for lines matching the configured patterns."""
+        """Return matched lines for the configured patterns."""
         matches = []
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):

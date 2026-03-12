@@ -1,4 +1,4 @@
-"""Implements a program that displays the current calendar, with optional date and time."""
+"""Implements a program that displays a calendar with optional date and time."""
 
 import argparse
 import calendar
@@ -18,7 +18,7 @@ class _CalendarQuarterColumnBounds(NamedTuple):
 
 
 class When(CLIProgram):
-    """Command implementation for displaying the current calendar, with optional date and time."""
+    """Command implementation for displaying a calendar with optional date and time."""
 
     def __init__(self) -> None:
         """Initialize a new instance."""
@@ -28,7 +28,7 @@ class When(CLIProgram):
     def build_arguments(self) -> argparse.ArgumentParser:
         """Build and return an argument parser."""
         parser = argparse.ArgumentParser(allow_abbrev=False,
-                                         description="display a calendar, optionally with date and time",
+                                         description="display a calendar with optional date and time",
                                          epilog="datetime format is interpreted using strftime(3)", prog=self.name)
 
         parser.add_argument("-c", "--calendar", choices=("m", "q", "y"), default="m",

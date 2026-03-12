@@ -84,7 +84,7 @@ class Subs(TextProgram):
 
     def iter_replaced_lines(self, lines: Iterable[str]) -> Iterator[str]:
         """
-        Yield lines with pattern matches replaced.
+        Yield lines with matches replaced.
 
         - Yields lines unchanged when no pattern is compiled.
         """

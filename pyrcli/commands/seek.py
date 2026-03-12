@@ -207,7 +207,7 @@ class Seek(CLIProgram):
         print(display_path)
 
     def print_paths(self, directories: Iterable[str]) -> None:
-        """Traverse each starting directory up to ``--max-depth`` and print paths that match the search criteria."""
+        """Traverse starting directories up to ``--max-depth`` and print matching paths."""
         for directory in text.iter_normalized_lines(directories):
             if os.path.exists(directory):
                 root = Path(directory)
