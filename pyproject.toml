@@ -32,6 +32,7 @@ dependencies = [
 dupe = "pyrcli.commands.dupe:main"
 emit = "pyrcli.commands.emit:main"
 glue = "pyrcli.commands.glue:main"
+here = "pyrcli.commands.here:main"
 num = "pyrcli.commands.num:main"
 order = "pyrcli.commands.order:main"
 peek = "pyrcli.commands.peek:main"
@@ -43,7 +44,6 @@ subs = "pyrcli.commands.subs:main"
 tally = "pyrcli.commands.tally:main"
 track = "pyrcli.commands.track:main"
 when = "pyrcli.commands.when:main"
-where = "pyrcli.commands.where:main"
 
 [project.urls]
 Homepage = "https://github.com/rothdearl/Pyr-CLI"

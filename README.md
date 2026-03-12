@@ -182,6 +182,10 @@ A minimal, echo-like command for writing strings to standard output.
 
 A minimal, cat-like command for concatenating files to standard output.
 
+### `here`
+
+A minimal command for displaying current IP-based location information.
+
 ### `num`
 
 A minimal, nl-like command for numbering lines in files.
@@ -225,10 +229,6 @@ A minimal, tail-like command for printing the last part of files and following n
 ### `when`
 
 A minimal calendar command for displaying months, quarters, or years with optional date and time.
-
-### `where`
-
-A minimal command for displaying current IP-based location information.
 
 > Each command documents its own flags and output shape via `--help`.
 

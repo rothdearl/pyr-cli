@@ -12,12 +12,12 @@ from pyrcli.cli.http import JsonObject, client, responses
 _IPINFO_URL: Final[str] = "https://ipinfo.io/json"
 
 
-class Where(CLIProgram):
+class Here(CLIProgram):
     """Command implementation for displaying current IP-based location information."""
 
     def __init__(self) -> None:
         """Initialize a new instance."""
-        super().__init__(name="where")
+        super().__init__(name="here")
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
@@ -92,10 +92,10 @@ class Where(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    # Reduce timeout from the default; where is interactive and a slow response is indistinguishable from a hang.
+    # Reduce timeout from the default; here is interactive and a slow response is indistinguishable from a hang.
     client.set_timeout(5.0)
 
-    return Where().run_program()
+    return Here().run_program()
 
 
 if __name__ == "__main__":
