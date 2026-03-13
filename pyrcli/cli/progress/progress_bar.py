@@ -18,8 +18,8 @@ class ProgressBarLayout:
         width: Number of character cells used for the bar body.
         fill: Glyph used to represent completed progress.
         empty: Glyph used to represent remaining progress.
-        left: Left delimiter placed before the bar body.
-        right: Right delimiter placed after the bar body.
+        left_delimiter: Left delimiter placed before the bar body.
+        right_delimiter: Right delimiter placed after the bar body.
         show_percent: Whether to append a percentage suffix (value followed by ``%``).
         percent_style: ANSI SGR prefix applied to the percent value (empty disables styling).
         percent_symbol_style: ANSI SGR prefix applied to the percent symbol (empty disables styling).
@@ -30,8 +30,8 @@ class ProgressBarLayout:
     width: int = _DEFAULT_WIDTH
     fill: str = "·"
     empty: str = " "
-    left: str = "["
-    right: str = "]"
+    left_delimiter: str = "["
+    right_delimiter: str = "]"
     show_percent: bool = True
     percent_style: str = ""
     percent_symbol_style: str = ""
@@ -80,7 +80,12 @@ class ProgressBar(_ProgressIndicator):
         """Return a rendered progress bar for a completion fraction in ``[0, 1]``."""
         filled_cells = int(fraction * self.layout.width)
         empty_cells = self.layout.width - filled_cells
-        bar = f"{self.layout.left}{self.layout.fill * filled_cells}{self.layout.empty * empty_cells}{self.layout.right}"
+        bar = (
+            f"{self.layout.left_delimiter}"
+            f"{self.layout.fill * filled_cells}"
+            f"{self.layout.empty * empty_cells}"
+            f"{self.layout.right_delimiter}"
+        )
 
         if not self.layout.show_percent:
             return bar

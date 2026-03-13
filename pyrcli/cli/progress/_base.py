@@ -1,4 +1,4 @@
-"""Base class for terminal progress indicators that update a single line in place and emit an optional final message."""
+"""Base class for terminal progress indicators."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -15,13 +15,13 @@ class _ProgressIndicator(ABC):
     Base class for terminal progress indicators that update a single line in place and emit an optional final message.
 
     Attributes:
-        text_stream: Text stream where output is written.
+        output_stream: Text stream where indicator output is written.
         visible: Whether the indicator is rendered.
         final_message: Optional message written on finalization; empty strings are treated as no message.
-        message_position: Whether the message appears to the left or right of the indicator (default: ``right``).
+        message_position: Position of the message relative to the indicator (default: ``right``).
     """
 
-    text_stream: Final[TextIO]
+    output_stream: Final[TextIO]
     visible: Final[bool] = True
     final_message: ProgressMessage = None
     message_position: ProgressMessagePosition = "right"
@@ -40,7 +40,7 @@ class _ProgressIndicator(ABC):
 
     def __post_init__(self) -> None:
         """Initialize internal state."""
-        self._writer = _LineWriter(text_stream=self.text_stream, enabled=self.visible)
+        self._writer = _LineWriter(output_stream=self.output_stream, enabled=self.visible)
 
     @final
     def _finalize_with_message(self, message: ProgressMessage) -> None:
@@ -67,5 +67,5 @@ class _ProgressIndicator(ABC):
         if self.visible:
             self._render_final(self.final_message)
         elif self.final_message:
-            self.text_stream.write(self.final_message + "\n")
-            self.text_stream.flush()
+            self.output_stream.write(self.final_message + "\n")
+            self.output_stream.flush()

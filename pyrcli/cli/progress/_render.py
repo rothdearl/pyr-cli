@@ -1,4 +1,4 @@
-"""Internal rendering primitives for terminal progress indicators that update a single line in-place."""
+"""Internal primitives for rendering single-line terminal progress indicators."""
 
 import re
 from dataclasses import dataclass, field
@@ -6,12 +6,12 @@ from typing import Final, TextIO
 
 from .types import ProgressMessage, ProgressMessagePosition
 
-# Regular expression for ANSI CSI escape sequences.
+# Matches ANSI CSI escape sequences.
 _ANSI_RE: Final[re.Pattern[str]] = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
 
 def _compose_line(*, indicator: str, message: ProgressMessage, position: ProgressMessagePosition) -> str:
-    """Return a rendered line with ``message`` placed to the left or right of ``indicator``."""
+    """Return a line with ``message`` placed to the left or right of ``indicator``."""
     if not message:
         return indicator
 
@@ -26,20 +26,26 @@ def _strip_ansi(text: str) -> str:
     return _ANSI_RE.sub(repl="", string=text)
 
 
-def _visible_width(message: str) -> int:
+def _visible_width(text: str) -> int:
     """
-    Return the visible character width of ``message``, excluding ANSI CSI escape sequences.
+    Return the visible width of ``text``, excluding ANSI CSI escape sequences.
 
     - Does not account for Unicode double-width characters.
     """
-    return len(_strip_ansi(message))
+    return len(_strip_ansi(text))
 
 
 @dataclass(kw_only=True, slots=True)
 class _LineWriter:
-    """Stateful helper for rewriting a single terminal line in-place."""
+    """
+    Stateful helper for rewriting a single terminal line in place.
 
-    text_stream: TextIO
+    Attributes:
+        output_stream: Text stream where output is written.
+        enabled: Whether line rewriting is enabled.
+    """
+
+    output_stream: TextIO
     enabled: bool = True
     _last_visible_width: int = field(default=0, init=False, repr=False)
 
@@ -48,8 +54,8 @@ class _LineWriter:
         if not self.enabled:
             return
 
-        self.text_stream.write("\r" + (" " * self._last_visible_width) + "\r")
-        self.text_stream.flush()
+        self.output_stream.write("\r" + (" " * self._last_visible_width) + "\r")
+        self.output_stream.flush()
         self._last_visible_width = 0
 
     def newline(self) -> None:
@@ -57,8 +63,8 @@ class _LineWriter:
         if not self.enabled:
             return
 
-        self.text_stream.write("\n")
-        self.text_stream.flush()
+        self.output_stream.write("\n")
+        self.output_stream.flush()
         self._last_visible_width = 0
 
     def write(self, text: str) -> None:
@@ -70,8 +76,8 @@ class _LineWriter:
         visible_width = _visible_width(text)
         pad = max(0, self._last_visible_width - visible_width)
 
-        self.text_stream.write("\r" + text + (" " * pad))
-        self.text_stream.flush()
+        self.output_stream.write("\r" + text + (" " * pad))
+        self.output_stream.flush()
         self._last_visible_width = visible_width
 
     def write_composed(self, *, indicator: str, message: ProgressMessage, position: ProgressMessagePosition) -> None:
