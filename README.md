@@ -552,6 +552,7 @@ from pyrcli.cli.progress import ProgressBar, Spinner
 
 class CLIProgramDemo(CLIProgram):
     """Command implementation for demoing progress indicators."""
+
     def __init__(self) -> None:
         """Initialize a new instance."""
         super().__init__(name="demo")
@@ -573,14 +574,14 @@ class CLIProgramDemo(CLIProgram):
         files_to_update = len(files)
 
         # Find files to update.
-        with Spinner(text_stream=sys.stdout, message_position="left",
+        with Spinner(output_stream=sys.stdout, message_position="left",
                      final_message=f"Found {files_to_update} files that require an update.") as spin:
             for _ in range(files_to_update * 2):
                 spin.advance(message="Finding files to update")
                 time.sleep(0.125)  # Simulate finding a file.
 
         # Download updates.
-        with ProgressBar(total=files_to_update, text_stream=sys.stdout, clear_on_finish=True,
+        with ProgressBar(total=files_to_update, output_stream=sys.stdout, clear_on_finish=True,
                          final_message="Updates downloaded.") as bar:
             bar.start(message="Connecting to server...")
             time.sleep(.5)  # Simulate connecting to a server.
@@ -590,7 +591,7 @@ class CLIProgramDemo(CLIProgram):
                 bar.advance(message=f"Downloaded {file_index:>2} of {files_to_update}")
 
         # Apply updates.
-        with ProgressBar(total=files_to_update, text_stream=sys.stdout, clear_on_finish=True,
+        with ProgressBar(total=files_to_update, output_stream=sys.stdout, clear_on_finish=True,
                          final_message="Updates applied.") as bar:
             bar.start(message="Applying updates to files...")
             time.sleep(.25)  # Simulate starting the update process.
@@ -600,7 +601,7 @@ class CLIProgramDemo(CLIProgram):
                 bar.advance(message=f"Updated {file_index:>2} of {files_to_update}")
 
         # Perform any cleanup.
-        with Spinner(text_stream=sys.stdout, message_position="left") as spin:
+        with Spinner(output_stream=sys.stdout, message_position="left") as spin:
             for _ in range(files_to_update):
                 spin.advance(message="Cleaning up")
                 time.sleep(0.125)  # Simulate cleaning up.
@@ -633,13 +634,15 @@ import sys
 from collections.abc import Iterable
 from typing import Final, NoReturn, override
 
-from pyrcli.cli import TextProgram, ansi, io, text
+from pyrcli.cli import TextProgram, text
+from pyrcli.cli.ansi import ForegroundColors
+from pyrcli.cli.io import InputFile
 
 
 class _Styles:
     """Namespace for ANSI styling constants."""
-    COLON: Final[str] = ansi.ForegroundColors.BRIGHT_CYAN
-    FILE_NAME: Final[str] = ansi.ForegroundColors.BRIGHT_MAGENTA
+    COLON: Final[str] = ForegroundColors.BRIGHT_CYAN
+    FILE_NAME: Final[str] = ForegroundColors.BRIGHT_MAGENTA
 
 
 class TextProgramDemo(TextProgram):
@@ -695,7 +698,7 @@ class TextProgramDemo(TextProgram):
             print(line)
 
     @override
-    def process_text_stream(self, input_file: io.InputFile) -> None:
+    def process_text_stream(self, input_file: InputFile) -> None:
         """Process the text stream for a single input file."""
         self.print_file_header(input_file.file_name)
         self.print_lines(input_file.text_stream)
