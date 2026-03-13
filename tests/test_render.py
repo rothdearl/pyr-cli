@@ -5,7 +5,7 @@ from pyrcli.cli import ansi, render
 
 
 class TestRender(unittest.TestCase):
-    """Tests the render module."""
+    """Test the render module."""
 
     def test_single_pattern_single_match(self):
         text = "hello world"

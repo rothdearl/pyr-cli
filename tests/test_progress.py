@@ -7,11 +7,11 @@ from pyrcli.cli.progress import ProgressBar, Spinner
 
 
 class TestProgress(unittest.TestCase):
-    """Tests the progress modules."""
+    """Test the progress modules."""
     FILES_TO_UPDATE: Final[int] = 8
 
     def test_progress_bar(self):
-        """Tests the progress bar module."""
+        """Test the progress bar module."""
         # With final message.
         with ProgressBar(total=self.FILES_TO_UPDATE, text_stream=sys.stderr,
                          final_message="Download complete.") as bar:
@@ -80,7 +80,7 @@ class TestProgress(unittest.TestCase):
         bar.finalize()
 
     def test_spinner(self):
-        """Tests the spinner module."""
+        """Test the spinner module."""
         # With final message.
         with Spinner(text_stream=sys.stderr, final_message=f"Found {self.FILES_TO_UPDATE} files to update.") as spin:
             for _ in range(self.FILES_TO_UPDATE):

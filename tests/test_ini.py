@@ -7,7 +7,7 @@ from pyrcli.cli import ini
 
 @final
 class TestINI(unittest.TestCase):
-    """Tests the ini module."""
+    """Test the ini module."""
 
     def test_read(self) -> None:
         # File does not exist.

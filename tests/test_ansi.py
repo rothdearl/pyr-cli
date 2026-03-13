@@ -6,7 +6,7 @@ from pyrcli.cli import ansi
 
 @final
 class TestANSI(unittest.TestCase):
-    """Tests the ansi module."""
+    """Test the ansi module."""
 
     def test_16_color_palette(self) -> None:
         # Verify lengths.

@@ -6,7 +6,7 @@ from pyrcli.cli import terminal
 
 @final
 class TestTerminal(unittest.TestCase):
-    """Tests the terminal module."""
+    """Test the terminal module."""
 
     def test_terminal_predicates(self) -> None:
         self.assertFalse(terminal.stderr_is_redirected())

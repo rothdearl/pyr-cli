@@ -6,10 +6,10 @@ from pyrcli.cli import text
 
 @final
 class TestText(unittest.TestCase):
-    """Tests the text module."""
+    """Test the text module."""
 
     def test_iter_normalized_lines(self) -> None:
-        """Tests the iter_normalized_lines function."""
+        """Test the iter_normalized_lines function."""
         lines = (
             "Line 1\n",
             "Line 2",
@@ -22,7 +22,7 @@ class TestText(unittest.TestCase):
             self.assertFalse(line.endswith("\n"))
 
     def test_split_csv(self) -> None:
-        """Tests the split_csv function."""
+        """Test the split_csv function."""
         errors = []
 
         def on_error(error_message: str) -> None:
@@ -73,49 +73,50 @@ class TestText(unittest.TestCase):
         self.assertEqual(text.split_csv("a\rb\rc", separator="\r", on_error=on_error), ["a", "b", "c"])
         self.assertEqual(errors, [])
 
-    def test_split_regex(self) -> None:
-        """Tests the split_regex function."""
+    def test_split_pattern(self) -> None:
+        """Test the split_pattern function."""
         errors = []
 
         def on_error(error_message: str) -> None:
             """Callback for on_error."""
             errors.append(error_message)
 
-        # 1) Basic regex splitting.
-        self.assertEqual(text.split_regex("a,b,c", pattern=r",", on_error=on_error), ["a", "b", "c"])
+        # 1) Basic pattern splitting.
+        self.assertEqual(text.split_pattern("a,b,c", pattern=r",", on_error=on_error), ["a", "b", "c"])
         self.assertEqual(errors, [])
 
-        # 2) Regex that can produce empty fields (similar to re.split behavior).
-        self.assertEqual(text.split_regex("a,,b", pattern=r",", on_error=on_error), ["a", "", "b"])
+        # 2) Pattern that can produce empty fields (similar to re.split behavior).
+        self.assertEqual(text.split_pattern("a,,b", pattern=r",", on_error=on_error), ["a", "", "b"])
         self.assertEqual(errors, [])
 
         # 3) Toggle ignore_case.
-        self.assertEqual(text.split_regex("Xbox3", pattern=r"x", ignore_case=False, on_error=on_error), ["Xbo", "3"])
-        self.assertEqual(text.split_regex("Xbox3", pattern=r"x", ignore_case=True, on_error=on_error), ["", "bo", "3"])
+        self.assertEqual(text.split_pattern("Xbox3", pattern=r"x", ignore_case=False, on_error=on_error), ["Xbo", "3"])
+        self.assertEqual(text.split_pattern("Xbox3", pattern=r"x", ignore_case=True, on_error=on_error),
+                         ["", "bo", "3"])
         errors.clear()
 
-        # 4) Invalid regex pattern, raise re.error, fallback to whitespace split.
-        self.assertEqual(text.split_regex("a  b", pattern=r"(", on_error=on_error), ["a", "b"])
+        # 4) Invalid pattern, raise re.error, fallback to whitespace split.
+        self.assertEqual(text.split_pattern("a  b", pattern=r"(", on_error=on_error), ["a", "b"])
         self.assertEqual(len(errors), 1)
         self.assertIn("invalid pattern", errors[0])
 
-    def test_split_shell_style(self) -> None:
-        """Tests the split_shell_style function."""
+    def test_split_shell_tokens(self) -> None:
+        """Test the split_shell_tokens function."""
         # 1) Whitespace split.
-        self.assertEqual(text.split_shell_style(" a b   c "), ["a", "b", "c"])
+        self.assertEqual(text.split_shell_tokens(" a b   c "), ["a", "b", "c"])
 
         # 2) Shell-style quoting (default literal_quotes=False).
-        self.assertEqual(text.split_shell_style(' a " b c " d '), ["a", " b c ", "d"])
+        self.assertEqual(text.split_shell_tokens(' a " b c " d '), ["a", " b c ", "d"])
 
         # 3) Treat quotes as ordinary characters (literal_quotes=True).
-        self.assertEqual(text.split_shell_style('a "b c" d', literal_quotes=True), ["a", '"b', 'c"', "d"])
+        self.assertEqual(text.split_shell_tokens('a "b c" d', literal_quotes=True), ["a", '"b', 'c"', "d"])
 
         # 4) Unmatched quotes, raise ValueError, fallback to a single field.
         raw = 'a "b '
-        self.assertEqual(text.split_shell_style(raw), [raw])
+        self.assertEqual(text.split_shell_tokens(raw), [raw])
 
     def test_strip_trailing_newline(self) -> None:
-        """Tests the strip_trailing_newline function."""
+        """Test the strip_trailing_newline function."""
         lines = (
             "Line 1\n",
             "Line 2",

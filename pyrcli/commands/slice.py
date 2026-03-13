@@ -165,9 +165,9 @@ class Slice(TextProgram):
             case "regex":
                 field_pattern = self.args.field_pattern or r"\s+"
 
-                fields = text.split_regex(line, pattern=field_pattern, on_error=self.print_error_and_exit)
+                fields = text.split_pattern(line, pattern=field_pattern, on_error=self.print_error_and_exit)
             case _:
-                fields = text.split_shell_style(line, literal_quotes=self.args.literal_quotes)
+                fields = text.split_shell_tokens(line, literal_quotes=self.args.literal_quotes)
 
         # Filter empty fields unless --keep-empty=True.
         if not self.args.keep_empty:

@@ -65,8 +65,8 @@ from .text import (
     iter_nonempty_lines,
     iter_normalized_lines,
     split_csv,
-    split_regex,
-    split_shell_style,
+    split_pattern,
+    split_shell_tokens,
     strip_trailing_newline,
 )
 from .text_program import TextProgram
@@ -142,8 +142,8 @@ __all__: Final[tuple[str, ...]] = (
     "iter_nonempty_lines",
     "iter_normalized_lines",
     "split_csv",
-    "split_regex",
-    "split_shell_style",
+    "split_pattern",
+    "split_shell_tokens",
     "strip_trailing_newline",
 
     # types

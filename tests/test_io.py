@@ -8,10 +8,10 @@ from pyrcli.cli import io
 
 @final
 class TestIO(unittest.TestCase):
-    """Tests the io module."""
+    """Test the io module."""
 
     def test_iter_descendant_paths(self) -> None:
-        """Tests the iter_descendant_paths function."""
+        """Test the iter_descendant_paths function."""
         for path in io.iter_descendant_paths(Path(os.curdir)):
             self.assertIsInstance(path, Path)
 
@@ -19,7 +19,7 @@ class TestIO(unittest.TestCase):
             self.assertIsInstance(path, Path)
 
     def test_read_text_files(self) -> None:
-        """Tests the read_text_files function."""
+        """Test the read_text_files function."""
         errors = []
         test_file_path = os.path.join("test_data", "io-test-file.txt")
 
@@ -50,7 +50,7 @@ class TestIO(unittest.TestCase):
         self.assertEqual(errors[0], "'__pycache__': is a directory")
 
     def test_write_text_file(self) -> None:
-        """Tests the write_text_file function."""
+        """Test the write_text_file function."""
         errors = []
         test_file_path = os.path.join("test_data", "io-test-file.txt")
 

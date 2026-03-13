@@ -10,7 +10,7 @@ from .types import ErrorReporter
 
 
 def decode_python_escape_sequences(line: str) -> str:
-    """Return ``line`` with Python-style escape sequences decoded."""
+    """Decode Python-style backslash escape sequences in ``line``."""
     return line.encode("utf-8").decode("unicode_escape")
 
 
@@ -49,7 +49,7 @@ def split_csv(text: str, *, separator: str = " ", on_error: ErrorReporter) -> li
     return text.split(separator)
 
 
-def split_regex(text: str, *, pattern: str, ignore_case: bool = False, on_error: ErrorReporter) -> list[str]:
+def split_pattern(text: str, *, pattern: str, ignore_case: bool = False, on_error: ErrorReporter) -> list[str]:
     """
     Split ``text`` using a regular expression pattern.
 
@@ -65,8 +65,8 @@ def split_regex(text: str, *, pattern: str, ignore_case: bool = False, on_error:
     return text.split()
 
 
-def split_shell_style(text: str, *, literal_quotes: bool = False) -> list[str]:
-    """Split ``text`` using shell-style parsing."""
+def split_shell_tokens(text: str, *, literal_quotes: bool = False) -> list[str]:
+    """Return ``text`` split into shell-style tokens."""
     lexer = shlex.shlex(text, posix=True, punctuation_chars=False)
 
     lexer.whitespace_split = True  # Prevents punctuation-based tokenization.
@@ -91,7 +91,7 @@ __all__: Final[tuple[str, ...]] = (
     "iter_nonempty_lines",
     "iter_normalized_lines",
     "split_csv",
-    "split_regex",
-    "split_shell_style",
+    "split_pattern",
+    "split_shell_tokens",
     "strip_trailing_newline",
 )
