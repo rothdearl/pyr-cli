@@ -27,7 +27,7 @@ class When(CLIProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False,
                                          description="display a calendar with optional date and time",
                                          epilog="datetime format is interpreted using strftime(3)", prog=self.name)
@@ -191,7 +191,7 @@ class When(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return When().run_program()
+    return When().run()
 
 
 if __name__ == "__main__":

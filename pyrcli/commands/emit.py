@@ -18,7 +18,7 @@ class Emit(CLIProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="write strings to standard output",
                                          prog=self.name)
 
@@ -85,7 +85,7 @@ class Emit(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Emit().run_program()
+    return Emit().run()
 
 
 if __name__ == "__main__":

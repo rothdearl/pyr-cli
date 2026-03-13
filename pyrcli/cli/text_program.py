@@ -29,7 +29,7 @@ class TextProgram(CLIProgram, ABC):
         self.encoding: str = "utf-8"
 
     def _execute_redirected_input_flow(self) -> list[str]:
-        """Execute the redirected input flow and return the names of successfully processed files."""
+        """Process redirected input and return the names of successfully processed files."""
         processed_files = []
 
         if self.args.stdin_files:
@@ -44,7 +44,7 @@ class TextProgram(CLIProgram, ABC):
         return processed_files
 
     def _invoke_redirected_input_handler(self) -> None:
-        """Invoke handle_redirected_input() with buffered or streaming stdin."""
+        """Invoke ``handle_redirected_input()`` with buffered or streaming stdin."""
         if self.buffer_stdin:
             # Skip empty buffered stdin; an empty read indicates no input was provided.
             if lines := sys.stdin.readlines():
@@ -75,7 +75,7 @@ class TextProgram(CLIProgram, ABC):
 
     @final
     def execute(self) -> None:
-        """Execute the command using the prepared runtime state."""
+        """Route input sources and process them using the configured handlers."""
         processed_files = []
 
         if stdin_is_redirected():

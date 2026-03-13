@@ -482,7 +482,7 @@ parse arguments
 - Implement `execute` (CLIProgram only; TextProgram marks this `@final`)
 - Use validation hooks appropriately
 - Use `print_error` / `print_error_and_exit`
-- Use `run_program()` in the entry point
+- Use `run()` in the entry point
 
 ### For text programs
 
@@ -499,7 +499,7 @@ parse arguments
 
 ## Design Principles
 
-- Follow the standard lifecycle; do not bypass `run_program()`
+- Follow the standard lifecycle; do not bypass `run()`
 - Separate dependency checks, range validation, normalization, and runtime initialization
 - Comments should explain intent, not mechanics
 - Functions should read clearly, behave predictably, and have documentation that matches reality
@@ -558,7 +558,7 @@ class CLIProgramDemo(CLIProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="demo using progress indicators",
                                          prog=self.name)
 
@@ -614,7 +614,7 @@ class CLIProgramDemo(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return CLIProgramDemo().run_program()
+    return CLIProgramDemo().run()
 
 
 if __name__ == "__main__":
@@ -651,7 +651,7 @@ class TextProgramDemo(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="print FILES to standard output",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
 
@@ -703,7 +703,7 @@ class TextProgramDemo(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return TextProgramDemo().run_program()
+    return TextProgramDemo().run()
 
 
 if __name__ == "__main__":

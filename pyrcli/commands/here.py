@@ -21,7 +21,7 @@ class Here(CLIProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False,
                                          description="display current ip-based location information",
                                          epilog="location data provided by ipinfo.io", prog=self.name)
@@ -95,7 +95,7 @@ def main() -> int | NoReturn:
     # Reduce timeout from the default; here is interactive and a slow response is indistinguishable from a hang.
     client.set_timeout(5.0)
 
-    return Here().run_program()
+    return Here().run()
 
 
 if __name__ == "__main__":

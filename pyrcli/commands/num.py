@@ -33,7 +33,7 @@ class Num(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="number lines in FILES",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
         blank_group = parser.add_mutually_exclusive_group()
@@ -159,7 +159,7 @@ class Num(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Num().run_program()
+    return Num().run()
 
 
 if __name__ == "__main__":

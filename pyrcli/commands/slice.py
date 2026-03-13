@@ -32,7 +32,7 @@ class Slice(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="split lines in FILES into fields",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
 
@@ -191,7 +191,7 @@ class Slice(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Slice().run_program()
+    return Slice().run()
 
 
 if __name__ == "__main__":

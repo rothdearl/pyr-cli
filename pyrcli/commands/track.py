@@ -30,7 +30,7 @@ class Track(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False,
                                          description="print the last part of FILES, optionally following new lines",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
@@ -161,7 +161,7 @@ class Track(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Track().run_program()
+    return Track().run()
 
 
 if __name__ == "__main__":

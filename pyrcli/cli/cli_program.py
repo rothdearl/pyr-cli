@@ -38,11 +38,11 @@ class CLIProgram(ABC):
         self.version: Final[str] = __version__
 
     def _parse_arguments(self) -> None:
-        """Parse command-line arguments to initialize program options."""
+        """Parse command-line arguments and populate ``args``."""
         self.args = self.build_arguments().parse_args()
 
     def _prepare_runtime_state(self) -> None:
-        """Prepare runtime state by running the option lifecycle hooks in order."""
+        """Run the option lifecycle hooks to prepare runtime state."""
         self.check_option_dependencies()
         self.validate_option_ranges()
         self.normalize_options()
@@ -50,7 +50,7 @@ class CLIProgram(ABC):
 
     @abstractmethod
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         ...
 
     def check_option_dependencies(self) -> None:
@@ -95,11 +95,11 @@ class CLIProgram(ABC):
         raise SystemExit(self.error_exit_code)
 
     @final
-    def run_program(self) -> int:
+    def run(self) -> int:
         """
-        Run the full program lifecycle and normalize process termination.
+        Run the program lifecycle and normalize process termination.
 
-        - Configures the runtime environment.
+        - Configures platform-specific terminal and signal handling.
         - Parses arguments and prepares runtime state by running the option lifecycle hooks:
 
           - ``check_option_dependencies()``

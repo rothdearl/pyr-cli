@@ -26,7 +26,7 @@ class Dupe(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="find and filter duplicate lines in FILES",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
         print_group = parser.add_mutually_exclusive_group()
@@ -242,7 +242,7 @@ class Dupe(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Dupe().run_program()
+    return Dupe().run()
 
 
 if __name__ == "__main__":

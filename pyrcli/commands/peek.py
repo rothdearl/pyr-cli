@@ -26,7 +26,7 @@ class Peek(TextProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="print the first part of FILES",
                                          epilog="read from standard input when no FILES are specified", prog=self.name)
 
@@ -97,7 +97,7 @@ class Peek(TextProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Peek().run_program()
+    return Peek().run()
 
 
 if __name__ == "__main__":

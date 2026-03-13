@@ -40,7 +40,7 @@ class Seek(CLIProgram):
 
     @override
     def build_arguments(self) -> argparse.ArgumentParser:
-        """Build and return an argument parser."""
+        """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="search for files in a directory hierarchy",
                                          epilog="use the current directory as the default starting point",
                                          prog=self.name)
@@ -232,7 +232,7 @@ class Seek(CLIProgram):
 
 def main() -> int | NoReturn:
     """Run the command and return the exit code."""
-    return Seek().run_program()
+    return Seek().run()
 
 
 if __name__ == "__main__":
