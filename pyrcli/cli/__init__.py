@@ -13,10 +13,10 @@ from .ansi import (
 from .cli_program import CLIProgram
 from .ini import (
     get_bool_option,
-    get_dict_option,
     get_float_option,
     get_int_option,
-    get_str_list_option,
+    get_list_option,
+    get_mapping_option,
     get_str_option,
     has_defaults,
     has_sections,
@@ -90,10 +90,10 @@ __all__: Final[tuple[str, ...]] = (
 
     # ini
     "get_bool_option",
-    "get_dict_option",
     "get_float_option",
     "get_int_option",
-    "get_str_list_option",
+    "get_list_option",
+    "get_mapping_option",
     "get_str_option",
     "has_defaults",
     "has_sections",

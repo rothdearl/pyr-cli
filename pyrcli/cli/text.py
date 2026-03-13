@@ -69,7 +69,7 @@ def split_shell_style(text: str, *, literal_quotes: bool = False) -> list[str]:
     """Split ``text`` using shell-style parsing."""
     lexer = shlex.shlex(text, posix=True, punctuation_chars=False)
 
-    lexer.whitespace_split = True  # Treat whitespace as the token separator.
+    lexer.whitespace_split = True  # Prevents punctuation-based tokenization.
 
     if literal_quotes:
         lexer.quotes = ""  # Treat quotes as ordinary characters.

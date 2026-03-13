@@ -20,7 +20,7 @@ def get_bool_option(section: str, option: str) -> bool | None:
     """
     Return the option parsed as a boolean value.
 
-    - Uses ``"false"`` if the option is missing or empty.
+    - Treats a missing or empty option as ``"false"``.
     - Returns ``True`` or ``False`` for recognized truthy or falsy values.
     - Returns ``None`` if the value is neither truthy nor falsy.
     """
@@ -35,29 +35,11 @@ def get_bool_option(section: str, option: str) -> bool | None:
     return None
 
 
-def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
-    """
-    Return the option decoded as a dictionary.
-
-    - Uses ``"{}"`` if the option is missing or empty.
-    - Returns the decoded dictionary when parsing succeeds.
-    - Returns ``None`` if decoding fails or the value is not a dictionary.
-    """
-    value = get_str_option(section, option, fallback="{}")
-
-    try:
-        dict_value = json.loads(value)
-    except json.JSONDecodeError:
-        return None
-
-    return dict_value if isinstance(dict_value, dict) else None
-
-
 def get_float_option(section: str, option: str) -> float | None:
     """
     Return the option parsed as a floating-point value.
 
-    - Uses ``"0.0"`` if the option is missing or empty.
+    - Treats a missing or empty option as ``"0.0"``.
     - Returns the parsed floating-point value when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
@@ -73,7 +55,7 @@ def get_int_option(section: str, option: str) -> int | None:
     """
     Return the option parsed as an integer value.
 
-    - Uses ``"0"`` if the option is missing or empty.
+    - Treats a missing or empty option as ``"0"``.
     - Returns the parsed integer value when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
@@ -85,11 +67,29 @@ def get_int_option(section: str, option: str) -> int | None:
         return None
 
 
-def get_str_list_option(section: str, option: str, *, separator: str = ",") -> list[str]:
+def get_list_option(section: str, option: str, *, separator: str = ",") -> list[str]:
     """Return a list of values split on ``separator``, trimming whitespace and skipping empty entries."""
     value = get_str_option(section, option, fallback="")
 
     return [entry for part in value.split(separator) if (entry := part.strip())]
+
+
+def get_mapping_option(section: str, option: str) -> dict[str, Any] | None:
+    """
+    Return the option decoded as a dictionary.
+
+    - Treats a missing or empty option as ``"{}"``.
+    - Returns the decoded dictionary when parsing succeeds.
+    - Returns ``None`` if decoding fails or the value is not a dictionary.
+    """
+    value = get_str_option(section, option, fallback="{}")
+
+    try:
+        dict_value = json.loads(value)
+    except json.JSONDecodeError:
+        return None
+
+    return dict_value if isinstance(dict_value, dict) else None
 
 
 def get_str_option(section: str, option: str, *, fallback: str = "") -> str:
@@ -146,10 +146,10 @@ def load_config(path: str, *, clear_previous: bool = True, on_error: ErrorReport
 
 __all__: Final[tuple[str, ...]] = (
     "get_bool_option",
-    "get_dict_option",
     "get_float_option",
     "get_int_option",
-    "get_str_list_option",
+    "get_list_option",
+    "get_mapping_option",
     "get_str_option",
     "has_defaults",
     "has_sections",

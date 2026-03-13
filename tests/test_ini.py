@@ -55,29 +55,29 @@ class TestINI(unittest.TestCase):
         self.assertIsNone(ini.get_bool_option("bool_options", "invalid_value"))
 
     def test_values_dict(self) -> None:
-        section = "dict_options"
+        section = "mapping_options"
 
         # Valid.
-        self.assertEqual(ini.get_dict_option(section, "valid_dict"), {"a": 1, "b": True})
-        self.assertIsInstance(ini.get_dict_option(section, "valid_dict"), dict)
-        self.assertEqual(ini.get_dict_option(section, "valid_dicts"),
+        self.assertEqual(ini.get_mapping_option(section, "valid_dict"), {"a": 1, "b": True})
+        self.assertIsInstance(ini.get_mapping_option(section, "valid_dict"), dict)
+        self.assertEqual(ini.get_mapping_option(section, "valid_dicts"),
                          {"a": 1, "b": True, "c": {"d": 15.0, "e": "true"}})
-        self.assertIsInstance(ini.get_dict_option(section, "valid_dicts"), dict)
+        self.assertIsInstance(ini.get_mapping_option(section, "valid_dicts"), dict)
 
         # Invalid.
-        self.assertIsNone(ini.get_dict_option(section, "invalid_array"))
-        self.assertIsNone(ini.get_dict_option(section, "invalid_string"))
-        self.assertIsNone(ini.get_dict_option(section, "invalid_number"))
-        self.assertIsNone(ini.get_dict_option(section, "invalid_bool"))
-        self.assertIsNone(ini.get_dict_option(section, "valid_null"))
+        self.assertIsNone(ini.get_mapping_option(section, "invalid_array"))
+        self.assertIsNone(ini.get_mapping_option(section, "invalid_string"))
+        self.assertIsNone(ini.get_mapping_option(section, "invalid_number"))
+        self.assertIsNone(ini.get_mapping_option(section, "invalid_bool"))
+        self.assertIsNone(ini.get_mapping_option(section, "valid_null"))
 
         # Fallback.
-        self.assertEqual(ini.get_dict_option(section, "empty_value"), {})
-        self.assertEqual(ini.get_dict_option(section, "missing_value"), {})
-        self.assertEqual(ini.get_dict_option("missing_section", "valid_object"), {})
+        self.assertEqual(ini.get_mapping_option(section, "empty_value"), {})
+        self.assertEqual(ini.get_mapping_option(section, "missing_value"), {})
+        self.assertEqual(ini.get_mapping_option("missing_section", "valid_object"), {})
 
         # Invalid.
-        self.assertIsNone(ini.get_dict_option(section, "invalid_value"))
+        self.assertIsNone(ini.get_mapping_option(section, "invalid_value"))
 
     def test_values_float(self) -> None:
         # Valid.
@@ -119,17 +119,17 @@ class TestINI(unittest.TestCase):
         self.assertEqual(ini.get_str_option("missing_section", "normal_string"), "")
 
     def test_values_strings(self) -> None:
-        section = "string_list_option"
+        section = "list_option"
 
         # Valid.
-        self.assertEqual(ini.get_str_list_option(section, "comma_separated"), ["a", "b", "c"])
-        self.assertEqual(ini.get_str_list_option(section, "tab_separated", separator="\t"), ["a", "b", "c", "d"])
-        self.assertEqual(ini.get_str_list_option(section, "comma_with_spaces"), ["a", "b", "c"])
-        self.assertEqual(ini.get_str_list_option(section, "leading_trailing"), ["a", "b"])
-        self.assertEqual(ini.get_str_list_option(section, "only_separators"), [])
-        self.assertEqual(ini.get_str_list_option(section, "single_value"), ["one"])
+        self.assertEqual(ini.get_list_option(section, "comma_separated"), ["a", "b", "c"])
+        self.assertEqual(ini.get_list_option(section, "tab_separated", separator="\t"), ["a", "b", "c", "d"])
+        self.assertEqual(ini.get_list_option(section, "comma_with_spaces"), ["a", "b", "c"])
+        self.assertEqual(ini.get_list_option(section, "leading_trailing"), ["a", "b"])
+        self.assertEqual(ini.get_list_option(section, "only_separators"), [])
+        self.assertEqual(ini.get_list_option(section, "single_value"), ["one"])
 
         # Fallback.
-        self.assertEqual(ini.get_str_list_option(section, "empty_value"), [])
-        self.assertEqual(ini.get_str_list_option(section, "missing_value"), [])
-        self.assertEqual(ini.get_str_list_option("missing_section", "comma_separated"), [])
+        self.assertEqual(ini.get_list_option(section, "empty_value"), [])
+        self.assertEqual(ini.get_list_option(section, "missing_value"), [])
+        self.assertEqual(ini.get_list_option("missing_section", "comma_separated"), [])

@@ -1,4 +1,4 @@
-"""ANSI SGR escape sequence constants for terminal text attributes and colors."""
+"""ANSI SGR escape sequence constants for terminal styling."""
 
 from typing import Final, final
 

@@ -49,7 +49,7 @@ def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterator[
 
 
 def iter_stdin_file_names() -> Iterator[str]:
-    """Yield file names from standard input, skipping empty lines and removing trailing newlines."""
+    """Yield normalized, non-empty file names from standard input."""
     yield from iter_nonempty_lines(sys.stdin)
 
 
