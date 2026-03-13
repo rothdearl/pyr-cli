@@ -408,12 +408,12 @@ Read and process input interactively from the terminal.
 - Called only when stdin is not redirected and no file arguments are provided.
 - Responsible for prompting or reading from the terminal as needed.
 
-#### `process_text_stream(self, file_info: FileInfo) -> None`
+#### `process_text_stream(self, input_file: InputFile) -> None`
 
 Process a single text stream.
 
-- `file_info.file_name` — normalized file name
-- `file_info.text_stream` — open `TextIO` stream
+- `input_file.file_name` — normalized file name
+- `input_file.text_stream` — open `TextIO` stream
 - May raise `UnicodeDecodeError` (handled by the base class)
 - Do **not** open files manually; use the provided stream.
 
@@ -695,10 +695,10 @@ class TextProgramDemo(TextProgram):
             print(line)
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_file_header(file_info.file_name)
-        self.print_lines(file_info.text_stream)
+        self.print_file_header(input_file.file_name)
+        self.print_lines(input_file.text_stream)
 
 
 def main() -> int | NoReturn:

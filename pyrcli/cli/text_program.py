@@ -8,7 +8,7 @@ from typing import Final, final, override
 
 from .ansi import RESET
 from .cli_program import CLIProgram
-from .io import FileInfo, iter_stdin_file_names, read_text_files
+from .io import InputFile, iter_stdin_file_names, read_text_files
 from .terminal import stdin_is_redirected
 
 
@@ -60,12 +60,12 @@ class TextProgram(CLIProgram, ABC):
         """
         processed_files = []
 
-        for file_info in read_text_files(file_names, encoding=self.encoding, on_error=self.print_error):
+        for input_file in read_text_files(file_names, encoding=self.encoding, on_error=self.print_error):
             try:
-                self.process_text_stream(file_info)
-                processed_files.append(file_info.file_name)
+                self.process_text_stream(input_file)
+                processed_files.append(input_file.file_name)
             except UnicodeDecodeError:
-                self.print_error(f"{file_info.file_name!r}: unable to read with {self.encoding!r}")
+                self.print_error(f"{input_file.file_name!r}: unable to read with {self.encoding!r}")
 
         return processed_files
 
@@ -128,7 +128,7 @@ class TextProgram(CLIProgram, ABC):
         pass  # Optional hook; no action by default.
 
     @abstractmethod
-    def process_text_stream(self, file_info: FileInfo) -> None:
+    def process_text_stream(self, input_file: InputFile) -> None:
         """Process the text stream for a single input file."""
         ...
 

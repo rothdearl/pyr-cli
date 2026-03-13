@@ -139,10 +139,10 @@ class Track(TextProgram):
                 print(line)
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_file_header(file_info.file_name)
-        self.print_lines(file_info.text_stream.readlines())
+        self.print_file_header(input_file.file_name)
+        self.print_lines(input_file.text_stream.readlines())
 
     def start_following_threads(self, files: Iterable[str], *, print_file_name_on_update: bool) -> list[Thread]:
         """Start a thread for each file and return the started ``Thread`` objects."""

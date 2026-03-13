@@ -199,10 +199,10 @@ class Dupe(TextProgram):
                     break
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_file_header(file_info.file_name)
-        self.group_and_print_lines(file_info.text_stream)
+        self.print_file_header(input_file.file_name)
+        self.group_and_print_lines(input_file.text_stream)
 
     def should_include_key(self, key: str) -> bool:
         """Return ``True`` if ``key`` should participate in grouping."""

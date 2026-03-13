@@ -10,7 +10,7 @@ from .text import iter_nonempty_lines, iter_normalized_lines, strip_trailing_new
 from .types import ErrorReporter
 
 
-class FileInfo(NamedTuple):
+class InputFile(NamedTuple):
     """
     Information about a file being read.
 
@@ -53,11 +53,11 @@ def iter_stdin_file_names() -> Iterator[str]:
     yield from iter_nonempty_lines(sys.stdin)
 
 
-def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: ErrorReporter) -> Iterator[FileInfo]:
+def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: ErrorReporter) -> Iterator[InputFile]:
     """
-    Yield a ``FileInfo`` for each readable file in ``file_names``.
+    Yield a ``InputFile`` for each readable file in ``file_names``.
 
-    - Each yielded ``FileInfo.text_stream`` is valid only until the next iteration.
+    - Each yielded ``InputFile.text_stream`` is valid only until the next iteration.
     - Invokes ``on_error(message)`` for file-related errors; processing continues with the next file.
     - Reports: directory path, missing file, unknown encoding, permission denied, and other OS read errors.
     """
@@ -68,7 +68,7 @@ def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: Error
                 continue
 
             with open(file_name, mode="rt", encoding=encoding) as text_stream:
-                yield FileInfo(file_name, text_stream)
+                yield InputFile(file_name, text_stream)
         except FileNotFoundError:
             on_error(f"{file_name!r}: no such file or directory")
         except LookupError:
@@ -101,7 +101,7 @@ def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_e
 
 
 __all__: Final[tuple[str, ...]] = (
-    "FileInfo",
+    "InputFile",
     "iter_descendant_paths",
     "iter_stdin_file_names",
     "read_text_files",

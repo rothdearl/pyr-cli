@@ -113,17 +113,17 @@ class Subs(TextProgram):
             print(line)
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
         if self.args.in_place:
             # Buffer before writing to avoid reading and writing the same file simultaneously.
-            lines = file_info.text_stream.readlines()
+            lines = input_file.text_stream.readlines()
 
-            io.write_text_file(file_info.file_name, lines=self.iter_replaced_lines(lines), encoding=self.encoding,
+            io.write_text_file(input_file.file_name, lines=self.iter_replaced_lines(lines), encoding=self.encoding,
                                on_error=self.print_error)
         else:
-            self.print_file_header(file_info.file_name)
-            self.print_replaced_lines(file_info.text_stream.readlines())
+            self.print_file_header(input_file.file_name)
+            self.print_replaced_lines(input_file.text_stream.readlines())
 
     @override
     def validate_option_ranges(self) -> None:

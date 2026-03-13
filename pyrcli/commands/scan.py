@@ -180,9 +180,9 @@ class Scan(TextProgram):
         self.print_match_results(matches, source_file=source_file)
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_matches(file_info.text_stream, source_file=file_info.file_name)
+        self.print_matches(input_file.text_stream, source_file=input_file.file_name)
 
 
 def main() -> int | NoReturn:

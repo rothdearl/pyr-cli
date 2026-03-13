@@ -24,7 +24,7 @@ from .ini import (
     load_config,
 )
 from .io import (
-    FileInfo,
+    InputFile,
     iter_descendant_paths,
     iter_stdin_file_names,
     read_text_files,
@@ -101,7 +101,7 @@ __all__: Final[tuple[str, ...]] = (
     "load_config",
 
     # io
-    "FileInfo",
+    "InputFile",
     "iter_descendant_paths",
     "iter_stdin_file_names",
     "read_text_files",

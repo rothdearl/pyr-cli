@@ -170,12 +170,12 @@ class Tally(TextProgram):
             print()
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        counts = self.calculate_counts(file_info.text_stream)
+        counts = self.calculate_counts(input_file.text_stream)
 
         self.accumulate_counts(counts)
-        self.print_counts(counts, source_file=file_info.file_name, is_total=False)
+        self.print_counts(counts, source_file=input_file.file_name, is_total=False)
 
     @override
     def validate_option_ranges(self) -> None:

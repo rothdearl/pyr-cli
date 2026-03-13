@@ -135,10 +135,10 @@ class Slice(TextProgram):
             print(self.format_file_header(file_name, file_name_style=_Styles.FILE_NAME, colon_style=_Styles.COLON))
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_file_header(file_info.file_name)
-        self.split_and_print_lines(file_info.text_stream)
+        self.print_file_header(input_file.file_name)
+        self.split_and_print_lines(input_file.text_stream)
 
     def split_and_print_lines(self, lines: Iterable[str]) -> None:
         """Split lines into fields and print them."""

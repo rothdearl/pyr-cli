@@ -109,10 +109,10 @@ class Show(TextProgram):
                 print(rendered)
 
     @override
-    def process_text_stream(self, file_info: io.FileInfo) -> None:
+    def process_text_stream(self, input_file: io.InputFile) -> None:
         """Process the text stream for a single input file."""
-        self.print_file_header(file_info.file_name)
-        self.print_lines(file_info.text_stream.readlines())
+        self.print_file_header(input_file.file_name)
+        self.print_lines(input_file.text_stream.readlines())
 
     def render_ends(self, line: str) -> str:
         """Append a visible end-of-line marker to the line."""
