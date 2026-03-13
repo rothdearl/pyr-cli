@@ -51,9 +51,8 @@ class TextProgram(CLIProgram, ABC):
         if isinstance(stdin_buffer, io.BufferedReader):
             if stdin_buffer.peek():
                 self.handle_redirected_input(sys.stdin)
-        else:
-            if lines := sys.stdin.readlines():
-                self.handle_redirected_input(lines)
+        elif input_lines := sys.stdin.readlines():
+            self.handle_redirected_input(input_lines)
 
     def _process_text_files(self, file_names: Iterable[str]) -> list[str]:
         """
