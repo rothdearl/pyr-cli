@@ -1,4 +1,4 @@
-"""Type aliases for HTTP requests, responses, and JSON values."""
+"""Type aliases for HTTP requests and JSON values."""
 
 from collections.abc import Mapping
 from typing import Any, BinaryIO, Final
@@ -15,13 +15,13 @@ type JsonScalar = str | int | float | bool | None
 #: Any decoded JSON value.
 type JsonType = JsonArray | JsonObject | JsonScalar
 
-#: String-to-string mapping for HTTP headers.
+#: String-to-string mapping for HTTP headers and similar key-value data.
 type KeyValuePairs = Mapping[str, str]
 
 #: Mapping of form field names to (filename, binary file object) tuples for multipart uploads.
 type MultipartFiles = Mapping[str, tuple[str, BinaryIO]]
 
-#: String-to-string mapping encoded into the URL query string.
+#: String-to-string mapping of URL query parameters.
 type QueryParameters = Mapping[str, str]
 
 __all__: Final[tuple[str, ...]] = (
