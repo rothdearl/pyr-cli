@@ -16,7 +16,7 @@ def raises(exception_type: type[Exception]) -> ErrorReporter:
 
 
 def suppress(_: str) -> None:
-    """Suppress the error."""
+    """Ignore the error message."""
     pass
 
 

@@ -10,7 +10,7 @@ from .types import ErrorReporter
 
 
 def decode_python_escape_sequences(line: str) -> str:
-    """Decode Python-style backslash escape sequences in ``line``."""
+    """Return ``line`` with Python-style escape sequences decoded."""
     return line.encode("utf-8").decode("unicode_escape")
 
 

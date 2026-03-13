@@ -1,4 +1,4 @@
-"""Type aliases for the HTTP client package."""
+"""Type aliases for HTTP requests, responses, and JSON values."""
 
 from collections.abc import Mapping
 from typing import Any, BinaryIO, Final

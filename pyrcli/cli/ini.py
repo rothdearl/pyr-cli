@@ -37,7 +37,7 @@ def get_bool_option(section: str, option: str) -> bool | None:
 
 def get_dict_option(section: str, option: str) -> dict[str, Any] | None:
     """
-    Return the option parsed as a dictionary.
+    Return the option decoded as a dictionary.
 
     - Uses ``"{}"`` if the option is missing or empty.
     - Returns the decoded dictionary when parsing succeeds.
@@ -112,9 +112,9 @@ def is_empty() -> bool:
     return not has_defaults() and not has_sections()
 
 
-def read_options(path: str, *, clear_previous: bool = True, on_error: ErrorReporter) -> bool:
+def load_config(path: str, *, clear_previous: bool = True, on_error: ErrorReporter) -> bool:
     """
-    Read options from a configuration file.
+    Load options from a configuration file.
 
     - Clears previously loaded options before reading when ``clear_previous`` is ``True``.
     - Invokes ``on_error(message)`` if the file cannot be read or parsed.
@@ -154,5 +154,5 @@ __all__: Final[tuple[str, ...]] = (
     "has_defaults",
     "has_sections",
     "is_empty",
-    "read_options",
+    "load_config",
 )

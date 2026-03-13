@@ -21,7 +21,7 @@ from .ini import (
     has_defaults,
     has_sections,
     is_empty,
-    read_options,
+    load_config,
 )
 from .io import (
     FileInfo,
@@ -98,7 +98,7 @@ __all__: Final[tuple[str, ...]] = (
     "has_defaults",
     "has_sections",
     "is_empty",
-    "read_options",
+    "load_config",
 
     # io
     "FileInfo",

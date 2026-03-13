@@ -10,8 +10,8 @@ from .types import JsonType, KeyValuePairs, MultipartFiles, QueryParameters
 from .upload import multipart_file
 
 
-class _Methods(StrEnum):
-    """HTTP methods used for internal request dispatch."""
+class _Method(StrEnum):
+    """HTTP method used for internal request dispatch."""
     DELETE = "DELETE"
     GET = "GET"
     POST = "POST"
@@ -19,14 +19,14 @@ class _Methods(StrEnum):
 
 
 # HTTP method to request function dispatch table.
-_REQUESTS_FUNCTIONS: Final[dict[_Methods, Callable[..., requests.Response]]] = {
-    _Methods.DELETE: requests.delete,
-    _Methods.GET: requests.get,
-    _Methods.POST: requests.post,
-    _Methods.PUT: requests.put,
+_REQUESTS_FUNCTIONS: Final[dict[_Method, Callable[..., requests.Response]]] = {
+    _Method.DELETE: requests.delete,
+    _Method.GET: requests.get,
+    _Method.POST: requests.post,
+    _Method.PUT: requests.put,
 }
 
-# Module-wide request timeout in seconds; configure via set_timeout().
+# Module-wide request timeout in seconds; use set_timeout() to change.
 _timeout: float = 15.0
 
 
@@ -57,7 +57,7 @@ def _build_request_headers(*, data: JsonType = None, files: MultipartFiles | Non
     return headers
 
 
-def _execute_request(*, method: _Methods, url: str, params: QueryParameters | None = None, data: JsonType = None,
+def _execute_request(*, method: _Method, url: str, params: QueryParameters | None = None, data: JsonType = None,
                      files: MultipartFiles | None = None, headers: KeyValuePairs,
                      raise_on_error: bool) -> requests.Response:
     """
@@ -95,7 +95,7 @@ def delete(url: str, *, params: QueryParameters | None = None,
     """
     headers = _build_request_headers(auth_headers=auth_headers)
 
-    return _execute_request(method=_Methods.DELETE, url=url, params=params, headers=headers,
+    return _execute_request(method=_Method.DELETE, url=url, params=params, headers=headers,
                             raise_on_error=raise_on_error)
 
 
@@ -110,7 +110,7 @@ def get(url: str, *, params: QueryParameters | None = None,
     """
     headers = _build_request_headers(auth_headers=auth_headers)
 
-    return _execute_request(method=_Methods.GET, url=url, params=params, headers=headers, raise_on_error=raise_on_error)
+    return _execute_request(method=_Method.GET, url=url, params=params, headers=headers, raise_on_error=raise_on_error)
 
 
 def post(url: str, *, params: QueryParameters | None = None, data: JsonType = None, files: MultipartFiles | None = None,
@@ -129,7 +129,7 @@ def post(url: str, *, params: QueryParameters | None = None, data: JsonType = No
                                      auth_headers=auth_headers)
     payload = _serialize_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
 
-    return _execute_request(method=_Methods.POST, url=url, params=params, data=payload, files=files, headers=headers,
+    return _execute_request(method=_Method.POST, url=url, params=params, data=payload, files=files, headers=headers,
                             raise_on_error=raise_on_error)
 
 
@@ -149,7 +149,7 @@ def put(url: str, *, params: QueryParameters | None = None, data: JsonType = Non
                                      auth_headers=auth_headers)
     payload = _serialize_request_body(data=data, files=files, serialize_to_json=serialize_to_json)
 
-    return _execute_request(method=_Methods.PUT, url=url, params=params, data=payload, files=files, headers=headers,
+    return _execute_request(method=_Method.PUT, url=url, params=params, data=payload, files=files, headers=headers,
                             raise_on_error=raise_on_error)
 
 
@@ -170,7 +170,7 @@ def put_file(url: str, *, file_path: str, field_name: str = "file", auth_headers
 def set_timeout(timeout: float) -> None:
     """Set the module-wide HTTP request timeout in seconds for subsequent requests."""
     if timeout <= 0:
-        raise ValueError("http request timeout must be greater than 0.")
+        raise ValueError("http request timeout must be greater than 0")
 
     global _timeout
     _timeout = timeout
