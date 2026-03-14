@@ -68,7 +68,7 @@ class _LineWriter:
         self._last_visible_width = 0
 
     def write(self, text: str) -> None:
-        """Overwrite the current terminal line with ``text`` (without a trailing newline) if enabled."""
+        """Overwrite the current terminal line with ``text`` (without a trailing newline)."""
         if not self.enabled:
             return
 
@@ -80,6 +80,7 @@ class _LineWriter:
         self.output_stream.flush()
         self._last_visible_width = visible_width
 
-    def write_composed(self, *, indicator: str, message: ProgressMessage, position: ProgressMessagePosition) -> None:
+    def write_indicator_line(self, *, indicator: str, message: ProgressMessage,
+                             position: ProgressMessagePosition) -> None:
         """Write an indicator line with an optional message placed to the left or right."""
         self.write(_compose_line(indicator=indicator, message=message, position=position))

@@ -100,7 +100,7 @@ class ProgressBar(_ProgressIndicator):
 
         bar = self._render_bar(self._completion_fraction(self._completed))
 
-        self._writer.write_composed(indicator=bar, message=message, position=self.message_position)
+        self._writer.write_indicator_line(indicator=bar, message=message, position=self.message_position)
         self._writer.newline()
 
     def _render_percent(self, percent: int) -> str:
@@ -141,7 +141,7 @@ class ProgressBar(_ProgressIndicator):
 
         bar = self._render_bar(self._completion_fraction(clamped))
 
-        self._writer.write_composed(indicator=bar, message=message, position=self.message_position)
+        self._writer.write_indicator_line(indicator=bar, message=message, position=self.message_position)
         self._completed = clamped
 
 

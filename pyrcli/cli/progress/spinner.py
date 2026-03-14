@@ -46,7 +46,7 @@ class Spinner(_ProgressIndicator):
 
         glyph = self.frames[self._frame_index % len(self.frames)]
 
-        self._writer.write_composed(indicator=glyph, message=message, position=self.message_position)
+        self._writer.write_indicator_line(indicator=glyph, message=message, position=self.message_position)
         self._frame_index += 1
 
 

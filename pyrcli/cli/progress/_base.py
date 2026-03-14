@@ -29,7 +29,7 @@ class _ProgressIndicator(ABC):
     _writer: _LineWriter = field(init=False, repr=False)
 
     def __enter__(self) -> Self:
-        """Return the indicator for use in a context manager."""
+        """Return the indicator instance."""
         return self
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None,
@@ -44,7 +44,7 @@ class _ProgressIndicator(ABC):
 
     @final
     def _finalize_with_message(self, message: ProgressMessage) -> None:
-        """Clear the indicator line and, if ``message`` is non-empty, write it followed by a newline."""
+        """Clear the indicator line and write ``message`` followed by a newline when non-empty."""
         self._writer.clear()
 
         if message:
