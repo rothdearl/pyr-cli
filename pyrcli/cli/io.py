@@ -57,7 +57,7 @@ def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: Error
     """
     Yield an ``InputFile`` for each readable file in ``file_names``.
 
-    - Each yielded ``InputFile.text_stream`` is valid only until the next iteration.
+    - Each yielded ``InputFile.text_stream`` remains valid only until the next iteration.
     - Invokes ``on_error(message)`` for file-related errors; processing continues with the next file.
     - Reports: directory path, missing file, unknown encoding, permission denied, and other OS read errors.
     """

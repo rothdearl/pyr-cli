@@ -8,7 +8,7 @@ from .ansi import RESET, TextAttributes
 
 
 def _collect_merged_match_ranges(text: str, *, patterns: Collection[re.Pattern[str]]) -> list[tuple[int, int]]:
-    """Return merged non-overlapping match ranges for all pattern matches in ``text``."""
+    """Return merged non-overlapping ranges for all pattern matches in ``text``."""
     ranges = []
 
     for pattern in patterns:
@@ -28,30 +28,31 @@ def _collect_merged_match_ranges(text: str, *, patterns: Collection[re.Pattern[s
 
 
 def bold(text: str) -> str:
-    """Return ``text`` rendered in bold."""
+    """Return ``text`` styled in bold."""
     return style(text, ansi_style=TextAttributes.BOLD)
 
 
 def dim(text: str) -> str:
-    """Return ``text`` rendered at reduced intensity."""
+    """Return ``text`` styled at reduced intensity."""
     return style(text, ansi_style=TextAttributes.DIM)
 
 
 def reverse_video(text: str) -> str:
-    """Return ``text`` rendered with reversed foreground and background colors."""
+    """Return ``text`` styled with reversed foreground and background colors."""
     return style(text, ansi_style=TextAttributes.REVERSE)
 
 
 def style(text: str, *, ansi_style: str) -> str:
-    """Return ``text`` rendered with ``ansi_style``, resetting afterward."""
+    """Return ``text`` styled with ``ansi_style``, resetting afterward."""
     return f"{ansi_style}{text}{RESET}"
 
 
 def style_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], ansi_style: str) -> str:
     """
-    Return ``text`` with pattern matches rendered with ``ansi_style``, resetting after each match.
+    Return ``text`` with pattern matches styled using ``ansi_style``.
 
     - Styles only matched ranges.
+    - Resets styling after each match.
     - Overlapping matches are merged before styling.
     """
     # Avoid allocation and iteration for the empty case.

@@ -20,7 +20,7 @@ class CLIProgram(ABC):
     Base class for command-line programs with a standard parse–configure–execute lifecycle.
 
     Attributes:
-        args: Parsed command-line arguments (``argparse.Namespace``).
+        args: Parsed command-line arguments.
         error_exit_code: Exit code when an error occurs (default: ``1``).
         has_errors: Whether the program has encountered errors.
         name: Name of the program.
@@ -90,7 +90,7 @@ class CLIProgram(ABC):
 
     @final
     def print_error_and_exit(self, error_message: str) -> None:
-        """Print ``error_message`` to standard error and raise ``SystemExit(error_exit_code)`` immediately."""
+        """Print ``error_message`` to standard error and exit immediately."""
         print(f"{self.name}: error: {error_message}", file=sys.stderr)
         raise SystemExit(self.error_exit_code)
 

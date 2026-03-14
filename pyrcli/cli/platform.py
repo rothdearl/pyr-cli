@@ -1,4 +1,4 @@
-"""OS/platform predicates for use by CLI programs and supporting modules."""
+"""Operating system predicates for CLI programs and supporting modules."""
 
 import os
 import sys

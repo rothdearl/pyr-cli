@@ -18,7 +18,7 @@ _truthy_values: Final[frozenset[str]] = frozenset({"1", "on", "true", "y", "yes"
 
 def get_bool_option(section: str, option: str) -> bool | None:
     """
-    Return the option parsed as a boolean value.
+    Return the option as a boolean value.
 
     - Treats a missing or empty option as ``"false"``.
     - Returns ``True`` or ``False`` for recognized truthy or falsy values.
@@ -37,7 +37,7 @@ def get_bool_option(section: str, option: str) -> bool | None:
 
 def get_float_option(section: str, option: str) -> float | None:
     """
-    Return the option parsed as a floating-point value.
+    Return the option as a floating-point value.
 
     - Treats a missing or empty option as ``"0.0"``.
     - Returns the parsed floating-point value when conversion succeeds.
@@ -53,7 +53,7 @@ def get_float_option(section: str, option: str) -> float | None:
 
 def get_int_option(section: str, option: str) -> int | None:
     """
-    Return the option parsed as an integer value.
+    Return the option as an integer value.
 
     - Treats a missing or empty option as ``"0"``.
     - Returns the parsed integer value when conversion succeeds.
@@ -76,10 +76,10 @@ def get_list_option(section: str, option: str, *, separator: str = ",") -> list[
 
 def get_mapping_option(section: str, option: str) -> dict[str, Any] | None:
     """
-    Return the option decoded as a dictionary.
+    Return the option as a dictionary.
 
     - Treats a missing or empty option as ``"{}"``.
-    - Returns the decoded dictionary when parsing succeeds.
+    - Returns the decoded dictionary when decoding succeeds.
     - Returns ``None`` if decoding fails or the value is not a dictionary.
     """
     value = get_str_option(section, option, fallback="{}")

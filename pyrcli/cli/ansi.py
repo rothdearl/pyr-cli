@@ -15,7 +15,7 @@ FOREGROUND_COLORS_256: Final[tuple[str, ...]] = tuple(f"{_CSI}38;5;{code}m" for 
 
 @final
 class BackgroundColors:
-    """ANSI SGR background color constants from the standard 16-color palette."""
+    """ANSI SGR background colors from the standard 16-color palette."""
     BLACK: Final[str] = f"{_CSI}40m"
     RED: Final[str] = f"{_CSI}41m"
     GREEN: Final[str] = f"{_CSI}42m"
@@ -36,7 +36,7 @@ class BackgroundColors:
 
 @final
 class ForegroundColors:
-    """ANSI SGR foreground color constants from the standard 16-color palette."""
+    """ANSI SGR foreground colors from the standard 16-color palette."""
     BLACK: Final[str] = f"{_CSI}30m"
     RED: Final[str] = f"{_CSI}31m"
     GREEN: Final[str] = f"{_CSI}32m"
@@ -57,7 +57,7 @@ class ForegroundColors:
 
 @final
 class TextAttributes:
-    """Text attribute constants for common SGR styles."""
+    """ANSI SGR text attribute codes."""
     BOLD: Final[str] = f"{_CSI}1m"
     DIM: Final[str] = f"{_CSI}2m"
     ITALIC: Final[str] = f"{_CSI}3m"

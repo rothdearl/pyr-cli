@@ -41,7 +41,7 @@ class TextProgram(CLIProgram, ABC):
 
     def _process_text_files(self, file_names: Iterable[str]) -> list[str]:
         """
-        Process each file and return the names of the ones successfully processed.
+        Process each file and return the names of successfully processed files.
 
         - Skips unreadable files and reports errors via print_error().
         """
@@ -57,7 +57,7 @@ class TextProgram(CLIProgram, ABC):
         return processed_files
 
     def _process_text_files_from_stdin(self) -> list[str]:
-        """Process file names read from standard input and return the names of the ones successfully processed."""
+        """Process file names read from standard input and return the names of successfully processed files."""
         return self._process_text_files(iter_stdin_file_names())
 
     def _route_redirected_input(self) -> list[str]:
