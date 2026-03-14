@@ -12,7 +12,7 @@ from .types import ProgressMessage, ProgressMessagePosition
 @dataclass(kw_only=True, slots=True)
 class _ProgressIndicator(ABC):
     """
-    Base class for terminal progress indicators that update a single line in place and emit an optional final message.
+    Base class for terminal progress indicators that update a single terminal line in place and optionally emit a final message.
 
     Attributes:
         output_stream: Text stream where indicator output is written.
@@ -39,7 +39,7 @@ class _ProgressIndicator(ABC):
         return False
 
     def __post_init__(self) -> None:
-        """Initialize internal state."""
+        """Initialize and normalize configuration."""
         self._writer = _LineWriter(output_stream=self.output_stream, enabled=self.visible)
 
     @final
@@ -58,7 +58,7 @@ class _ProgressIndicator(ABC):
 
     @final
     def finalize(self) -> None:
-        """Finalize the indicator (idempotent) and emit any final output."""
+        """Finalize the indicator (idempotent) and emit any configured final output."""
         if self._finished:
             return
 

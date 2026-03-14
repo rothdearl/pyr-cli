@@ -71,7 +71,7 @@ class CLIProgram(ABC):
         """
         Initialize internal state derived from parsed options.
 
-        - Enables ``print_color`` only when ``--color=on`` and standard output is a terminal.
+        - Enables ``print_color`` only when ``--color=on`` and standard output is attached to a terminal.
         """
         self.print_color = getattr(self.args, "color", "off") == "on" and stdout_is_terminal()
 

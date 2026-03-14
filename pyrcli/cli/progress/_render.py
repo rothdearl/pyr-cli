@@ -59,7 +59,7 @@ class _LineWriter:
         self._last_visible_width = 0
 
     def newline(self) -> None:
-        """Write a terminating newline, leaving the current line content as-is, if enabled."""
+        """Write a terminating newline without clearing the current line."""
         if not self.enabled:
             return
 
