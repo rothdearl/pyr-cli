@@ -66,7 +66,7 @@ def split_pattern(text: str, *, pattern: str, ignore_case: bool = False, on_erro
 
 
 def split_shell_tokens(text: str, *, literal_quotes: bool = False) -> list[str]:
-    """Return ``text`` split into POSIX shell-style tokens."""
+    """Return tokens parsed from ``text`` using POSIX shell rules."""
     lexer = shlex.shlex(text, posix=True, punctuation_chars=False)
 
     lexer.whitespace_split = True  # Prevents punctuation-based tokenization.

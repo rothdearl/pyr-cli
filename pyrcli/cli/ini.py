@@ -93,7 +93,7 @@ def get_mapping_option(section: str, option: str) -> dict[str, Any] | None:
 
 
 def get_str_option(section: str, option: str, *, fallback: str = "") -> str:
-    """Return a string value, using ``fallback`` if the option is missing or empty."""
+    """Return the option as a string, using ``fallback`` if it is missing or empty."""
     return _config.get(section, option, fallback=fallback) or fallback
 
 

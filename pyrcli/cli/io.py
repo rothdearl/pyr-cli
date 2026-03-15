@@ -81,7 +81,7 @@ def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: Error
 
 def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_error: ErrorReporter) -> None:
     """
-    Write lines to a file, ensuring each ends with exactly one newline.
+    Write lines to a file, ensuring each ends with exactly one trailing newline.
 
     - Invokes ``on_error(message)`` for file-related errors.
     - Reports: unknown encoding, permission denied, encoding failures, and other OS write errors.
