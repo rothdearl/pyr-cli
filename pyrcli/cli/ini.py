@@ -6,7 +6,7 @@ from typing import Any, Final
 
 from .types import ErrorReporter
 
-# Shared across all callers; reflects the most recently loaded configuration.
+# Shared configuration instance reflecting the most recently loaded file.
 _config: configparser.ConfigParser = configparser.ConfigParser()
 
 # String values that are considered falsy.
@@ -68,7 +68,7 @@ def get_int_option(section: str, option: str) -> int | None:
 
 
 def get_list_option(section: str, option: str, *, separator: str = ",") -> list[str]:
-    """Return a list of values split on ``separator``, trimming whitespace and skipping empty entries."""
+    """Return the option as a list of values split on ``separator``, trimming whitespace and skipping empty entries."""
     value = get_str_option(section, option, fallback="")
 
     return [entry for part in value.split(separator) if (entry := part.strip())]

@@ -16,7 +16,7 @@ class InputFile(NamedTuple):
 
     Attributes:
         file_name: File name supplied by the caller.
-        text_stream: Open text stream valid until the next iteration.
+        text_stream: Open text stream valid only during the current iteration.
     """
     file_name: str
     text_stream: TextIO
