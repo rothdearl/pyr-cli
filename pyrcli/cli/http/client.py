@@ -33,7 +33,7 @@ _request_timeout: float = 15.0
 def _build_request_headers(*, data: JsonArray | JsonObject | None = None, files: MultipartFiles | None = None,
                            serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None) -> KeyValuePairs:
     """
-    Return the request headers for an HTTP request.
+    Return HTTP request headers.
 
     - Always sets ``Accept: application/json``.
     - Sets ``Content-Type`` based on ``data``, ``files``, and ``serialize_to_json``:
@@ -80,7 +80,7 @@ def _execute_request(*, method: _HTTPMethod, url: str, params: QueryParameters |
 
 def _serialize_json_body(*, data: JsonArray | JsonObject | None, files: MultipartFiles | None,
                          enabled: bool) -> JsonArray | JsonObject | str | None:
-    """Serialize ``data`` to JSON when required, or return it unchanged."""
+    """Serialize ``data`` to JSON when ``enabled`` and no files are provided."""
     if files is None and data is not None and enabled:
         return json.dumps(data)
 

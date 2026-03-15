@@ -11,7 +11,7 @@ from .types import JsonType
 def parse_json_body(response: requests.Response, *, allowed_types: tuple[type[JsonType], ...] = (dict, list),
                     on_error: ErrorReporter) -> JsonType | None:
     """
-    Return the decoded JSON body of ``response``.
+    Return the decoded JSON body from ``response``.
 
     - Invokes ``on_error(message)`` and returns ``None`` if:
 
