@@ -31,7 +31,7 @@ def split_csv(text: str, *, separator: str = " ", on_error: ErrorReporter) -> li
     """
     Split ``text`` using CSV parsing rules.
 
-    - Falls back to ``str.split()`` if parsing fails.
+    - Falls back to ``str.split()`` using default whitespace splitting.
     """
     try:
         decoded_separator = decode_python_escape_sequences(separator)

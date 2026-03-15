@@ -8,7 +8,7 @@ from .ansi import RESET, TextAttributes
 
 
 def _collect_merged_match_ranges(text: str, *, patterns: Collection[re.Pattern[str]]) -> list[tuple[int, int]]:
-    """Return merged non-overlapping match ranges within ``text``."""
+    """Return merged non-overlapping match ranges for all patterns within ``text``."""
     ranges = []
 
     for pattern in patterns:

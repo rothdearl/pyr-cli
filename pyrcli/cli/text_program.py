@@ -28,7 +28,7 @@ class TextProgram(CLIProgram, ABC):
         self.encoding: str = "utf-8"
 
     def _invoke_redirected_input(self) -> None:
-        """Invoke ``handle_redirected_input()`` when redirected input is present on standard input."""
+        """Invoke ``handle_redirected_input()`` when redirected standard input contains data."""
         # Use peek() to detect piped input without consuming it.
         # Fall back to readlines() when the underlying buffer is not a BufferedReader.
         stdin_buffer = getattr(sys.stdin, "buffer", None)

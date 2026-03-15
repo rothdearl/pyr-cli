@@ -1,4 +1,4 @@
-"""Utilities for reading and writing text files and streams."""
+"""Utilities for reading and writing text files and traversing filesystem paths."""
 
 import os
 import sys
