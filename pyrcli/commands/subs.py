@@ -116,7 +116,7 @@ class Subs(TextProgram):
 
     @override
     def process_text_stream(self, input_file: InputFile) -> None:
-        """Process the text stream contained in ``input_file``."""
+        """Process the text stream from ``input_file``."""
         if self.args.in_place:
             # Buffer before writing to avoid reading and writing the same file simultaneously.
             lines = input_file.text_stream.readlines()

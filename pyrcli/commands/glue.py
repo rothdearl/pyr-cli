@@ -103,7 +103,7 @@ class Glue(TextProgram):
 
     @override
     def process_text_stream(self, input_file: InputFile) -> None:
-        """Process the text stream contained in ``input_file``."""
+        """Process the text stream from ``input_file``."""
         self.print_lines(input_file.text_stream)
 
     def render_number(self, line: str) -> str:

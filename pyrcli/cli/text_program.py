@@ -27,7 +27,7 @@ class TextProgram(CLIProgram, ABC):
 
         self.encoding: str = "utf-8"
 
-    def _invoke_redirected_input_handler(self) -> None:
+    def _invoke_redirected_input(self) -> None:
         """Invoke ``handle_redirected_input()`` when redirected input is present on stdin."""
         # Use peek() to detect piped input without consuming it.
         # Fall back to readlines() when the underlying buffer is not a BufferedReader.
@@ -67,7 +67,7 @@ class TextProgram(CLIProgram, ABC):
         if self.args.stdin_files:
             processed_files.extend(self._process_text_files_from_stdin())
         else:
-            self._invoke_redirected_input_handler()
+            self._invoke_redirected_input()
 
         # Process any additional file arguments.
         if self.args.files:
@@ -126,12 +126,12 @@ class TextProgram(CLIProgram, ABC):
         self.encoding = "iso-8859-1" if getattr(self.args, "latin1", False) else "utf-8"
 
     def post_execute(self, processed_files: Sequence[str]) -> None:
-        """Run post-execution logic after all input has been processed."""
+        """Run post-execution logic after all input processing completes."""
         pass  # Optional hook; no action by default.
 
     @abstractmethod
     def process_text_stream(self, input_file: InputFile) -> None:
-        """Process the text stream contained in ``input_file``."""
+        """Process the text stream from ``input_file``."""
         ...
 
     @final

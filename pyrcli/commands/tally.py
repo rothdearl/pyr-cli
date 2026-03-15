@@ -173,7 +173,7 @@ class Tally(TextProgram):
 
     @override
     def process_text_stream(self, input_file: InputFile) -> None:
-        """Process the text stream contained in ``input_file``."""
+        """Process the text stream from ``input_file``."""
         counts = self.calculate_counts(input_file.text_stream)
 
         self.accumulate_counts(counts)
