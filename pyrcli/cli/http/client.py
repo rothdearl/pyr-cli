@@ -40,12 +40,12 @@ def _build_request_headers(*, data: JsonArray | JsonObject | None = None, files:
 
       - For JSON bodies (no files, ``serialize_to_json=True``), uses ``application/json``.
       - For form bodies (no files, ``serialize_to_json=False``), uses ``application/x-www-form-urlencoded; charset=utf-8``.
-      - For multipart (files provided), leaves ``Content-Type`` unset for ``requests`` to populate.
+      - For multipart/form-data (files provided), leaves ``Content-Type`` unset for ``requests`` to populate.
     - Merges ``auth_headers`` into the returned headers when provided.
     """
     headers = {"Accept": "application/json"}
 
-    # Let requests set multipart Content-Type with boundary for files.
+    # Let requests set multipart/form-data Content-Type with boundary for files.
     if files is None and data is not None:
         if serialize_to_json:
             headers["Content-Type"] = "application/json"
@@ -124,7 +124,7 @@ def post(url: str, *, params: QueryParameters | None = None, data: JsonArray | J
     Send a POST request and return the response.
 
     - Serializes ``data`` to JSON and sets JSON headers when ``serialize_to_json`` is ``True`` and ``files`` is not provided.
-    - When ``files`` is provided, sends a multipart request and lets ``requests`` set the content type.
+    - When ``files`` is provided, sends a multipart/form-data request and lets ``requests`` set the content type.
     - Adds ``Accept: application/json`` to the request headers.
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
@@ -144,7 +144,7 @@ def put(url: str, *, params: QueryParameters | None = None, data: JsonArray | Js
     Send a PUT request and return the response.
 
     - Serializes ``data`` to JSON and sets JSON headers when ``serialize_to_json`` is ``True`` and ``files`` is not provided.
-    - When ``files`` is provided, sends a multipart request and lets ``requests`` set the content type.
+    - When ``files`` is provided, sends a multipart/form-data request and lets ``requests`` set the content type.
     - Adds ``Accept: application/json`` to the request headers.
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
@@ -162,7 +162,7 @@ def put_file(url: str, *, file_path: str, field_name: str = "file", auth_headers
     """
     Upload a file using a multipart/form-data PUT request and return the response.
 
-    - Uses ``field_name`` as the multipart form field name (default: ``"file"``).
+    - Uses ``field_name`` as the multipart/form-data field name (default: ``"file"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
