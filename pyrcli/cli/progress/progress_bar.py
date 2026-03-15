@@ -78,7 +78,7 @@ class ProgressBar(_ProgressIndicator):
 
     def _render_bar(self, fraction: float) -> str:
         """Return a rendered progress bar for a completion fraction in ``[0, 1]``."""
-        filled_cells = int(fraction * self.layout.width)
+        filled_cells = round(fraction * self.layout.width)
         empty_cells = self.layout.width - filled_cells
         bar = (
             f"{self.layout.left_delimiter}"
@@ -90,7 +90,7 @@ class ProgressBar(_ProgressIndicator):
         if not self.layout.show_percent:
             return bar
 
-        return f"{bar} {self._render_percent(int(fraction * 100))}"
+        return f"{bar} {self._render_percent(round(fraction * 100))}"
 
     def _render_final(self, message: ProgressMessage) -> None:
         """Render the final indicator state and terminate the line when appropriate."""
