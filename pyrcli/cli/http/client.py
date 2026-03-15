@@ -30,12 +30,13 @@ _REQUEST_DISPATCH: Final[dict[_HTTPMethod, Callable[..., requests.Response]]] = 
 _request_timeout: float = 15.0
 
 
-def _build_request_headers(*, data: JsonArray | JsonObject | None = None, files: MultipartFiles | None = None,
-                           serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None) -> KeyValuePairs:
+def _build_request_headers(*, accept: str, data: JsonArray | JsonObject | None = None,
+                           files: MultipartFiles | None = None, serialize_to_json: bool = True,
+                           auth_headers: KeyValuePairs | None = None) -> KeyValuePairs:
     """
     Return HTTP request headers.
 
-    - Always sets ``Accept: application/json``.
+    - Sets ``Accept`` to ``accept``.
     - Sets ``Content-Type`` based on ``data``, ``files``, and ``serialize_to_json``:
 
       - For JSON bodies (no files, ``serialize_to_json=True``), uses ``application/json``.
@@ -43,7 +44,7 @@ def _build_request_headers(*, data: JsonArray | JsonObject | None = None, files:
       - For multipart/form-data (files provided), leaves ``Content-Type`` unset for ``requests`` to populate.
     - Merges ``auth_headers`` into the returned headers when provided.
     """
-    headers = {"Accept": "application/json"}
+    headers = {"Accept": accept}
 
     # Let requests set multipart/form-data Content-Type with boundary for files.
     if files is None and data is not None:
@@ -87,49 +88,49 @@ def _serialize_json_body(*, data: JsonArray | JsonObject | None, files: Multipar
     return data
 
 
-def delete(url: str, *, params: QueryParameters | None = None, auth_headers: KeyValuePairs | None = None,
-           raise_on_error: bool = False) -> requests.Response:
+def delete(url: str, *, params: QueryParameters | None = None, accept: str = "application/json",
+           auth_headers: KeyValuePairs | None = None, raise_on_error: bool = False) -> requests.Response:
     """
     Send a DELETE request and return the response.
 
-    - Adds ``Accept: application/json`` to the request headers.
+    - Uses ``accept`` as the ``Accept`` header value (default: ``"application/json"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
-    headers = _build_request_headers(auth_headers=auth_headers)
+    headers = _build_request_headers(accept=accept, auth_headers=auth_headers)
 
     return _execute_request(method=_HTTPMethod.DELETE, url=url, params=params, headers=headers,
                             raise_on_error=raise_on_error)
 
 
-def get(url: str, *, params: QueryParameters | None = None, auth_headers: KeyValuePairs | None = None,
-        raise_on_error: bool = False) -> requests.Response:
+def get(url: str, *, params: QueryParameters | None = None, accept: str = "application/json",
+        auth_headers: KeyValuePairs | None = None, raise_on_error: bool = False) -> requests.Response:
     """
     Send a GET request and return the response.
 
-    - Adds ``Accept: application/json`` to the request headers.
+    - Uses ``accept`` as the ``Accept`` header value (default: ``"application/json"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
-    headers = _build_request_headers(auth_headers=auth_headers)
+    headers = _build_request_headers(accept=accept, auth_headers=auth_headers)
 
     return _execute_request(method=_HTTPMethod.GET, url=url, params=params, headers=headers,
                             raise_on_error=raise_on_error)
 
 
 def post(url: str, *, params: QueryParameters | None = None, data: JsonArray | JsonObject | None = None,
-         files: MultipartFiles | None = None, serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
-         raise_on_error: bool = False) -> requests.Response:
+         files: MultipartFiles | None = None, serialize_to_json: bool = True, accept: str = "application/json",
+         auth_headers: KeyValuePairs | None = None, raise_on_error: bool = False) -> requests.Response:
     """
     Send a POST request and return the response.
 
     - Serializes ``data`` to JSON and sets JSON headers when ``serialize_to_json`` is ``True`` and ``files`` is not provided.
     - When ``files`` is provided, sends a multipart/form-data request and lets ``requests`` set the content type.
-    - Adds ``Accept: application/json`` to the request headers.
+    - Uses ``accept`` as the ``Accept`` header value (default: ``"application/json"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
-    headers = _build_request_headers(data=data, files=files, serialize_to_json=serialize_to_json,
+    headers = _build_request_headers(accept=accept, data=data, files=files, serialize_to_json=serialize_to_json,
                                      auth_headers=auth_headers)
     payload = _serialize_json_body(data=data, files=files, enabled=serialize_to_json)
 
@@ -138,18 +139,18 @@ def post(url: str, *, params: QueryParameters | None = None, data: JsonArray | J
 
 
 def put(url: str, *, params: QueryParameters | None = None, data: JsonArray | JsonObject | None = None,
-        files: MultipartFiles | None = None, serialize_to_json: bool = True, auth_headers: KeyValuePairs | None = None,
-        raise_on_error: bool = False) -> requests.Response:
+        files: MultipartFiles | None = None, serialize_to_json: bool = True, accept: str = "application/json",
+        auth_headers: KeyValuePairs | None = None, raise_on_error: bool = False) -> requests.Response:
     """
     Send a PUT request and return the response.
 
     - Serializes ``data`` to JSON and sets JSON headers when ``serialize_to_json`` is ``True`` and ``files`` is not provided.
     - When ``files`` is provided, sends a multipart/form-data request and lets ``requests`` set the content type.
-    - Adds ``Accept: application/json`` to the request headers.
+    - Uses ``accept`` as the ``Accept`` header value (default: ``"application/json"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
-    headers = _build_request_headers(data=data, files=files, serialize_to_json=serialize_to_json,
+    headers = _build_request_headers(accept=accept, data=data, files=files, serialize_to_json=serialize_to_json,
                                      auth_headers=auth_headers)
     payload = _serialize_json_body(data=data, files=files, enabled=serialize_to_json)
 
@@ -157,17 +158,18 @@ def put(url: str, *, params: QueryParameters | None = None, data: JsonArray | Js
                             raise_on_error=raise_on_error)
 
 
-def put_file(url: str, *, file_path: str, field_name: str = "file", auth_headers: KeyValuePairs | None = None,
-             raise_on_error: bool = False) -> requests.Response:
+def put_file(url: str, *, file_path: str, field_name: str = "file", accept: str = "application/json",
+             auth_headers: KeyValuePairs | None = None, raise_on_error: bool = False) -> requests.Response:
     """
     Upload a file using a multipart/form-data PUT request and return the response.
 
     - Uses ``field_name`` as the multipart/form-data field name (default: ``"file"``).
+    - Uses ``accept`` as the ``Accept`` header value (default: ``"application/json"``).
     - Merges ``auth_headers`` into the request headers when provided.
     - Calls ``response.raise_for_status()`` when ``raise_on_error`` is ``True``.
     """
     with multipart_file(file_path, field_name=field_name) as files:
-        return put(url, files=files, auth_headers=auth_headers, raise_on_error=raise_on_error)
+        return put(url, files=files, accept=accept, auth_headers=auth_headers, raise_on_error=raise_on_error)
 
 
 def set_timeout(timeout: float) -> None:
