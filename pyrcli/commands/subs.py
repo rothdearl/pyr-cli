@@ -90,6 +90,7 @@ class Subs(TextProgram):
 
         - Yields lines unchanged when no pattern is compiled.
         """
+        # Check pattern once rather than per line.
         if self.pattern:
             for line in text.iter_normalized_lines(lines):
                 yield self.pattern.sub(repl=self.args.replace, string=line, count=self.args.max_replacements)

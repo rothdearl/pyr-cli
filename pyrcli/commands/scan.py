@@ -74,7 +74,12 @@ class Scan(TextProgram):
         return parser
 
     def collect_matches(self, lines: Iterable[str]) -> list[_Match]:
-        """Return matched lines for the configured patterns."""
+        """
+        Return matched lines with line numbers for the configured patterns.
+
+        - Applies match styling when color is enabled and ``--invert-match`` is not set.
+        - Raises ``SystemExit(0)`` immediately when ``--quiet`` is set and a match is found.
+        """
         matches = []
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):
@@ -108,6 +113,7 @@ class Scan(TextProgram):
     @override
     def handle_terminal_input(self) -> None:
         """Read and process input interactively from the terminal."""
+        # Printing counts requires the input to be buffered.
         if self.is_printing_counts():
             self.print_matches(sys.stdin.readlines(), source_file="")
         else:
