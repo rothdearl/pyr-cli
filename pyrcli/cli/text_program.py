@@ -115,7 +115,7 @@ class TextProgram(CLIProgram, ABC):
         """
         Initialize internal state derived from parsed options.
 
-        - Sets encoding to ``iso-8859-1`` when ``--latin1`` is enabled.
+        - Sets encoding to ``iso-8859-1`` when ``--latin1`` is set.
         """
         super().initialize_runtime_state()
 

@@ -6,7 +6,7 @@ import random
 import re
 import sys
 from collections.abc import Iterable
-from typing import Final, NoReturn, override
+from typing import Any, Callable, Final, NoReturn, override
 
 from dateutil.parser import ParserError, parse
 
@@ -97,7 +97,6 @@ class Order(TextProgram):
             number = self.normalize_number(re.sub(pattern=_CURRENCY_SANITIZE_REGEX, repl="", string=field))
 
             try:
-                # Convert to float and apply sign.
                 segments.append((0, float(number) * (-1 if negative else 1)))
             except ValueError:
                 segments.append((1, field))
@@ -178,6 +177,22 @@ class Order(TextProgram):
 
         return fields
 
+    def get_sort_key(self) -> Callable[[str], Any]:
+        """Return the sort key function for the configured sort mode."""
+        if self.args.currency_sort:
+            return self.generate_currency_sort_key
+
+        if self.args.date_sort:
+            return self.generate_date_sort_key
+
+        if self.args.dictionary_order:
+            return self.generate_dictionary_sort_key
+
+        if self.args.natural_sort:
+            return self.generate_natural_sort_key
+
+        return self.generate_default_sort_key
+
     @override
     def handle_redirected_input(self, input_lines: Iterable[str]) -> None:
         """Process input received from redirected standard input."""
@@ -239,15 +254,7 @@ class Order(TextProgram):
         if self.args.random_sort:
             random.shuffle(lines)
         else:
-            key_function = (
-                self.generate_currency_sort_key if self.args.currency_sort else
-                self.generate_date_sort_key if self.args.date_sort else
-                self.generate_dictionary_sort_key if self.args.dictionary_order else
-                self.generate_natural_sort_key if self.args.natural_sort else
-                self.generate_default_sort_key
-            )
-
-            lines.sort(key=key_function, reverse=self.args.reverse)
+            lines.sort(key=self.get_sort_key(), reverse=self.args.reverse)
 
         for line in text.iter_normalized_lines(lines):
             if self.args.no_blank and not line.rstrip():

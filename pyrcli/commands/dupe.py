@@ -72,7 +72,7 @@ class Dupe(TextProgram):
             self.print_error_and_exit("--field-separator requires --skip-fields")
 
     def get_compare_key(self, line: str) -> str:
-        """Return a normalized comparison key derived from the line, applying skip, trim, and case options."""
+        """Return a comparison key for ``line`` according to the configured normalization options."""
         compare_key = line
 
         if self.args.skip_whitespace:

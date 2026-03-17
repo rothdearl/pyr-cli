@@ -149,7 +149,7 @@ class Slice(TextProgram):
         for line in text.iter_normalized_lines(lines):
             fields = self.split_line(line)
 
-            # Skip blank lines unless --keep-empty-lines is enabled.
+            # Skip blank lines unless --keep-empty-lines is set.
             if not fields and not self.args.keep_empty_lines:
                 continue
 

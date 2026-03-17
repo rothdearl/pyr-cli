@@ -81,7 +81,7 @@ class CLIProgram(ABC):
 
     @final
     def print_error(self, error_message: str) -> None:
-        """Set the error flag and print ``error_message`` to standard error unless ``--no-messages`` is enabled."""
+        """Set the error flag and print ``error_message`` to standard error unless ``--no-messages`` is set."""
         self.has_errors = True
 
         # --no-messages is a Unix convention to suppress per-file diagnostics but still set the error flag.
