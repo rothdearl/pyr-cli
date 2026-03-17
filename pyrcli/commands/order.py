@@ -204,7 +204,7 @@ class Order(TextProgram):
     @override
     def handle_terminal_input(self) -> None:
         """Read and process input interactively from the terminal."""
-        self.sort_and_print_lines(sys.stdin.readlines())
+        self.sort_and_print_lines(sys.stdin.readlines())  # sort_and_print_lines requires a list for in-place sorting.
 
     def normalize_line(self, line: str) -> str:
         """Return the line with trailing whitespace removed and optional leading-blank and case normalization."""

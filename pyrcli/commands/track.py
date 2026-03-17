@@ -100,7 +100,7 @@ class Track(TextProgram):
     @override
     def handle_redirected_input(self, input_lines: Iterable[str]) -> None:
         """Process input received from redirected standard input."""
-        lines = list(input_lines)  # Materialize to a list; print_lines requires a Sequence to compute line bounds.
+        lines = list(input_lines)  # Materialize to a list; print_lines requires a Sequence to compute line start.
 
         self.print_file_header(file_name="")
         self.print_lines(lines)
@@ -109,7 +109,7 @@ class Track(TextProgram):
     def handle_terminal_input(self) -> None:
         """Read and process input interactively from the terminal."""
         while True:
-            self.print_lines(sys.stdin.readlines())
+            self.print_lines(sys.stdin.readlines())  # print_lines requires a Sequence to compute line start.
 
             # --follow on standard input is an infinite loop until Ctrl-C.
             if not self.args.follow:

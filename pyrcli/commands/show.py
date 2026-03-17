@@ -61,10 +61,21 @@ class Show(TextProgram):
 
         return parser
 
+    def get_line_range(self, lines: Sequence[str]) -> tuple[int, int]:
+        """
+        Return the start and end line numbers for printing.
+
+        - Negative ``--start`` values count from the end of ``lines``.
+        """
+        line_start = self.args.start if self.args.start > 0 else len(lines) + self.args.start + 1
+        line_end = min(len(lines), line_start + self.args.max_lines - 1)
+
+        return line_start, line_end
+
     @override
     def handle_redirected_input(self, input_lines: Iterable[str]) -> None:
         """Process input received from redirected standard input."""
-        lines = list(input_lines)  # Materialize to a list; print_lines requires a Sequence to compute line bounds.
+        lines = list(input_lines)  # Materialize to a list; print_lines requires a Sequence to compute line range.
 
         self.print_file_header(file_name="")
         self.print_lines(lines)
@@ -72,7 +83,7 @@ class Show(TextProgram):
     @override
     def handle_terminal_input(self) -> None:
         """Read and process input interactively from the terminal."""
-        self.print_lines(sys.stdin.readlines())
+        self.print_lines(sys.stdin.readlines())  # print_lines requires a Sequence to compute line range.
 
     @override
     def normalize_options(self) -> None:
@@ -88,8 +99,7 @@ class Show(TextProgram):
 
     def print_lines(self, lines: Sequence[str]) -> None:
         """Print lines to standard output, applying numbering and whitespace rendering."""
-        line_start = self.args.start if self.args.start > 0 else len(lines) + self.args.start + 1
-        line_end = min(len(lines), line_start + self.args.max_lines - 1)
+        line_start, line_end = self.get_line_range(lines)
         padding = len(str(line_end))
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):
