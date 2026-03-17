@@ -380,7 +380,7 @@ Handled automatically in `CLIProgram`:
 
 Handled additionally in `TextProgram`:
 
-- `encoding` — set to `iso-8859-1` when `--latin1` is enabled, otherwise `utf-8`
+- `encoding` — set to `iso-8859-1` when `--latin1` is set, otherwise `utf-8`
 
 ---
 
