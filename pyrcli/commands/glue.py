@@ -122,6 +122,7 @@ class Glue(TextProgram):
         """Render visible representations of tabs and end-of-line markers."""
         rendered = line
 
+        # Replace tabs before appending the end marker to preserve correct ordering.
         if self.args.show_tabs:
             if self.print_color:
                 tab_marker = (
@@ -149,13 +150,7 @@ class Glue(TextProgram):
 
     def should_suppress_blank_line(self, blank_line_count: int) -> bool:
         """Return ``True`` if a blank line should be suppressed."""
-        if self.args.no_blank:
-            return True
-
-        if self.args.squeeze_blank and blank_line_count > 1:
-            return True
-
-        return False
+        return self.args.no_blank or (self.args.squeeze_blank and blank_line_count > 1)
 
     @override
     def validate_option_ranges(self) -> None:
