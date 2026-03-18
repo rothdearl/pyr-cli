@@ -39,6 +39,21 @@ class TextProgram(CLIProgram, ABC):
         elif input_lines := sys.stdin.readlines():
             self.handle_redirected_input(input_lines)
 
+    def _process_redirected_input(self) -> list[str]:
+        """Process redirected input and return the names of successfully processed files."""
+        processed_files = []
+
+        if self.args.stdin_files:
+            processed_files.extend(self._process_text_files(iter_stdin_file_names()))
+        else:
+            self._invoke_redirected_input()
+
+        # Process any additional file arguments.
+        if self.args.files:
+            processed_files.extend(self._process_text_files(self.args.files))
+
+        return processed_files
+
     def _process_text_files(self, file_names: Iterable[str]) -> list[str]:
         """
         Process each file and return the names of successfully processed files.
@@ -56,28 +71,18 @@ class TextProgram(CLIProgram, ABC):
 
         return processed_files
 
-    def _route_redirected_input(self) -> list[str]:
-        """Process redirected input and return the names of successfully processed files."""
-        processed_files = []
-
-        if self.args.stdin_files:
-            processed_files.extend(self._process_text_files(iter_stdin_file_names()))
-        else:
-            self._invoke_redirected_input()
-
-        # Process any additional file arguments.
-        if self.args.files:
-            processed_files.extend(self._process_text_files(self.args.files))
-
-        return processed_files
-
     @final
     def execute(self) -> None:
-        """Route input sources and process them using the configured handlers."""
+        """
+        Route input using the configured handlers.
+
+        - Handles redirected standard input, file arguments, or terminal input.
+        - Always invokes ``post_execute()`` after processing completes.
+        """
         processed_files = []
 
         if stdin_is_redirected():
-            processed_files.extend(self._route_redirected_input())
+            processed_files.extend(self._process_redirected_input())
         elif self.args.files:
             processed_files.extend(self._process_text_files(self.args.files))
         else:
