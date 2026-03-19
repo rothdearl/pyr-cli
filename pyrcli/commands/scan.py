@@ -90,7 +90,7 @@ class Scan(TextProgram):
 
                 self.match_found = True
 
-                if self.print_color and not self.args.invert_match:
+                if self.use_color and not self.args.invert_match:
                     line = render.style_matches(line, patterns=self.patterns, ansi_style=_Styles.MATCH)
 
                 matches.append(_Match(line_number, line))
@@ -122,7 +122,7 @@ class Scan(TextProgram):
     @override
     def initialize_runtime_state(self) -> None:
         """
-        Initialize internal state derived from parsed options.
+        Initialize runtime state derived from parsed options.
 
         - Raises ``SystemExit(1)`` if no ``--find`` patterns are provided.
         - Compiles ``--find`` patterns.
@@ -164,7 +164,7 @@ class Scan(TextProgram):
 
             for line_number, line in matches:
                 if self.args.line_number:
-                    if self.print_color:
+                    if self.use_color:
                         print(
                             f"{_Styles.LINE_NUMBER}"
                             f"{line_number:>{padding}}"

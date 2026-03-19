@@ -118,7 +118,7 @@ class Tally(TextProgram):
     @override
     def initialize_runtime_state(self) -> None:
         """
-        Initialize internal state derived from parsed options.
+        Initialize runtime state derived from parsed options.
 
         - Defaults count flags to lines, words, and characters if none are provided.
         """
@@ -153,7 +153,7 @@ class Tally(TextProgram):
         # _Counts is iterable in field order.
         for index, count in enumerate(counts):
             if self.flags[index]:
-                if self.print_color:
+                if self.use_color:
                     print(
                         f"{count_color}"
                         f"{count:>{padding},}"
@@ -164,7 +164,7 @@ class Tally(TextProgram):
                     print(f"{count:>{padding},}", end="")
 
         if source_file:
-            if self.print_color:
+            if self.use_color:
                 print(f" {source_file_color}{source_file}{RESET}")
             else:
                 print(f" {source_file}")

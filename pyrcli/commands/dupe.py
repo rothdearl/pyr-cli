@@ -185,7 +185,7 @@ class Dupe(TextProgram):
                 if self.args.count:
                     # Only print the group count for the first line.
                     if line_index == 0:
-                        if self.print_color:
+                        if self.use_color:
                             group_count_str = (
                                 f"{_Styles.GROUP_COUNT}"
                                 f"{group_count:>{self.args.count_width},}"

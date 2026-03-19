@@ -95,7 +95,7 @@ class TextProgram(CLIProgram, ABC):
         """Return a styled ``file_name:`` header, or ``"(standard input):"`` when the file name is empty."""
         display_name = os.path.relpath(file_name) if file_name else "(standard input)"
 
-        if self.print_color:
+        if self.use_color:
             return (
                 f"{file_name_style}"
                 f"{display_name}"
@@ -118,7 +118,7 @@ class TextProgram(CLIProgram, ABC):
     @override
     def initialize_runtime_state(self) -> None:
         """
-        Initialize internal state derived from parsed options.
+        Initialize runtime state derived from parsed options.
 
         - Sets encoding to ``iso-8859-1`` when ``--latin1`` is set.
         """

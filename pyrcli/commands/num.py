@@ -122,7 +122,7 @@ class Num(TextProgram):
 
     def render_line_number(self, line: str, line_number: int, *, format_prefix: str) -> str:
         """Prefix a formatted line number to the line."""
-        if self.print_color:
+        if self.use_color:
             return (
                 f"{_Styles.LINE_NUMBER}"
                 f"{line_number:{format_prefix}{self.args.number_width}}"

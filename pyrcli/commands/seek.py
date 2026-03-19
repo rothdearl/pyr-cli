@@ -101,7 +101,7 @@ class Seek(CLIProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """Initialize internal state derived from parsed options."""
+        """Initialize runtime state derived from parsed options."""
         super().initialize_runtime_state()
 
         # Compile patterns for file matching.
@@ -185,7 +185,7 @@ class Seek(CLIProgram):
 
         self.match_found = True
 
-        if self.print_color and not self.args.invert_match:
+        if self.use_color and not self.args.invert_match:
             name_part = render.style_matches(name_part, patterns=self.name_patterns, ansi_style=_Styles.MATCH)
             path_part = render.style_matches(path_part, patterns=self.path_patterns, ansi_style=_Styles.MATCH)
 

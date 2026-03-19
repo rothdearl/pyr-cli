@@ -76,7 +76,7 @@ class Subs(TextProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """Initialize internal state derived from parsed options."""
+        """Initialize runtime state derived from parsed options."""
         super().initialize_runtime_state()
 
         # Compile search patterns into a single OR-pattern.

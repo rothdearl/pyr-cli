@@ -108,7 +108,7 @@ class Glue(TextProgram):
 
     def render_number(self, line: str) -> str:
         """Prefix a formatted line number to the line."""
-        if self.print_color:
+        if self.use_color:
             return (
                 f"{_Styles.NUMBER}"
                 f"{self.line_number:>{self.args.number_width}}"
@@ -124,7 +124,7 @@ class Glue(TextProgram):
 
         # Replace tabs before appending the end marker to preserve correct ordering.
         if self.args.show_tabs:
-            if self.print_color:
+            if self.use_color:
                 tab_marker = (
                     f"{_Styles.TAB_MARKER}"
                     f"{_Whitespace.TAB_MARKER}"
@@ -136,7 +136,7 @@ class Glue(TextProgram):
                 rendered = rendered.replace("\t", _Whitespace.TAB_MARKER)
 
         if self.args.show_ends:
-            if self.print_color:
+            if self.use_color:
                 rendered = (
                     f"{rendered}"
                     f"{_Styles.END_MARKER}"

@@ -1,4 +1,4 @@
-"""Type aliases used by the CLI framework."""
+"""Shared type aliases for CLI modules."""
 
 import re
 from collections.abc import Callable, Sequence

@@ -128,7 +128,7 @@ class Show(TextProgram):
 
     def render_ends(self, line: str) -> str:
         """Append a visible end-of-line marker to the line."""
-        if self.print_color:
+        if self.use_color:
             return (
                 f"{line}"
                 f"{_Styles.END_MARKER}"
@@ -140,7 +140,7 @@ class Show(TextProgram):
 
     def render_line_number(self, line: str, line_number: int, *, padding: int) -> str:
         """Prefix the line with a line number, right-aligned to the specified padding."""
-        if self.print_color:
+        if self.use_color:
             return (
                 f"{_Styles.LINE_NUMBER}"
                 f"{line_number:>{padding}}"
@@ -159,7 +159,7 @@ class Show(TextProgram):
         if trailing_count:
             rendered = rendered[:-trailing_count]
 
-        if self.print_color:
+        if self.use_color:
             space_marker = f"{_Styles.SPACE_MARKER}{_Whitespace.SPACE_MARKER}{RESET}"
 
             rendered = rendered.replace(" ", space_marker)
@@ -173,7 +173,7 @@ class Show(TextProgram):
 
     def render_tabs(self, line: str) -> str:
         """Replace tabs with visible markers."""
-        if self.print_color:
+        if self.use_color:
             tab_marker = (
                 f"{_Styles.TAB_MARKER}"
                 f"{_Whitespace.TAB_MARKER}"

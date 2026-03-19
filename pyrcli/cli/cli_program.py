@@ -24,7 +24,7 @@ class CLIProgram(ABC):
         error_exit_code: Exit code when an error occurs (default: ``1``).
         has_errors: Whether the program has encountered errors.
         name: Name of the program.
-        print_color: Whether color output is enabled.
+        use_color: Whether color output is enabled.
         version: Program version.
     """
 
@@ -34,7 +34,7 @@ class CLIProgram(ABC):
         self.error_exit_code: Final[int] = error_exit_code
         self.has_errors: bool = False
         self.name: Final[str] = name
-        self.print_color: bool = False
+        self.use_color: bool = False
         self.version: Final[str] = __version__
 
     def _parse_arguments(self) -> None:
@@ -42,7 +42,7 @@ class CLIProgram(ABC):
         self.args = self.build_arguments().parse_args()
 
     def _run_option_hooks(self) -> None:
-        """Run the option hooks to prepare runtime state."""
+        """Run option lifecycle steps to prepare runtime state."""
         self.check_option_dependencies()
         self.validate_option_ranges()
         self.normalize_options()
@@ -69,11 +69,11 @@ class CLIProgram(ABC):
 
     def initialize_runtime_state(self) -> None:
         """
-        Initialize internal state derived from parsed options.
+        Initialize runtime state derived from parsed options.
 
-        - Enables ``print_color`` only when ``--color=on`` and standard output is attached to a terminal.
+        - Enables ``use_color`` only when ``--color=on`` and standard output is attached to a terminal.
         """
-        self.print_color = getattr(self.args, "color", "off") == "on" and stdout_is_terminal()
+        self.use_color = getattr(self.args, "color", "off") == "on" and stdout_is_terminal()
 
     def normalize_options(self) -> None:
         """Apply derived defaults and adjust option values for consistent internal use."""
@@ -106,7 +106,7 @@ class CLIProgram(ABC):
           - ``validate_option_ranges()``
           - ``normalize_options()``
           - ``initialize_runtime_state()``
-        - Executes the command.
+        - Invokes ``execute()``.
         - Normalizes runtime errors and signals to consistent exit behavior.
         - Returns ``0`` on success.
         - Raises ``SystemExit`` with a non-zero code on failure.
