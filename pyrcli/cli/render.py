@@ -49,7 +49,7 @@ def style(text: str, *, ansi_style: str) -> str:
     return f"{ansi_style}{text}{RESET}"
 
 
-def style_pattern_matches(text: str, *, patterns: Collection[re.Pattern[str]], ansi_style: str) -> str:
+def style_matches(text: str, *, patterns: Collection[re.Pattern[str]], ansi_style: str) -> str:
     """
     Return ``text`` with pattern matches styled using ``ansi_style``.
 
@@ -82,5 +82,5 @@ __all__ = (
     "dim",
     "reverse_video",
     "style",
-    "style_pattern_matches",
+    "style_matches",
 )

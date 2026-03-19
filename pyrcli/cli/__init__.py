@@ -44,7 +44,7 @@ from .render import (
     dim,
     reverse_video,
     style,
-    style_pattern_matches,
+    style_matches,
 )
 from .reporters import (
     raises,
@@ -121,7 +121,7 @@ __all__ = (
     "dim",
     "reverse_video",
     "style",
-    "style_pattern_matches",
+    "style_matches",
 
     # reporters
     "raises",

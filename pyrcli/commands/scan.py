@@ -91,7 +91,7 @@ class Scan(TextProgram):
                 self.match_found = True
 
                 if self.print_color and not self.args.invert_match:
-                    line = render.style_pattern_matches(line, patterns=self.patterns, ansi_style=_Styles.MATCH)
+                    line = render.style_matches(line, patterns=self.patterns, ansi_style=_Styles.MATCH)
 
                 matches.append(_Match(line_number, line))
 

@@ -11,7 +11,7 @@ class TestRender(unittest.TestCase):
         text = "hello world"
         pattern = re.compile(r"hello")
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=[pattern], ansi_style=color)
+        result = render.style_matches(text, patterns=[pattern], ansi_style=color)
 
         self.assertEqual(result, f"{color}hello{ansi.RESET} world")
 
@@ -19,7 +19,7 @@ class TestRender(unittest.TestCase):
         text = "hello world"
         test_patterns = [re.compile(r"hello"), re.compile(r"world")]
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         self.assertEqual(result, f"{color}hello{ansi.RESET} {color}world{ansi.RESET}", )
 
@@ -27,7 +27,7 @@ class TestRender(unittest.TestCase):
         text = "apple"
         test_patterns = [re.compile(r"app"), re.compile(r"le")]
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         # Entire string should be colored once due to overlap.
         self.assertEqual(result, f"{color}apple{ansi.RESET}")
@@ -36,7 +36,7 @@ class TestRender(unittest.TestCase):
         text = "hello world"
         test_patterns = [re.compile(r"xyz")]
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         self.assertEqual(result, text)
 
@@ -44,7 +44,7 @@ class TestRender(unittest.TestCase):
         text = ""
         test_patterns = [re.compile(r"hello")]
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         self.assertEqual(result, "")
 
@@ -52,7 +52,7 @@ class TestRender(unittest.TestCase):
         text = "hello world"
         test_patterns = []
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         self.assertEqual(result, text)
 
@@ -60,7 +60,7 @@ class TestRender(unittest.TestCase):
         text = "aabb"
         test_patterns = [re.compile(r"a")]
         color = "\033[31m"
-        result = render.style_pattern_matches(text, patterns=test_patterns, ansi_style=color)
+        result = render.style_matches(text, patterns=test_patterns, ansi_style=color)
 
         self.assertEqual(result, f"{color}aa{ansi.RESET}bb")
 
