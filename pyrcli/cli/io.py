@@ -58,7 +58,7 @@ def open_text_files(file_names: Iterable[str], *, encoding: str, on_error: Error
     Yield an ``InputFile`` for each readable file in ``file_names``.
 
     - Each yielded ``InputFile.text_stream`` remains valid only until the next iteration.
-    - Invokes ``on_error(message)`` for file-related errors; processing continues with the next file.
+    - Calls ``on_error(message)`` for file-related errors; processing continues with the next file.
     - Reports: directory path, missing file, unknown encoding, permission denied, and other OS read errors.
     """
     for file_name in iter_normalized_lines(file_names):
@@ -83,7 +83,7 @@ def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_e
     """
     Write lines to a file, ensuring each ends with exactly one trailing newline.
 
-    - Invokes ``on_error(message)`` for file-related errors.
+    - Calls ``on_error(message)`` for file-related errors.
     - Reports: unknown encoding, permission denied, encoding failures, and other OS write errors.
     """
     try:

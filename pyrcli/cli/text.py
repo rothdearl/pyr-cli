@@ -30,7 +30,7 @@ def split_csv(text: str, *, separator: str = " ", on_error: ErrorReporter) -> li
     """
     Split ``text`` using CSV parsing rules.
 
-    - Invokes ``on_error(message)`` and falls back to whitespace splitting if the separator is invalid.
+    - Calls ``on_error(message)`` and falls back to whitespace splitting if the separator is invalid.
     - Falls back to ``str.split(separator)`` if the separator cannot be used as a CSV delimiter.
     """
     try:

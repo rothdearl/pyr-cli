@@ -403,7 +403,7 @@ Read and process input interactively from the terminal.
 - Called only when stdin is not redirected and no file arguments are provided.
 - Responsible for prompting or reading from the terminal as needed.
 
-#### `process_text_stream(self, input_file: InputFile) -> None`
+#### `process_input_file(self, input_file: InputFile) -> None`
 
 Process a single text stream.
 
@@ -484,7 +484,7 @@ parse arguments
 - Inherit from `TextProgram`
 - Implement `handle_redirected_input`
 - Implement `handle_terminal_input`
-- Implement `process_text_stream`
+- Implement `process_input_file`
 - Optionally implement `post_execute` for post-processing or summary output
 - Do not manually open text files
 - Do not override `execute`
@@ -692,7 +692,7 @@ class TextProgramDemo(TextProgram):
             print(line)
 
     @override
-    def process_text_stream(self, input_file: InputFile) -> None:
+    def process_input_file(self, input_file: InputFile) -> None:
         """Process the text stream from ``input_file``."""
         self.print_file_header(input_file.file_name)
         self.print_lines(input_file.text_stream)

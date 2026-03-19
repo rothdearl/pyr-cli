@@ -11,7 +11,7 @@ def decode_json_body(response: requests.Response, *, allowed_types: tuple[type[J
     """
     Return the decoded JSON body of ``response``.
 
-    - Invokes ``on_error(message)`` and returns ``None`` if:
+    - Calls ``on_error(message)`` and returns ``None`` if:
 
       - The body cannot be decoded as JSON.
       - The decoded value is not one of ``allowed_types``.

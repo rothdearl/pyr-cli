@@ -106,7 +106,7 @@ class CLIProgram(ABC):
           - ``validate_option_ranges()``
           - ``normalize_options()``
           - ``initialize_runtime_state()``
-        - Invokes ``execute()``.
+        - Calls ``execute()``.
         - Normalizes runtime errors and signals to consistent exit behavior.
         - Returns ``0`` on success.
         - Raises ``SystemExit`` with a non-zero code on failure.

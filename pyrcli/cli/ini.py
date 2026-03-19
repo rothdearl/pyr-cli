@@ -117,7 +117,7 @@ def load_config(path: str, *, clear_previous: bool = True, on_error: ErrorReport
     Load options from a configuration file and return ``True`` on success.
 
     - Clears previously loaded options before reading when ``clear_previous`` is ``True``.
-    - Invokes ``on_error(message)`` if the file cannot be read or parsed.
+    - Calls ``on_error(message)`` if the file cannot be read or parsed.
     - Reports: missing file, permission denied, invalid configuration file, and other OS read errors.
     - If reading fails after clearing, the configuration remains empty.
     """

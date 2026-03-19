@@ -25,7 +25,7 @@ def compile_patterns(patterns: Iterable[str], *, ignore_case: bool, on_error: Er
 
     - Skips empty pattern strings.
     - Case-insensitive when ``ignore_case`` is ``True``.
-    - Invokes ``on_error(message)`` for invalid patterns and continues.
+    - Calls ``on_error(message)`` for invalid patterns and continues.
     - Returns only successfully compiled patterns.
     """
     compiled = []

@@ -188,7 +188,7 @@ class Scan(TextProgram):
         self.print_match_results(matches, source_file=source_file)
 
     @override
-    def process_text_stream(self, input_file: InputFile) -> None:
+    def process_input_file(self, input_file: InputFile) -> None:
         """Process the text stream from ``input_file``."""
         self.print_matches(input_file.text_stream, source_file=input_file.file_name)
 

@@ -39,24 +39,9 @@ class TextProgram(CLIProgram, ABC):
         elif input_lines := sys.stdin.readlines():
             self.handle_redirected_input(input_lines)
 
-    def _process_redirected_input(self) -> list[str]:
-        """Process redirected input and return the names of successfully processed files."""
-        processed_files = []
-
-        if self.args.stdin_files:
-            processed_files.extend(self._process_text_files(iter_stdin_lines()))
-        else:
-            self._invoke_redirected_input()
-
-        # Process any additional file arguments.
-        if self.args.files:
-            processed_files.extend(self._process_text_files(self.args.files))
-
-        return processed_files
-
-    def _process_text_files(self, file_names: Iterable[str]) -> list[str]:
+    def _process_input_files(self, file_names: Iterable[str]) -> list[str]:
         """
-        Process each file and return the names of successfully processed files.
+        Process files and return the names of those successfully processed.
 
         - Skips unreadable files and reports errors via print_error().
         """
@@ -64,10 +49,25 @@ class TextProgram(CLIProgram, ABC):
 
         for input_file in open_text_files(file_names, encoding=self.encoding, on_error=self.print_error):
             try:
-                self.process_text_stream(input_file)
+                self.process_input_file(input_file)
                 processed_files.append(input_file.file_name)
             except UnicodeDecodeError:
                 self.print_error(f"{input_file.file_name!r}: unable to read with {self.encoding!r}")
+
+        return processed_files
+
+    def _process_redirected_input(self) -> list[str]:
+        """Process redirected input and return the names of successfully processed files."""
+        processed_files = []
+
+        if self.args.stdin_files:
+            processed_files.extend(self._process_input_files(iter_stdin_lines()))
+        else:
+            self._invoke_redirected_input()
+
+        # Process any additional file arguments.
+        if self.args.files:
+            processed_files.extend(self._process_input_files(self.args.files))
 
         return processed_files
 
@@ -77,14 +77,14 @@ class TextProgram(CLIProgram, ABC):
         Route input using the configured handlers.
 
         - Handles redirected standard input, file arguments, or terminal input.
-        - Always invokes ``post_execute()`` after processing completes.
+        - Always calls ``post_execute()`` after processing completes.
         """
         processed_files = []
 
         if stdin_is_redirected():
             processed_files.extend(self._process_redirected_input())
         elif self.args.files:
-            processed_files.extend(self._process_text_files(self.args.files))
+            processed_files.extend(self._process_input_files(self.args.files))
         else:
             self.handle_terminal_input()
 
@@ -131,7 +131,7 @@ class TextProgram(CLIProgram, ABC):
         pass  # Optional hook; no action by default.
 
     @abstractmethod
-    def process_text_stream(self, input_file: InputFile) -> None:
+    def process_input_file(self, input_file: InputFile) -> None:
         """Process the text stream from ``input_file``."""
         ...
 

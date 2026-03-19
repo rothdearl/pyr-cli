@@ -115,7 +115,7 @@ class Num(TextProgram):
             print(self.format_file_header(file_name, file_name_style=_Styles.FILE_NAME, colon_style=_Styles.COLON))
 
     @override
-    def process_text_stream(self, input_file: InputFile) -> None:
+    def process_input_file(self, input_file: InputFile) -> None:
         """Process the text stream from ``input_file``."""
         self.print_file_header(input_file.file_name)
         self.number_lines(input_file.text_stream)
