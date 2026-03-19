@@ -48,12 +48,12 @@ def iter_descendant_paths(root: Path, max_depth: int = sys.maxsize) -> Iterator[
             yield current_path / name
 
 
-def iter_stdin_file_names() -> Iterator[str]:
-    """Yield normalized, non-empty file names from standard input."""
+def iter_stdin_lines() -> Iterator[str]:
+    """Yield normalized, non-empty lines from standard input."""
     yield from iter_nonempty_lines(sys.stdin)
 
 
-def read_text_files(file_names: Iterable[str], *, encoding: str, on_error: ErrorReporter) -> Iterator[InputFile]:
+def open_text_files(file_names: Iterable[str], *, encoding: str, on_error: ErrorReporter) -> Iterator[InputFile]:
     """
     Yield an ``InputFile`` for each readable file in ``file_names``.
 
@@ -103,7 +103,7 @@ def write_text_file(file_name: str, *, lines: Iterable[str], encoding: str, on_e
 __all__ = (
     "InputFile",
     "iter_descendant_paths",
-    "iter_stdin_file_names",
-    "read_text_files",
+    "iter_stdin_lines",
+    "open_text_files",
     "write_text_file",
 )

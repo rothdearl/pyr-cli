@@ -28,23 +28,23 @@ class TestIO(unittest.TestCase):
             errors.append(error_message)
 
         # 1) Empty file list.
-        io.read_text_files(file_names=[], encoding="utf-8", on_error=on_error)
+        io.open_text_files(file_names=[], encoding="utf-8", on_error=on_error)
         self.assertEqual(errors, [])
 
         # 2) Valid file.
-        for file_info in io.read_text_files(file_names=[test_file_path], encoding="utf-8", on_error=on_error):
+        for file_info in io.open_text_files(file_names=[test_file_path], encoding="utf-8", on_error=on_error):
             self.assertEqual(file_info.file_name, test_file_path)
         self.assertEqual(errors, [])
 
         # 3) File error: no such file or directory.
-        for _ in io.read_text_files(file_names=["_init_.py"], encoding="utf-8", on_error=on_error):
+        for _ in io.open_text_files(file_names=["_init_.py"], encoding="utf-8", on_error=on_error):
             pass
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0], "'_init_.py': no such file or directory")
         errors.clear()
 
         # 4) File error: is a directory.
-        for _ in io.read_text_files(file_names=["__pycache__"], encoding="utf-8", on_error=on_error):
+        for _ in io.open_text_files(file_names=["__pycache__"], encoding="utf-8", on_error=on_error):
             pass
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0], "'__pycache__': is a directory")

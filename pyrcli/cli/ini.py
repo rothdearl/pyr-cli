@@ -18,7 +18,7 @@ _truthy_values: Final[frozenset[str]] = frozenset({"1", "on", "true", "y", "yes"
 
 def get_bool_option(section: str, option: str) -> bool | None:
     """
-    Return the option as a boolean value.
+    Return the option as a boolean.
 
     - Treats a missing or empty option as ``"false"``.
     - Returns ``True`` or ``False`` for recognized truthy or falsy values.
@@ -37,10 +37,10 @@ def get_bool_option(section: str, option: str) -> bool | None:
 
 def get_float_option(section: str, option: str) -> float | None:
     """
-    Return the option as a floating-point value.
+    Return the option as a float.
 
     - Treats a missing or empty option as ``"0.0"``.
-    - Returns the parsed floating-point value when conversion succeeds.
+    - Returns the parsed float when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
     value = get_str_option(section, option, fallback="0.0")
@@ -53,10 +53,10 @@ def get_float_option(section: str, option: str) -> float | None:
 
 def get_int_option(section: str, option: str) -> int | None:
     """
-    Return the option as an integer value.
+    Return the option as an integer.
 
     - Treats a missing or empty option as ``"0"``.
-    - Returns the parsed integer value when conversion succeeds.
+    - Returns the parsed integer when conversion succeeds.
     - Returns ``None`` if the value cannot be parsed.
     """
     value = get_str_option(section, option, fallback="0")
@@ -93,7 +93,7 @@ def get_mapping_option(section: str, option: str) -> dict[str, Any] | None:
 
 
 def get_str_option(section: str, option: str, *, fallback: str = "") -> str:
-    """Return the option as a string, using ``fallback`` if it is missing or empty."""
+    """Return the option as a string or ``fallback`` if missing or empty."""
     return _config.get(section, option, fallback=fallback) or fallback
 
 

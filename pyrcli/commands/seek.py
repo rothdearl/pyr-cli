@@ -83,7 +83,7 @@ class Seek(CLIProgram):
     def execute(self) -> None:
         """Execute the command using the prepared runtime state."""
         if terminal.stdin_is_redirected():
-            self.print_paths(io.iter_stdin_file_names())
+            self.print_paths(io.iter_stdin_lines())
 
             # Process any additional directories.
             if self.args.directories:

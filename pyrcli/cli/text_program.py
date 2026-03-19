@@ -9,7 +9,7 @@ from typing import final, override
 
 from .ansi import RESET
 from .cli_program import CLIProgram
-from .io import InputFile, iter_stdin_file_names, read_text_files
+from .io import InputFile, iter_stdin_lines, open_text_files
 from .terminal import stdin_is_redirected
 
 
@@ -44,7 +44,7 @@ class TextProgram(CLIProgram, ABC):
         processed_files = []
 
         if self.args.stdin_files:
-            processed_files.extend(self._process_text_files(iter_stdin_file_names()))
+            processed_files.extend(self._process_text_files(iter_stdin_lines()))
         else:
             self._invoke_redirected_input()
 
@@ -62,7 +62,7 @@ class TextProgram(CLIProgram, ABC):
         """
         processed_files = []
 
-        for input_file in read_text_files(file_names, encoding=self.encoding, on_error=self.print_error):
+        for input_file in open_text_files(file_names, encoding=self.encoding, on_error=self.print_error):
             try:
                 self.process_text_stream(input_file)
                 processed_files.append(input_file.file_name)

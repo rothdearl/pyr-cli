@@ -24,8 +24,8 @@ from .ini import (
 from .io import (
     InputFile,
     iter_descendant_paths,
-    iter_stdin_file_names,
-    read_text_files,
+    iter_stdin_lines,
+    open_text_files,
     write_text_file,
 )
 from .patterns import (
@@ -101,8 +101,8 @@ __all__ = (
     # io
     "InputFile",
     "iter_descendant_paths",
-    "iter_stdin_file_names",
-    "read_text_files",
+    "iter_stdin_lines",
+    "open_text_files",
     "write_text_file",
 
     # patterns
