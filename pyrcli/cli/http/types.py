@@ -13,7 +13,7 @@ type JsonObject = dict[str, Any]
 type JsonScalar = str | int | float | bool | None
 
 #: Any decoded JSON value.
-type JsonType = JsonArray | JsonObject | JsonScalar
+type JsonValue = JsonArray | JsonObject | JsonScalar
 
 #: String-to-string mapping for HTTP headers and similar key-value data.
 type KeyValuePairs = Mapping[str, str]
@@ -28,7 +28,7 @@ __all__ = (
     "JsonArray",
     "JsonObject",
     "JsonScalar",
-    "JsonType",
+    "JsonValue",
     "KeyValuePairs",
     "MultipartFiles",
     "QueryParameters",
