@@ -6,8 +6,8 @@ from pyrcli.cli import ErrorReporter
 from .types import JsonValue
 
 
-def decode_json_body(response: requests.Response, *, allowed_types: tuple[type[JsonValue], ...] = (dict, list),
-                     on_error: ErrorReporter) -> JsonValue | None:
+def get_json_body(response: requests.Response, *, allowed_types: tuple[type[JsonValue], ...] = (dict, list),
+                  on_error: ErrorReporter) -> JsonValue | None:
     """
     Return the decoded JSON body of ``response``.
 
@@ -26,4 +26,4 @@ def decode_json_body(response: requests.Response, *, allowed_types: tuple[type[J
     return json_value
 
 
-__all__ = ("decode_json_body",)
+__all__ = ("get_json_body",)

@@ -46,7 +46,7 @@ class Here(CLIProgram):
         """Execute the command using the prepared runtime state."""
         try:
             response = client.get(_IPINFO_URL, raise_on_error=True)
-            data = responses.decode_json_body(response, allowed_types=(dict,), on_error=reporters.raises(ValueError))
+            data = responses.get_json_body(response, allowed_types=(dict,), on_error=reporters.raises(ValueError))
 
             # Print geolocation information.
             for key in ("city", "region", "postal", "country", "timezone"):
