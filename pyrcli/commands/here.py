@@ -6,7 +6,7 @@ from typing import Final, NoReturn, override
 import requests
 
 from pyrcli.cli import CLIProgram, reporters
-from pyrcli.cli.http import JsonObject, client, responses
+from pyrcli.cli.http import JsonObject, client, json
 
 # Endpoint returning public IP geolocation data in JSON.
 _IPINFO_URL: Final[str] = "https://ipinfo.io/json"
@@ -46,7 +46,7 @@ class Here(CLIProgram):
         """Execute the command using the prepared runtime state."""
         try:
             response = client.get(_IPINFO_URL, raise_on_error=True)
-            data = responses.get_json_body(response, allowed_types=(dict,), on_error=reporters.raises(ValueError))
+            data = json.get_body(response, allowed_types=(dict,), on_error=reporters.raises(ValueError))
 
             # Print geolocation information.
             for key in ("city", "region", "postal", "country", "timezone"):

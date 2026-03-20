@@ -1,4 +1,4 @@
-"""Utilities for parsing and validating HTTP response bodies."""
+"""Utilities for reading and validating JSON response bodies."""
 
 import requests
 
@@ -6,8 +6,8 @@ from pyrcli.cli import ErrorReporter
 from .types import JsonValue
 
 
-def get_json_body(response: requests.Response, *, allowed_types: tuple[type[JsonValue], ...] = (dict, list),
-                  on_error: ErrorReporter) -> JsonValue | None:
+def get_body(response: requests.Response, *, allowed_types: tuple[type[JsonValue], ...] = (dict, list),
+             on_error: ErrorReporter) -> JsonValue | None:
     """
     Return the decoded JSON body of ``response``.
 
@@ -26,4 +26,4 @@ def get_json_body(response: requests.Response, *, allowed_types: tuple[type[Json
     return json_value
 
 
-__all__ = ("get_json_body",)
+__all__ = ("get_body",)

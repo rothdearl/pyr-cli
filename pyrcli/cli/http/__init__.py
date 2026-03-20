@@ -7,7 +7,7 @@ from .client import (
     put,
     set_timeout,
 )
-from .responses import get_json_body
+from .json import get_body
 from .types import (
     JsonArray,
     JsonObject,
@@ -27,8 +27,8 @@ __all__ = (
     "put",
     "set_timeout",
 
-    # responses
-    "get_json_body",
+    # json
+    "get_body",
 
     # types
     "JsonArray",
