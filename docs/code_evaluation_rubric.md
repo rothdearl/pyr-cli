@@ -116,6 +116,18 @@ unambiguous.
 - Avoid reassigning function parameters unless the function is very short and the intent is immediately obvious;
   instead, use local variables for transformations or intermediate values.
 
+### Module-Level Functions vs. Utility Classes
+
+Do not create a class solely to hold functions. Declare functions at module level instead; a class that carries no state
+and provides no polymorphism adds ceremony without benefit.
+
+A class is appropriate when it encapsulates state, participates in inheritance, or satisfies a protocol. A collection of
+stateless functions with no shared lifecycle belongs at module scope.
+
+An exception is a `@final` class used as a namespace for `Final` constants when grouping related constants
+meaningfully (e.g., ANSI styling constants scoped to a command). This pattern is acceptable when the grouping improves
+clarity over a flat list of module-level constants.
+
 ---
 
 ## Naming Conventions
