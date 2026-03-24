@@ -144,7 +144,7 @@ class Glue(TextProgram):
                     f"{RESET}"
                 )
             else:
-                rendered = f"{rendered}{_Whitespace.END_MARKER}"
+                rendered = rendered + _Whitespace.END_MARKER
 
         return rendered
 
