@@ -9,7 +9,7 @@ from pyrcli.cli import TextProgram, text
 from pyrcli.cli.ansi import ForegroundColors, RESET
 from pyrcli.cli.io import InputFile
 
-#: Lines sharing the same comparison key.
+#: Group of lines sharing the same comparison key.
 type _LineGroups = list[str]
 
 
@@ -83,9 +83,9 @@ class Dupe(TextProgram):
 
         if self.args.skip_fields:
             separator = self.args.field_separator or " "
+            fields = text.split_csv(compare_key, separator=separator, on_error=self.print_error_and_exit)
 
-            compare_key = text.split_csv(compare_key, separator=separator, on_error=self.print_error_and_exit)
-            compare_key = separator.join(compare_key[self.args.skip_fields:])
+            compare_key = separator.join(fields[self.args.skip_fields:])
 
         if self.args.max_chars or self.args.skip_chars:
             start_index = self.args.skip_chars or 0
@@ -136,10 +136,7 @@ class Dupe(TextProgram):
             if not self.should_include_key(key):
                 continue
 
-            if key in group_map:
-                group_map[key].append(line)
-            else:
-                group_map[key] = [line]
+            group_map.setdefault(key, []).append(line)
 
         return group_map
 
@@ -180,8 +177,6 @@ class Dupe(TextProgram):
                 print()
 
             for line_index, line in enumerate(line_group):
-                group_count_str = ""
-
                 if self.args.count:
                     # Only print the group count for the first line.
                     if line_index == 0:
@@ -197,7 +192,10 @@ class Dupe(TextProgram):
                     else:
                         group_count_str = f"{' ':>{self.args.count_width}} "  # Ensure lines align.
 
-                print(f"{group_count_str}{line}")
+                    print(f"{group_count_str}{line}")
+                else:
+                    print(line)
+
                 printed_line_count += 1
 
                 if not self.should_print_all_group_lines():
