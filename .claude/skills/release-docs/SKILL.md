@@ -3,9 +3,10 @@ name: release-docs
 description: Generate structured release notes for a Pyr-CLI patch or minor release using the project's established format and conventions.
 ---
 
-This skill is activated when the user describes a set of changes and asks for release notes, release documentation, or a
-release summary. Generate release notes based on the changes provided. Output must follow the established format and
-tone used throughout the project's release history.
+This skill is activated when the user asks for release notes, release documentation, or a release summary. Read the
+`## Unreleased` section of `CHANGELOG.md` as the primary source of changes. If the user provides additional context or
+corrections, incorporate them. Output must follow the established format and tone used throughout the project's release
+history.
 
 ---
 
@@ -109,6 +110,17 @@ new_module.new_function(...)
 
 Only include a code example when the migration requires more than a symbol substitution (e.g., a module rename that
 changes the import path, or a parameter rename that affects keyword arguments).
+
+---
+
+## After Generating Release Notes
+
+Once the user confirms the release notes are final, update `CHANGELOG.md`:
+
+1. Replace `## Unreleased` with `## <version> — <date>` (e.g., `## 1.5.0 — 2026-03-26`).
+2. Add a new empty `## Unreleased` section above it.
+
+Do not modify the release notes or entries themselves — only the heading and the reset section.
 
 ---
 

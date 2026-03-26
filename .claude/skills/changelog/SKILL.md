@@ -32,8 +32,8 @@ change.
 
 ## Changelog Entries
 
-The project has no changelog file. Changelog entries are short records of individual changes meant to accumulate into
-release notes — they are not release notes themselves. Each entry covers one logical change.
+Changelog entries accumulate in `CHANGELOG.md` under the `## Unreleased` section. They are short records of individual
+changes that feed into release notes — they are not release notes themselves. Each entry covers one logical change.
 
 ### Format
 
@@ -75,5 +75,8 @@ that.
 <module>: <entry>.
 <module>: <entry>.
 ```
+
+After presenting the entries, append them to the `## Unreleased` section of `CHANGELOG.md`. Insert each entry as a new
+bullet at the bottom of the existing list. Do not rewrite or reformat existing entries.
 
 If the changes are ambiguous, ask one focused question before generating — do not guess at intent.
