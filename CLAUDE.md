@@ -51,8 +51,8 @@ rigidity or over-abstraction.
 - Pure functions separated from I/O.
 - Weakest correct type annotations for inputs; concrete types for return values when ownership matters.
 
-The full design rubric is in `CodeEvaluationRubric-DesignGuidelines.md`. The command-line help text rubric is in
-`CommandLineHelpTextRubric.md`. Both are authoritative references for all code and documentation decisions.
+The full design rubric is in `docs/code_evaluation_rubric.md`. The command-line help text rubric is in
+`docs/help_text_rubric.md`. Both are authoritative references for all code and documentation decisions.
 
 ---
 
