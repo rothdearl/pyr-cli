@@ -3,7 +3,7 @@
 import argparse
 import sys
 import time
-from collections.abc import Collection, Iterable, Sequence
+from collections.abc import Collection, Iterable
 from threading import Thread
 from typing import Final, NoReturn, override
 
@@ -50,7 +50,7 @@ class Track(TextProgram):
         return parser
 
     @override
-    def post_execute(self, processed_files: Sequence[str]) -> None:
+    def post_execute(self, processed_files: Collection[str]) -> None:
         """Run post-execution logic after all input has been processed."""
         file_count = len(processed_files)
 

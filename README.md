@@ -437,7 +437,7 @@ post_execute() is always called after input processing completes.
 
 ## Optional Hooks
 
-### `post_execute(self, processed_files: Sequence[str]) -> None`
+### `post_execute(self, processed_files: Collection[str]) -> None`
 
 Called after all input has been processed.
 

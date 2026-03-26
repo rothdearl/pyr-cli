@@ -3,7 +3,7 @@
 import argparse
 import re
 import sys
-from collections.abc import Iterable, Sequence
+from collections.abc import Collection, Iterable
 from typing import Final, NamedTuple, NoReturn, override
 
 from pyrcli.cli import TextProgram, text
@@ -133,7 +133,7 @@ class Tally(TextProgram):
                 self.flags[index] = True
 
     @override
-    def post_execute(self, processed_files: Sequence[str]) -> None:
+    def post_execute(self, processed_files: Collection[str]) -> None:
         """Run post-execution logic after all input has been processed."""
         file_count = len(processed_files) + 1 if self.received_stdin else 0
 

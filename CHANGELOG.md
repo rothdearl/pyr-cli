@@ -21,3 +21,9 @@ versioned section when a release is cut.
 - `skills`: Updated the `release-docs` skill to read from CHANGELOG.md and reset the Unreleased section after a release.
 - `docs`: Added CHANGELOG.md with the unreleased accumulation structure, seeded with entries from the current cycle.
 - `CLAUDE.md`: Added a note to the Versioning section documenting the CHANGELOG.md unreleased accumulation workflow.
+- `show`: Changed `Sequence[str]` to `Collection[str]` in `get_line_range` and `print_lines` — neither method uses indexing or ordering, only `len()` and iteration.
+- `track`: Changed `Sequence[str]` to `Collection[str]` in `print_lines` — the method uses only `len()` and iteration.
+- `dupe`: Changed `Sequence[str]` to `Collection[str]` in the inner type of `print_line_groups` — each group is accessed only via `len()` and iteration.
+- `types`: Changed `CompiledPatterns` from `Sequence[re.Pattern[str]]` to `Collection[re.Pattern[str]]` — callers use only boolean checks and iteration, not indexing or ordering.
+- `text_program`: Changed `post_execute` parameter from `Sequence[str]` to `Collection[str]` — overrides require only `len()` and iteration.
+- `docs`: Updated `post_execute` signature in README.md to reflect the type change.

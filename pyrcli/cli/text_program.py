@@ -4,7 +4,7 @@ import io
 import os
 import sys
 from abc import ABC, abstractmethod
-from collections.abc import Iterable, Sequence
+from collections.abc import Collection, Iterable
 from typing import final, override
 
 from .ansi import RESET
@@ -132,7 +132,7 @@ class TextProgram(CLIProgram, ABC):
 
         self.encoding = "iso-8859-1" if self.args.latin1 else "utf-8"
 
-    def post_execute(self, processed_files: Sequence[str]) -> None:
+    def post_execute(self, processed_files: Collection[str]) -> None:
         """Run post-execution logic after all input processing completes."""
         pass  # Optional hook; no action by default.
 
