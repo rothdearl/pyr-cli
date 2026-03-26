@@ -1,6 +1,6 @@
 ---
-name: type-hints
-description: Review type hint usage across one or more Python modules, checking collection abstraction level, local variable annotation noise, type alias usage, and syntax currency. Use when asked to review or audit type hints or type annotations.
+name: typing
+description: Review type annotation usage across one or more Python modules, checking collection abstraction level, local variable annotation noise, type alias usage, and syntax currency. Use when asked to review or audit type hints or type annotations.
 ---
 
 This skill is activated when the user provides one or more Python module paths and asks for a type hint review, type
