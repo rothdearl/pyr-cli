@@ -113,6 +113,13 @@ changes the import path, or a parameter rename that affects keyword arguments).
 
 ---
 
+## Output
+
+Write the release notes to `RELEASE.md` in the project root, overwriting any existing file. Do not print the release
+notes to the conversation — confirm to the user that `RELEASE.md` has been written.
+
+---
+
 ## After Generating Release Notes
 
 Once the user confirms the release notes are final, update `CHANGELOG.md`:
