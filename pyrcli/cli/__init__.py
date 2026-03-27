@@ -9,6 +9,10 @@ from .ansi import (
     TextAttributes,
 )
 from .cli_program import CLIProgram
+from .env import (
+    get_env_str,
+    get_required_env_str,
+)
 from .ini import (
     get_bool_option,
     get_float_option,
@@ -85,6 +89,10 @@ __all__ = (
     # base classes
     "CLIProgram",
     "TextProgram",
+
+    # env
+    "get_env_str",
+    "get_required_env_str",
 
     # ini
     "get_bool_option",

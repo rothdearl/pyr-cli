@@ -27,3 +27,7 @@ versioned section when a release is cut.
 - `types`: Changed `CompiledPatterns` from `Sequence[re.Pattern[str]]` to `Collection[re.Pattern[str]]` — callers use only boolean checks and iteration, not indexing or ordering.
 - `text_program`: Changed `post_execute` parameter from `Sequence[str]` to `Collection[str]` — overrides require only `len()` and iteration.
 - `docs`: Updated `post_execute` signature in README.md to reflect the type change.
+- `docs`: Corrected the `pyrcli.cli.http` module listing in README.md — renamed `responses` to `json`.
+- `docs`: Corrected the `initialize_runtime_state` section in README.md — renamed `print_color` to `use_color`.
+- `env`: Added `get_env_str` and `get_required_env_str` for reading environment variables with optional whitespace trimming.
+- `tests`: Added `test_env.py` with full coverage of the env module.
