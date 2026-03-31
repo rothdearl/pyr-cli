@@ -10,6 +10,8 @@ versioned section when a release is cut.
 - `env`: Improved docstrings for `get_env_str` and `get_required_env_str` to more accurately describe trim behavior.
 - `docs`: Updated multi-line docstrings across `pyrcli.cli` and `pyrcli.cli.progress` to conform to PEP 257 — summary line now starts on the same line as the opening `"""`.
 - `client`: Removed redundant `accept` default documentation from `delete`, `get`, `post`, and `put`; simplified `set_timeout` docstring.
+- `config`: Added `.claude/settings.json` to configure Claude Code tool permissions for the project.
+- `config`: Added `git diff --staged` allow rules to `.claude/settings.json` to suppress permission prompts from the changelog skill.
 
 ---
 

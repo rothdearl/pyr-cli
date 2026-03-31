@@ -4,10 +4,6 @@
         "allow": [
             "Bash(git -C * diff --staged*)",
             "Bash(git diff --staged*)",
-            "Bash(npm run compile)",
-            "Bash(npm run lint)",
-            "Bash(npm run test:report)",
-            "Bash(npm run test*)",
             "WebFetch",
             "WebSearch"
         ],
