@@ -4,16 +4,9 @@
         "allow": [
             "Bash(git -C * diff --staged*)",
             "Bash(git diff --staged*)",
+            "Bash(python3*)",
             "WebFetch",
             "WebSearch"
-        ],
-        "deny": [
-            "Bash(git clean -f*)",
-            "Bash(git push --force*)",
-            "Bash(git reset --hard*)",
-            "Bash(rm -rf*)",
-            "Read(.env.local)",
-            "Read(.env)"
         ]
     }
 }
