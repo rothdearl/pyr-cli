@@ -1,4 +1,4 @@
-# Python Code Evaluation Rubric and Design Guidelines
+# Python Code Evaluation Rubric
 
 The following criteria define the expected design and review standards for modern, idiomatic, and maintainable Python
 code. This rubric reflects preferred design principles and trade-offs, not an exhaustive list of universal Python
