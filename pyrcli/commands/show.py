@@ -46,7 +46,7 @@ class Show(TextProgram):
                             metavar="N", type=int)
         parser.add_argument("-l", "--max-lines", default=sys.maxsize, help="print first N lines (N >= 1)", metavar="N",
                             type=int)
-        parser.add_argument("-n", "--line-numbers", action="store_true", help="number lines")
+        parser.add_argument("-n", "--line-numbers", action="store_true", help="number all lines")
         parser.add_argument("--ends", action="store_true",
                             help=f"display '{_Whitespace.END_MARKER}' at end of each line")
         parser.add_argument("--spaces", action="store_true",

@@ -19,6 +19,13 @@ versioned section when a release is cut.
 - `CLAUDE.md`: Revised import policy to follow the Google Python Style Guide — utility modules imported as modules; classes, type aliases, and constants imported by name.
 - `rubric`: Revised import policy section to distinguish utility module imports from direct name imports for types and constants, with a usage-based evaluator heuristic.
 - `__about__`: Updated `_get_version` docstring to document the ``"0+unknown"`` fallback when the package is not installed.
+- `emit`: Fixed `--stdin-after` description ("read from standard input" replacing "process standard input") and moved `--no-newline` after the processing options.
+- `glue`: Clarified `--number` as "number all lines", `--no-blank` as "suppress all blank lines", and added missing article to `--show-ends` description.
+- `num`: Clarified `--no-blank` as "suppress all blank lines".
+- `order`: Clarified `--no-blank` as "suppress all blank lines".
+- `scan`: Fixed `--stdin-files` description to match project convention ("read FILES from standard input (one per line)").
+- `seek`: Updated epilog to match project convention ("search the current directory when no DIRECTORIES are specified").
+- `show`: Clarified `--line-numbers` as "number all lines".
 
 ---
 

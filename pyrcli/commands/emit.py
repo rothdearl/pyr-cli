@@ -25,11 +25,11 @@ class Emit(CLIProgram):
         parser.add_argument("strings", help="strings to write", metavar="STRINGS", nargs="*")
         parser.add_argument("--stdin", action="store_true", help="read from standard input")
         parser.add_argument("--stdin-after", action="store_true",
-                            help="process standard input after STRINGS (requires --stdin)")
-        parser.add_argument("-n", "--no-newline", action="store_true", help="suppress trailing newline")
+                            help="read from standard input after STRINGS (requires --stdin)")
         parser.add_argument("-e", "--escapes", action="store_true", help="interpret backslash escape sequences")
         parser.add_argument("-s", "--strict-escapes", action="store_true",
                             help="fail on invalid escape sequences (requires --escapes)")
+        parser.add_argument("-n", "--no-newline", action="store_true", help="suppress trailing newline")
         parser.add_argument("--version", action="version", version=f"%(prog)s {self.version}")
 
         return parser

@@ -49,7 +49,7 @@ class Num(TextProgram):
         parser.add_argument("--number-separator", default="\t",
                             help="separate line numbers and output lines with SEP (default: <tab>)", metavar="SEP")
         blank_group.add_argument("-s", "--squeeze-blank", action="store_true", help="suppress repeated blank lines")
-        blank_group.add_argument("--no-blank", action="store_true", help="suppress blank lines")
+        blank_group.add_argument("--no-blank", action="store_true", help="suppress all blank lines")
         parser.add_argument("-H", "--no-file-name", action="store_true", help="suppress file name prefixes")
         parser.add_argument("--color", choices=("on", "off"), default="on",
                             help="use color for file names and line numbers (default: on)")

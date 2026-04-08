@@ -67,8 +67,7 @@ class Scan(TextProgram):
         parser.add_argument("--color", choices=("on", "off"), default="on",
                             help="use color for file names, matches, and line numbers (default: on)")
         parser.add_argument("--latin1", action="store_true", help="read FILES as latin-1 (default: utf-8)")
-        parser.add_argument("--stdin-files", action="store_true",
-                            help="treat standard input as a list of FILES (one per line)")
+        parser.add_argument("--stdin-files", action="store_true", help="read FILES from standard input (one per line)")
         parser.add_argument("--version", action="version", version=f"%(prog)s {self.version}")
 
         return parser

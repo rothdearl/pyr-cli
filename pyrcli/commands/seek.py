@@ -42,7 +42,7 @@ class Seek(CLIProgram):
     def build_arguments(self) -> argparse.ArgumentParser:
         """Return an argument parser describing the command-line interface."""
         parser = argparse.ArgumentParser(allow_abbrev=False, description="search for files in a directory hierarchy",
-                                         epilog="use the current directory as the default starting point",
+                                         epilog="search the current directory when no DIRECTORIES are specified",
                                          prog=self.name)
         modified_group = parser.add_mutually_exclusive_group()
 

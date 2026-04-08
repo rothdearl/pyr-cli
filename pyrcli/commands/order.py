@@ -67,7 +67,7 @@ class Order(TextProgram):
                             help="split lines into fields using SEP (default: <space>; requires --skip-fields)",
                             metavar="SEP")
         parser.add_argument("-r", "--reverse", action="store_true", help="reverse the order of the sort")
-        parser.add_argument("--no-blank", action="store_true", help="suppress blank lines")
+        parser.add_argument("--no-blank", action="store_true", help="suppress all blank lines")
         parser.add_argument("-H", "--no-file-name", action="store_true", help="suppress file name prefixes")
         parser.add_argument("--color", choices=("on", "off"), default="on",
                             help="use color for file names (default: on)")

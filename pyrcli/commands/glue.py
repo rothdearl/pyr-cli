@@ -47,13 +47,13 @@ class Glue(TextProgram):
 
         parser.add_argument("files", help="read from FILES", metavar="FILES", nargs="*")
         number_group.add_argument("-b", "--number-nonblank", action="store_true", help="number nonblank lines")
-        number_group.add_argument("-n", "--number", action="store_true", help="number lines")
+        number_group.add_argument("-n", "--number", action="store_true", help="number all lines")
         parser.add_argument("--number-width", default=6, help="pad line numbers to width N (default: 6; N >= 1)",
                             metavar="N", type=int)
         blank_group.add_argument("-s", "--squeeze-blank", action="store_true", help="suppress repeated blank lines")
-        blank_group.add_argument("--no-blank", action="store_true", help="suppress blank lines")
+        blank_group.add_argument("--no-blank", action="store_true", help="suppress all blank lines")
         parser.add_argument("-E", "--show-ends", action="store_true",
-                            help=f"display '{_Whitespace.END_MARKER}' at end of each line")
+                            help=f"display '{_Whitespace.END_MARKER}' at the end of each line")
         parser.add_argument("-T", "--show-tabs", action="store_true",
                             help=f"display tab characters as '{_Whitespace.TAB_MARKER}'")
         parser.add_argument("--color", choices=("on", "off"), default="on",
