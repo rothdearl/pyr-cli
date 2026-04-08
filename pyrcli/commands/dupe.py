@@ -9,7 +9,7 @@ from pyrcli.cli import TextProgram, text
 from pyrcli.cli.ansi import ForegroundColors, RESET
 from pyrcli.cli.io import InputFile
 
-#: Group of lines sharing the same comparison key.
+# Group of lines sharing the same comparison key.
 type _LineGroups = list[str]
 
 

@@ -5,7 +5,7 @@ from collections.abc import Collection
 
 from .ansi import RESET, TextAttributes
 
-#: Start and end character position pair representing a match range.
+# Start and end character position pair representing a match range.
 type _MatchRange = tuple[int, int]
 
 

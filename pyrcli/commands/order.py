@@ -23,10 +23,10 @@ _DIGIT_TOKEN_REGEX: Final[str] = r"(\d+)"
 # Matches one or more consecutive characters that are not Unicode word characters or whitespace.
 _NON_WORD_OR_WHITESPACE_REGEX: Final[str] = r"[^\w\s]+"
 
-#: Sort key segment where ``0`` indicates a parsed date and ``1`` indicates a text fallback.
+# Sort key segment where ``0`` indicates a parsed date and ``1`` indicates a text fallback.
 type _DateSortSegment = tuple[int, datetime.datetime | str]
 
-#: Sort key segment where ``0`` indicates a numeric value and ``1`` indicates a text fallback.
+# Sort key segment where ``0`` indicates a numeric value and ``1`` indicates a text fallback.
 type _NumericSortSegment = tuple[int, float | str]
 
 

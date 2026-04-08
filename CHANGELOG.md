@@ -13,6 +13,9 @@ versioned section when a release is cut.
 - `config`: Added `.claude/settings.json` to configure Claude Code tool permissions for the project.
 - `config`: Added `git diff --staged` allow rules to `.claude/settings.json` to suppress permission prompts from the changelog skill.
 - `rubric`: Simplified the title of `code_evaluation_rubric.md` from "Python Code Evaluation Rubric and Design Guidelines" to "Python Code Evaluation Rubric".
+- `render`: Changed `#:` comment on `_MatchRange` to `#` — Sphinx-style attribute docs have no effect on private symbols.
+- `dupe`: Changed `#:` comment on `_LineGroups` to `#` — Sphinx-style attribute docs have no effect on private symbols.
+- `order`: Changed `#:` comments on `_DateSortSegment` and `_NumericSortSegment` to `#` — Sphinx-style attribute docs have no effect on private symbols.
 
 ---
 
