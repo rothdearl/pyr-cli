@@ -16,6 +16,9 @@ versioned section when a release is cut.
 - `render`: Changed `#:` comment on `_MatchRange` to `#` — Sphinx-style attribute docs have no effect on private symbols.
 - `dupe`: Changed `#:` comment on `_LineGroups` to `#` — Sphinx-style attribute docs have no effect on private symbols.
 - `order`: Changed `#:` comments on `_DateSortSegment` and `_NumericSortSegment` to `#` — Sphinx-style attribute docs have no effect on private symbols.
+- `CLAUDE.md`: Revised import policy to follow the Google Python Style Guide — utility modules imported as modules; classes, type aliases, and constants imported by name.
+- `rubric`: Revised import policy section to distinguish utility module imports from direct name imports for types and constants, with a usage-based evaluator heuristic.
+- `__about__`: Updated `_get_version` docstring to document the ``"0+unknown"`` fallback when the package is not installed.
 
 ---
 
