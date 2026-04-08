@@ -67,19 +67,34 @@ The full design rubric is in `docs/code_evaluation_rubric.md`. The command-line 
 
 ## Import Policy
 
-- Use **relative imports** within the same package.
-- Import **names directly** for functions, classes, type aliases, and `Final` constants — they are stable and will not
-  be rebound:
+Follow the Google Python Style Guide: import utility modules as modules and call functions with their module prefix.
+This makes the origin of every call visible at the call site without reading the import block.
+
+- Import **utility modules** as modules and call functions with the module prefix:
 
 ``` python
-from .io import InputFile, open_text_files
-from .platform import IS_POSIX
+from pyrcli.cli import io, patterns, render, terminal, text
 ```
 
-- Import the **module itself** only for mutable shared state (e.g., `from . import context`) so attribute access
-  reflects the current value at call time.
-- The one example of shared mutable state in this project is `_config` in `ini.py` — it must be accessed via the module,
-  never imported directly.
+- Import **names directly** for classes, type aliases, and `Final` constants — not for functions. These names are
+  self-identifying and do not benefit from a module prefix:
+    - **Classes used as type annotations** (e.g., `from pyrcli.cli.io import InputFile`) — `input_file: InputFile` reads
+      more naturally than `input_file: io.InputFile`.
+    - **Namespace or enum-like constant classes** (e.g., `from pyrcli.cli.ansi import ForegroundColors`) —
+      `ForegroundColors.BRIGHT_CYAN` already communicates the domain; a module prefix adds a redundant third level.
+    - **Standalone constants** (e.g., `from pyrcli.cli.ansi import RESET`, `from pyrcli.cli.platform import IS_POSIX`) —
+      short, unambiguous names used inline.
+
+- Import **mutable shared state** via the module so attribute access reflects the current value at call time. The one
+  example in this project is `_config` in `ini.py` — it must be accessed via the module, never imported directly.
+
+- **Intra-package imports within `pyrcli/cli/`**: framework modules import sibling names directly using relative imports
+  to avoid circular dependencies:
+
+``` python
+from .terminal import stdin_is_redirected
+from .io import InputFile, open_text_files
+```
 
 ---
 

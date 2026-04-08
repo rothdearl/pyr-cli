@@ -50,12 +50,23 @@ typing and data modeling, and concluding with documentation and style.
 
 - Use relative imports for modules within the same package.
 
+- Follow the Google Python Style Guide: import utility modules as modules and call functions with the module prefix
+  (e.g., `from pyrcli.cli import io` then `io.write_text_file(...)`). This makes the origin of every call visible at
+  the call site without consulting the import block.
+
+- Import names directly for classes, type aliases, and `Final` constants — not for functions. These names are
+  self-identifying and do not benefit from a module prefix:
+    - Classes used as type annotations (e.g., `from pyrcli.cli.io import InputFile`) — annotations conventionally use
+      bare names, and `input_file: InputFile` reads more naturally than `input_file: io.InputFile`.
+    - Namespace or enum-like constant classes (e.g., `from pyrcli.cli.ansi import ForegroundColors`) —
+      `ForegroundColors.BRIGHT_CYAN` already communicates the domain; adding a module prefix creates a redundant third
+      level of access.
+    - Standalone constants (e.g., `from pyrcli.cli.ansi import RESET`, `from pyrcli.cli.platform import IS_POSIX`) —
+      short, unambiguous names used inline.
+
 - When accessing or mutating shared runtime state, import the module itself (e.g., `from . import context`) and read
   attributes from the module namespace at use time. This preserves semantic correctness by ensuring the current value
   is observed and avoiding stale bindings.
-
-- Import names directly (e.g., `from .auth import fetch_access_token_header`) for functions, classes, type aliases,
-  and semantically constant values that are not expected to be rebound.
 
 - Do not import mutable module variables directly (e.g., `from .context import hostname`). Direct name imports of
   mutable module state create local bindings that will not reflect subsequent updates to the module attribute.
@@ -67,9 +78,10 @@ typing and data modeling, and concluding with documentation and style.
     - Reduce import-time side effects
     - Defer an expensive or optional dependency
 
-- **Evaluator Heuristic:** If a value is intended to reflect shared, evolving module state, importing the module and
-  accessing the attribute dynamically is the correct semantic model. If importing a name would make the binding
-  incorrect after mutation, the import form is a design flaw.
+- **Evaluator Heuristic:** The correct import form is determined by how the name is used. If it is called like a
+  function, import its module and use the module prefix. If it is used as a type, constant, or namespace, import the
+  name directly. If a value is intended to reflect shared, evolving module state, importing the module and accessing
+  the attribute dynamically is the correct semantic model.
 
 ---
 

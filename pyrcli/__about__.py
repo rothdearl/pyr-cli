@@ -5,7 +5,7 @@ from typing import Final
 
 
 def _get_version() -> str:
-    """Return the installed distribution version for pyr-cli."""
+    """Return the installed distribution version for pyr-cli, or ``"0+unknown"`` if the package is not installed."""
     try:
         return version("pyr-cli")
     except PackageNotFoundError:
