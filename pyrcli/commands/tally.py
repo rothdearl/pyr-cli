@@ -30,8 +30,7 @@ class _Styles:
 
 
 class Tally(TextProgram):
-    """
-    Command implementation for counting lines, words, and characters in files.
+    """Command implementation for counting lines, words, and characters in files.
 
     Attributes:
         flags: Flags for determining if a count attribute will be printed.
@@ -117,8 +116,7 @@ class Tally(TextProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """
-        Initialize runtime state derived from parsed options.
+        """Initialize runtime state derived from parsed options.
 
         - Defaults count flags to lines, words, and characters if none are provided.
         """

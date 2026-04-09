@@ -89,8 +89,7 @@ class Order(TextProgram):
             self.print_error_and_exit("--decimal-comma requires --currency-sort or --natural-sort")
 
     def generate_currency_sort_key(self, line: str) -> list[_NumericSortSegment]:
-        """
-        Return a sort key that orders currency-like values numerically when possible.
+        """Return a sort key that orders currency-like values numerically when possible.
 
         - Returns a list of tuples used for comparison.
         - Each tuple is ``(0, number)`` when the text parses as a number.
@@ -110,8 +109,7 @@ class Order(TextProgram):
         return segments
 
     def generate_date_sort_key(self, line: str) -> list[_DateSortSegment]:
-        """
-        Return a sort key that orders date-like values chronologically when possible.
+        """Return a sort key that orders date-like values chronologically when possible.
 
         - Returns a list of tuples used for comparison.
         - Each tuple is ``(0, date)`` when the text parses as a date.
@@ -142,8 +140,7 @@ class Order(TextProgram):
         return sort_fields
 
     def generate_natural_sort_key(self, line: str) -> list[_NumericSortSegment]:
-        """
-        Return a sort key that orders text lexicographically and numbers numerically when possible.
+        """Return a sort key that orders text lexicographically and numbers numerically when possible.
 
         - Returns a list of tuples used for comparison.
         - Each tuple is ``(0, number)`` when the text parses as a number.

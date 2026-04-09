@@ -59,8 +59,7 @@ class Track(TextProgram):
                 thread.join()
 
     def follow_file(self, file_name: str, print_file_name_on_update: bool) -> None:
-        """
-        Continuously poll ``file_name`` and print lines appended since the previous read.
+        """Continuously poll ``file_name`` and print lines appended since the previous read.
 
         - The entire file is re-read on each poll; only newly appended lines are printed.
         """

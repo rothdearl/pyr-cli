@@ -2,7 +2,7 @@ import os
 import unittest
 from typing import final
 
-from pyrcli.cli import ini
+from pyrcli.cli import ini, reporters
 
 
 @final
@@ -11,11 +11,11 @@ class TestINI(unittest.TestCase):
 
     def test_read(self) -> None:
         # File does not exist.
-        self.assertFalse(ini.load_config("", clear_previous=False, on_error=print))
+        self.assertFalse(ini.load_config("", clear_previous=False, on_error=reporters.suppress))
 
         # File is invalid.
-        self.assertFalse(
-            ini.load_config(os.path.join("test_data", "invalid-ini-file.ini"), clear_previous=False, on_error=print))
+        self.assertFalse(ini.load_config(os.path.join("test_data", "invalid-ini-file.ini"), clear_previous=False,
+                                         on_error=reporters.suppress))
 
         # No options.
         self.assertTrue(ini.is_empty())
@@ -23,8 +23,8 @@ class TestINI(unittest.TestCase):
         self.assertFalse(ini.has_sections())
 
         # Valid file with options.
-        self.assertTrue(
-            ini.load_config(os.path.join("test_data", "valid-ini-file.ini"), clear_previous=True, on_error=print))
+        self.assertTrue(ini.load_config(os.path.join("test_data", "valid-ini-file.ini"), clear_previous=True,
+                                        on_error=reporters.suppress))
 
         # Has options.
         self.assertFalse(ini.is_empty())

@@ -13,6 +13,12 @@ versioned section when a release is cut.
 - `progress_bar`: Added missing `@override` to `_render_final`.
 - `spinner`: Added missing `@override` to `__post_init__` and `_render_final`.
 - `text_program`: Added missing `@override` to `execute`.
+- `seek`: Added `mtime_threshold` instance attribute; hoisted mtime option conversion from per-path logic into `initialize_runtime_state` to avoid repeated argument access per path.
+- `seek`: Renamed `path_matches_filters` to `check_path_filters` — the method calls `print_error()` on `PermissionError`, which disqualifies it as a pure predicate.
+- `seek`: Expanded `check_path_filters`, `print_path`, and `print_paths` docstrings with missing behavioral contracts.
+- `glue`, `order`, `scan`, `seek`, `show`, `slice`, `subs`, `tally`, `track`: Fixed multi-line docstrings where the summary was placed on its own line rather than on the opening `"""` line.
+- `here`: Added `assert isinstance(data, dict)` narrowing hint after `json.get_body()` — guaranteed by `allowed_types=(dict,)`, required to satisfy the type checker.
+- `test_ini`: Replaced `print` with `reporters.suppress` as the `on_error` callback in `load_config` test calls.
 
 ---
 

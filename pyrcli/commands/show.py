@@ -62,8 +62,7 @@ class Show(TextProgram):
         return parser
 
     def get_line_range(self, lines: Collection[str]) -> tuple[int, int]:
-        """
-        Return the start and end line numbers for printing.
+        """Return the start and end line numbers for printing.
 
         - Negative ``--start`` values count from the end of ``lines``.
         """

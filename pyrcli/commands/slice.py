@@ -17,8 +17,7 @@ class _Styles:
 
 
 class Slice(TextProgram):
-    """
-    Command implementation for splitting lines in files into fields.
+    """Command implementation for splitting lines in files into fields.
 
     Attributes:
         selected_fields: Zero-based field indices to print.

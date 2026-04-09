@@ -28,8 +28,7 @@ class _Styles:
 
 
 class Scan(TextProgram):
-    """
-    Command implementation for printing lines matching patterns in files.
+    """Command implementation for printing lines matching patterns in files.
 
     Attributes:
         match_found: Whether any match was found.
@@ -73,8 +72,7 @@ class Scan(TextProgram):
         return parser
 
     def collect_matches(self, lines: Iterable[str]) -> list[_Match]:
-        """
-        Return matched lines with line numbers for the configured patterns.
+        """Return matched lines with line numbers for the configured patterns.
 
         - Applies match styling when color is enabled and ``--invert-match`` is not set.
         - Raises ``SystemExit(0)`` immediately when ``--quiet`` is set and a match is found.
@@ -120,8 +118,7 @@ class Scan(TextProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """
-        Initialize runtime state derived from parsed options.
+        """Initialize runtime state derived from parsed options.
 
         - Raises ``SystemExit(1)`` if no ``--find`` patterns are provided.
         - Compiles ``--find`` patterns.

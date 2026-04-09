@@ -18,8 +18,7 @@ class _Styles:
 
 
 class Subs(TextProgram):
-    """
-    Command implementation for replacing matching text in files.
+    """Command implementation for replacing matching text in files.
 
     Attributes:
         pattern: Compiled pattern to match.
@@ -76,8 +75,7 @@ class Subs(TextProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """
-        Initialize runtime state derived from parsed options.
+        """Initialize runtime state derived from parsed options.
 
         - Compiles ``--find`` patterns into a single OR-pattern.
         """
@@ -88,8 +86,7 @@ class Subs(TextProgram):
             self.pattern = patterns.compile_or_pattern(compiled, ignore_case=self.args.ignore_case)
 
     def iter_replaced_lines(self, lines: Iterable[str]) -> Iterator[str]:
-        """
-        Yield lines with matches replaced.
+        """Yield lines with matches replaced.
 
         - Yields lines unchanged when no pattern is compiled.
         """

@@ -21,11 +21,11 @@ class _Styles:
 
 
 class Seek(CLIProgram):
-    """
-    Command implementation for searching for files in a directory hierarchy.
+    """Command implementation for searching for files in a directory hierarchy.
 
     Attributes:
         match_found: Whether any match was found.
+        mtime_threshold: Modification time threshold in seconds (``None`` when no ``--mtime-*`` option is set).
         name_patterns: Compiled name patterns to match.
         path_patterns: Compiled path patterns to match.
     """
@@ -35,6 +35,7 @@ class Seek(CLIProgram):
         super().__init__(name="seek", error_exit_code=2)
 
         self.match_found: bool = False
+        self.mtime_threshold: int | None = None
         self.name_patterns: CompiledPatterns = []
         self.path_patterns: CompiledPatterns = []
 
@@ -79,6 +80,43 @@ class Seek(CLIProgram):
 
         return parser
 
+    def check_path_filters(self, path: Path) -> bool:
+        """Return ``True`` if the path matches all enabled filters.
+
+        - Calls ``print_error()`` and returns ``False`` on ``PermissionError``.
+        """
+        try:
+            if self.args.type:
+                is_dir = path.is_dir()
+
+                if self.args.type == "d" and not is_dir:
+                    return False
+
+                if self.args.type == "f" and is_dir:
+                    return False
+
+            if self.args.empty_only:
+                if path.is_dir():
+                    if os.listdir(path):
+                        return False
+                else:
+                    if path.lstat().st_size:
+                        return False
+
+            if self.mtime_threshold is not None:
+                age_seconds = time.time() - path.lstat().st_mtime
+
+                if self.mtime_threshold < 0:
+                    return age_seconds < abs(self.mtime_threshold)
+
+                return age_seconds > self.mtime_threshold
+        except PermissionError:
+            self.print_error(f"{path!r}: permission denied")
+            return False
+
+        # All active filters passed.
+        return True
+
     @override
     def execute(self) -> None:
         """Execute the command using the prepared runtime state."""
@@ -101,12 +139,21 @@ class Seek(CLIProgram):
 
     @override
     def initialize_runtime_state(self) -> None:
-        """
-        Initialize runtime state derived from parsed options.
+        """Initialize runtime state derived from parsed options.
 
+        - Converts any provided ``--mtime-*`` option to ``mtime_threshold`` in seconds.
         - Compiles ``--name`` and ``--path`` patterns when provided.
         """
         super().initialize_runtime_state()
+
+        # --mtime options are mutually exclusive; only one may be provided.
+        if self.args.mtime_days or self.args.mtime_hours or self.args.mtime_mins:
+            if self.args.mtime_days is not None:
+                self.mtime_threshold = self.args.mtime_days * 86400
+            elif self.args.mtime_hours is not None:
+                self.mtime_threshold = self.args.mtime_hours * 3600
+            else:
+                self.mtime_threshold = self.args.mtime_mins * 60
 
         if self.args.name:
             self.name_patterns = patterns.compile_patterns(self.args.name, ignore_case=self.args.ignore_case,
@@ -115,48 +162,6 @@ class Seek(CLIProgram):
         if self.args.path:
             self.path_patterns = patterns.compile_patterns(self.args.path, ignore_case=self.args.ignore_case,
                                                            on_error=self.print_error_and_exit)
-
-    def path_matches_filters(self, path: Path) -> bool:
-        """Return ``True`` if the path matches all enabled filters."""
-        try:
-            if self.args.type:
-                is_dir = path.is_dir()
-
-                if self.args.type == "d" and not is_dir:
-                    return False
-
-                if self.args.type == "f" and is_dir:
-                    return False
-
-            if self.args.empty_only:
-                if path.is_dir():
-                    if os.listdir(path):
-                        return False
-                else:
-                    if path.lstat().st_size:
-                        return False
-
-            # --mtime options are mutually exclusive; only one may be provided.
-            if self.args.mtime_days or self.args.mtime_hours or self.args.mtime_mins:
-                if self.args.mtime_days is not None:
-                    threshold_seconds = self.args.mtime_days * 86400
-                elif self.args.mtime_hours is not None:
-                    threshold_seconds = self.args.mtime_hours * 3600
-                else:
-                    threshold_seconds = self.args.mtime_mins * 60
-
-                age_seconds = time.time() - path.lstat().st_mtime
-
-                if threshold_seconds < 0:
-                    return age_seconds < abs(threshold_seconds)
-
-                return age_seconds > threshold_seconds
-        except PermissionError:
-            self.print_error(f"{path!r}: permission denied")
-            return False
-
-        # All active filters passed.
-        return True
 
     def path_matches_patterns(self, name_part: str, path_part: str) -> bool:
         """Return ``True`` if the ``name_part`` and ``path_part`` match all provided name and path patterns."""
@@ -169,7 +174,11 @@ class Seek(CLIProgram):
         return True
 
     def print_path(self, path: Path) -> None:
-        """Print the path if it matches the specified search criteria."""
+        """Print the path if it matches the specified search criteria.
+
+        - Sets ``match_found`` to ``True`` when a match is printed.
+        - Raises ``SystemExit(0)`` when ``--quiet`` is set and a match is found.
+        """
         is_current_directory = path.name == ""
         name_part = path.name or os.curdir  # The current directory has no name component.
         path_part = str(path.parent) if len(path.parts) > 1 else ""  # Do not include '.' in the path part.
@@ -178,7 +187,7 @@ class Seek(CLIProgram):
         if is_current_directory and not self.args.dot_prefix:
             return
 
-        matches = self.path_matches_patterns(name_part, path_part) and self.path_matches_filters(path)
+        matches = self.path_matches_patterns(name_part, path_part) and self.check_path_filters(path)
 
         if matches == self.args.invert_match:
             return
@@ -212,7 +221,10 @@ class Seek(CLIProgram):
         print(display_path)
 
     def print_paths(self, directories: Iterable[str]) -> None:
-        """Traverse starting directories up to ``--max-depth`` and print matching paths."""
+        """Traverse starting directories up to ``--max-depth`` and print matching paths.
+
+        - Calls ``print_error()`` for missing or inaccessible directories; processing continues with the next directory.
+        """
         for directory in text.iter_normalized_lines(directories):
             if os.path.exists(directory):
                 root = Path(directory)

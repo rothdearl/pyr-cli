@@ -48,6 +48,8 @@ class Here(CLIProgram):
             response = client.get(_IPINFO_URL, raise_on_error=True)
             data = json.get_body(response, allowed_types=(dict,), on_error=reporters.raises(ValueError))
 
+            assert isinstance(data, dict)  # Narrowing hint; guaranteed by allowed_types=(dict,).
+
             # Print geolocation information.
             for key in ("city", "region", "postal", "country", "timezone"):
                 print(f"{key}: {self.get_json_value(data=data, key=key)}")

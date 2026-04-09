@@ -24,8 +24,7 @@ class _Whitespace:
 
 
 class Glue(TextProgram):
-    """
-    Command implementation for concatenating files and standard input to standard output.
+    """Command implementation for concatenating files and standard input to standard output.
 
     Attributes:
         line_number: Line number to be printed with output lines.
