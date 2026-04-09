@@ -76,17 +76,16 @@ class ProgressBar(_ProgressIndicator):
 
     def _render_bar(self, fraction: float) -> str:
         """Return a rendered progress bar for a completion fraction in ``[0, 1]``."""
-        layout = self.layout
-        filled_cells = round(fraction * layout.width)
-        empty_cells = layout.width - filled_cells
+        filled_cells = round(fraction * self.layout.width)
+        empty_cells = self.layout.width - filled_cells
         bar = (
-            f"{layout.left_delimiter}"
-            f"{layout.fill * filled_cells}"
-            f"{layout.empty * empty_cells}"
-            f"{layout.right_delimiter}"
+            f"{self.layout.left_delimiter}"
+            f"{self.layout.fill * filled_cells}"
+            f"{self.layout.empty * empty_cells}"
+            f"{self.layout.right_delimiter}"
         )
 
-        if not layout.show_percent:
+        if not self.layout.show_percent:
             return bar
 
         return f"{bar} {self._render_percent(round(fraction * 100))}"
@@ -105,13 +104,11 @@ class ProgressBar(_ProgressIndicator):
 
     def _render_percent(self, percent: int) -> str:
         """Return a percent suffix (e.g., ``100%``), applying layout SGR styles when configured."""
-        layout = self.layout
-
         return (
-            f"{layout.percent_style}"
+            f"{self.layout.percent_style}"
             f"{percent:3d}"
-            f"{layout.percent_symbol_style}%"
-            f"{layout.percent_reset}"
+            f"{self.layout.percent_symbol_style}%"
+            f"{self.layout.percent_reset}"
         )
 
     def advance(self, step: int = 1, *, message: ProgressMessage = None) -> None:

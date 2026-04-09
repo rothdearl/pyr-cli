@@ -77,6 +77,7 @@ class Scan(TextProgram):
         - Applies match styling when color is enabled and ``--invert-match`` is not set.
         - Raises ``SystemExit(0)`` immediately when ``--quiet`` is set and a match is found.
         """
+        apply_style = self.use_color and not self.args.invert_match
         matches: list[_Match] = []
 
         for line_number, line in enumerate(text.iter_normalized_lines(lines), start=1):
@@ -87,7 +88,7 @@ class Scan(TextProgram):
 
                 self.match_found = True
 
-                if self.use_color and not self.args.invert_match:
+                if apply_style:
                     line = render.style_matches(line, patterns=self.patterns, ansi_style=_Styles.MATCH)
 
                 matches.append(_Match(line_number, line))

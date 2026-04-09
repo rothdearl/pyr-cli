@@ -8,7 +8,6 @@ versioned section when a release is cut.
 ## Unreleased
 
 - `skills`: Added the `performance` skill for reviewing modules for practical, rubric-compliant performance improvements.
-- `progress_bar`: Cached `self.layout` as a local variable in `_render_bar` and `_render_percent` to eliminate repeated attribute traversal per update call.
 - `patterns`: Replaced `all(genexpr)` with an explicit early-return loop in `matches_all_patterns` to avoid a generator allocation on every line call.
 - `progress_bar`: Added missing `@override` to `_render_final`.
 - `spinner`: Added missing `@override` to `__post_init__` and `_render_final`.
@@ -19,6 +18,8 @@ versioned section when a release is cut.
 - `glue`, `order`, `scan`, `seek`, `show`, `slice`, `subs`, `tally`, `track`: Fixed multi-line docstrings where the summary was placed on its own line rather than on the opening `"""` line.
 - `here`: Added `assert isinstance(data, dict)` narrowing hint after `json.get_body()` — guaranteed by `allowed_types=(dict,)`, required to satisfy the type checker.
 - `test_ini`: Replaced `print` with `reporters.suppress` as the `on_error` callback in `load_config` test calls.
+- `scan`: Hoisted `apply_style` as a pre-loop local in `collect_matches`, replacing a compound boolean expression re-evaluated per match.
+- `seek`: Tightened the `path_matches_patterns` docstring — "each match all provided patterns" removes the redundancy between the parameter names and "name and path".
 
 ---
 
