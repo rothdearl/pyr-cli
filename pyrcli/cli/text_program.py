@@ -75,6 +75,7 @@ class TextProgram(CLIProgram, ABC):
         return processed_files
 
     @final
+    @override
     def execute(self) -> None:
         """Route input using the configured handlers.
 

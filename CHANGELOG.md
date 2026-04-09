@@ -7,6 +7,13 @@ versioned section when a release is cut.
 
 ## Unreleased
 
+- `skills`: Added the `performance` skill for reviewing modules for practical, rubric-compliant performance improvements.
+- `progress_bar`: Cached `self.layout` as a local variable in `_render_bar` and `_render_percent` to eliminate repeated attribute traversal per update call.
+- `patterns`: Replaced `all(genexpr)` with an explicit early-return loop in `matches_all_patterns` to avoid a generator allocation on every line call.
+- `progress_bar`: Added missing `@override` to `_render_final`.
+- `spinner`: Added missing `@override` to `__post_init__` and `_render_final`.
+- `text_program`: Added missing `@override` to `execute`.
+
 ---
 
 ## 1.4.11 — 2026-04-08

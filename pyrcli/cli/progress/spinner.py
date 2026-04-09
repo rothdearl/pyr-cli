@@ -1,7 +1,7 @@
 """Terminal spinner for tracking work with an unknown total."""
 
 from dataclasses import dataclass, field
-from typing import Final, final
+from typing import Final, final, override
 
 from ._base import _ProgressIndicator
 from .types import ProgressMessage
@@ -27,6 +27,7 @@ class Spinner(_ProgressIndicator):
     frames: tuple[str, ...] = _DEFAULT_SPINNER_FRAMES
     _frame_index: int = field(default=0, init=False, repr=False)
 
+    @override
     def __post_init__(self) -> None:
         """Initialize and normalize configuration."""
         # Explicit super() call required for slotted dataclass inheritance on Python ≤ 3.12.
@@ -34,6 +35,7 @@ class Spinner(_ProgressIndicator):
 
         self.frames = tuple(self.frames) or _DEFAULT_SPINNER_FRAMES
 
+    @override
     def _render_final(self, message: ProgressMessage) -> None:
         """Render the final indicator state and terminate the line when appropriate."""
         self._finalize_with_message(message)
