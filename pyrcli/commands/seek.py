@@ -164,7 +164,7 @@ class Seek(CLIProgram):
                                                            on_error=self.print_error_and_exit)
 
     def path_matches_patterns(self, name_part: str, path_part: str) -> bool:
-        """Return ``True`` if the ``name_part`` and ``path_part`` each match all provided patterns."""
+        """Return ``True`` if the name and path each match all patterns."""
         if not patterns.matches_all_patterns(name_part, compiled_patterns=self.name_patterns):
             return False
 
