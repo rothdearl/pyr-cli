@@ -7,6 +7,10 @@ versioned section when a release is cut.
 
 ## Unreleased
 
+---
+
+## 1.4.12 — 2026-04-10
+
 - `skills`: Added the `performance` skill for reviewing modules for practical, rubric-compliant performance improvements.
 - `patterns`: Replaced `all(genexpr)` with an explicit early-return loop in `matches_all_patterns` to avoid a generator allocation on every line call.
 - `progress_bar`: Added missing `@override` to `_render_final`.
