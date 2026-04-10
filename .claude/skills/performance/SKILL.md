@@ -54,8 +54,14 @@ Impact: **High** when processing large files; **Low** for small or bounded input
 
 Check for values computed or looked up inside a loop body that are invariant across all iterations:
 
-- **Repeated attribute traversal** — `self.args.some_option` evaluated on every iteration when the value does not change
-  during the loop. A local variable assigned once before the loop is faster and clarifies intent.
+- **Deep attribute chains** — flag only when the chain is three or more levels deep (e.g.,
+  `self.some_class.some_inner.key`) and the value is used multiple times in the loop body. Shallow lookups like
+  `self.attr` or `self.args.attr` do not justify a local — the savings are negligible and the extra variable adds noise
+  without clarifying intent.
+- **Loop-invariant expressions with logic** — a boolean combination or method call computed from invariant inputs is
+  worth hoisting when it both reduces repeated work and clarifies meaning. Example:
+  `apply_style = self.use_color and not self.args.invert_match` set once before the loop is clearer and faster than
+  re-evaluating the expression per line.
 - **Repeated method calls returning a constant result** — e.g., `len(some_list)` called per iteration when the
   collection does not change.
 - **Repeated module-level lookups** — calling a function that re-derives the same result on every iteration.
@@ -124,6 +130,9 @@ across many output lines. Verify this is cached before the print loop, not recom
 - **C-extension or NumPy-style suggestions** — out of scope.
 - **Anything that harms readability** — if the suggestion requires a comment to explain why it is correct, it is
   probably not worth doing.
+- **Shallow attribute hoisting** — do not suggest `local = self.attr` or `local = self.args.attr` as loop-invariant
+  locals. Savings are negligible for I/O-bound work, and naming a variable purely to cache a one- or two-level lookup
+  adds noise that can obscure where the value comes from.
 
 ---
 
