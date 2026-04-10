@@ -20,6 +20,7 @@ versioned section when a release is cut.
 - `test_ini`: Replaced `print` with `reporters.suppress` as the `on_error` callback in `load_config` test calls.
 - `scan`: Hoisted `apply_style` as a pre-loop local in `collect_matches`, replacing a compound boolean expression re-evaluated per match.
 - `seek`: Tightened the `path_matches_patterns` docstring — "each match all provided patterns" removes the redundancy between the parameter names and "name and path".
+- `skills`: Tightened the `performance` skill — replaced the blanket "repeated attribute traversal" rule with separate guidance for deep chains (3+ levels) and loop-invariant logic expressions; added a "What Not to Flag" entry prohibiting shallow attribute hoisting.
 
 ---
 
