@@ -7,6 +7,9 @@ versioned section when a release is cut.
 
 ## Unreleased
 
+- `project`: Bumped version to 1.4.13.
+- `project`: Corrected GitHub repository URLs — changed `Pyr-CLI` to `pyr-cli` to match the actual repository name casing.
+
 ---
 
 ## 1.4.12 — 2026-04-10

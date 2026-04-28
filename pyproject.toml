@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyr-cli"
-version = "1.4.12"
+version = "1.4.13"
 description = "A collection of deterministic Unix-style CLI tools and a shared Python framework with stable I/O contracts for pipeline-safe composition."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -46,9 +46,9 @@ track = "pyrcli.commands.track:main"
 when = "pyrcli.commands.when:main"
 
 [project.urls]
-Homepage = "https://github.com/rothdearl/Pyr-CLI"
-Repository = "https://github.com/rothdearl/Pyr-CLI"
-Issues = "https://github.com/rothdearl/Pyr-CLI/issues"
+Homepage = "https://github.com/rothdearl/pyr-cli"
+Repository = "https://github.com/rothdearl/pyr-cli"
+Issues = "https://github.com/rothdearl/pyr-cli/issues"
 
 [tool.setuptools]
 include-package-data = false
